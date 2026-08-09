@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/theme-dark.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/radius.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/layout.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/base.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/tokens/print.css">
+<link rel="stylesheet" href="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/styles.css">
+<script src="_ds/datonum-design-system-de15d155-fcda-401c-8177-0079a3bdfd2f/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:#fff}
+a{color:var(--text-link);text-decoration:none}
+a:hover{color:var(--text-link-hover)}
+</style>
+</helmet>
+<div style="font-family:var(--font-sans);color:var(--text-body)">
+
+<header style="position:sticky;top:0;z-index:30;height:72px;display:flex;align-items:center;background:var(--alpha-header);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-subtle)">
+<div style="width:100%;max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:32px">
+<a href="#" onClick="{{ nav.home }}" style="display:flex;border-bottom:none">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Logo" variant="lockup" height="{{ 24 }}" hint-size="132px,34px"></x-import>
+</a>
+<nav style="display:flex;gap:24px;margin-right:auto;align-items:center">
+<a href="#" onClick="{{ nav.services }}" style="border-bottom:none;font:var(--weight-medium) var(--text-sm)/1 var(--font-sans);color:{{ cServices }}">Services</a>
+<a href="#" onClick="{{ nav.approach }}" style="border-bottom:none;font:var(--weight-medium) var(--text-sm)/1 var(--font-sans);color:{{ cApproach }}">Approach</a>
+<a href="#" onClick="{{ nav.who }}" style="border-bottom:none;font:var(--weight-medium) var(--text-sm)/1 var(--font-sans);color:{{ cWho }}">Who it's for</a>
+<a href="#" onClick="{{ nav.about }}" style="border-bottom:none;font:var(--weight-medium) var(--text-sm)/1 var(--font-sans);color:{{ cAbout }}">About</a>
+</nav>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" size="sm" onClick="{{ nav.contact }}" hint-size="168px,32px">Book a call</x-import>
+</div>
+</header>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Home">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:112px 0 88px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-500)">AI workflow consultancy</span>
+<h1 style="font:var(--type-display);letter-spacing:var(--tracking-display);color:var(--white);margin:20px 0 0;max-width:24ch;text-wrap:pretty">Your team is doing work a machine should have finished.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:62ch;text-wrap:pretty">We find out exactly which work, tell you honestly what is worth automating, and then build it. For service businesses with no technical team of their own.</p>
+<div style="display:flex;gap:12px;margin-top:36px;flex-wrap:wrap">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" size="lg" variant="inverse" onClick="{{ nav.contact }}" hint-size="210px,44px">Book a 30-minute call</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" size="lg" variant="inverse-outline" onClick="{{ nav.services }}" hint-size="190px,44px">See the three services</x-import>
+</div>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:96px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="The problem" title="You already know something is wrong" hint-size="100%,110px"></x-import>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:40px;background:var(--border-subtle);border:1px solid var(--border-subtle)">
+<div style="background:var(--surface-card);padding:32px;display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-data);color:var(--text-faint)">01</span>
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">The same work, every week.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Someone on your team sorts the same requests, writes the same documents, and copies the same information between systems.</p>
+</div>
+<div style="background:var(--surface-card);padding:32px;display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-data);color:var(--text-faint)">02</span>
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">You hired for growth, not admin.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">New people arrive and get absorbed into coordination rather than the work you actually sell.</p>
+</div>
+<div style="background:var(--surface-card);padding:32px;display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-data);color:var(--text-faint)">03</span>
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">You have tried a few AI tools.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Some people use them. Most do not. Nothing changed at the level of the business.</p>
+</div>
+<div style="background:var(--surface-card);padding:32px;display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-data);color:var(--text-faint)">04</span>
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">Everyone who calls wants to build something.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Nobody has looked at how you actually work first.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:96px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="The ladder" title="Three services, in the order they make sense" lead="Most clients start with an audit. Nobody is asked to commit to more than one step at a time." hint-size="100%,150px"></x-import>
+<div style="height:8px;margin:40px 0 0;border-top:1px solid var(--border-strong);background:repeating-linear-gradient(to right,var(--border-strong) 0 1px,transparent 1px 14px)"></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px">
+<div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:8px;box-shadow:0 1px 2px rgba(10,37,64,.06);padding:32px;display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-data);color:var(--teal-700)">01 — Find out what is worth doing</span>
+<h3 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">AI Readiness &amp; Automation Audit</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">A structured review of how your business runs and a ranked plan of what AI can take off your team's hands. Two to three weeks.</p>
+<a href="#" onClick="{{ nav.audit }}" style="margin-top:auto;font:var(--weight-semibold) var(--text-sm)/1.4 var(--font-sans);color:var(--text-link)">Read more →</a>
+</div>
+<div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:8px;box-shadow:0 1px 2px rgba(10,37,64,.06);padding:32px;display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-data);color:var(--teal-700)">02 — Build it properly</span>
+<h3 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">AI Workflow Implementation</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">We build one workflow end to end, connect it to the tools you already use, and hand it over working. Two to ten weeks depending on scope.</p>
+<a href="#" onClick="{{ nav.implementation }}" style="margin-top:auto;font:var(--weight-semibold) var(--text-sm)/1.4 var(--font-sans);color:var(--text-link)">Read more →</a>
+</div>
+<div style="background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:8px;box-shadow:0 1px 2px rgba(10,37,64,.06);padding:32px;display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-data);color:var(--teal-700)">03 — Keep it working</span>
+<h3 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">AI Workflow Optimization Retainer</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Ongoing care so the workflow gets better over time instead of quietly degrading. Monthly, rolling.</p>
+<a href="#" onClick="{{ nav.retainer }}" style="margin-top:auto;font:var(--weight-semibold) var(--text-sm)/1.4 var(--font-sans);color:var(--text-link)">Read more →</a>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background:var(--amber-050);border-top:1px solid var(--amber-300);border-bottom:1px solid var(--amber-300);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,9fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:16px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-caution)">The limits</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:16ch;text-wrap:pretty">What we will not do</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Every audit we deliver includes a do-not-automate list. It is usually the section clients find most useful.</p>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">We will not automate something because it is technically possible. It has to pay back.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">We will not remove the person from a decision that needs judgement.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">We will not sell you an implementation if the audit says the timing is wrong.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">We will not replace the systems you already run. We work with them.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">We will not leave you dependent on us. Everything is documented and handed over.</x-import>
+</ul>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:96px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="Fit" title="Who this is for" hint-size="100%,110px"></x-import>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:48px;margin-top:40px">
+<div style="display:flex;flex-direction:column;gap:20px;padding-top:24px;border-top:1px solid var(--teal-600)">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">This works when</h3>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">You are a service business of roughly 10 to 80 people.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">The founder or owner still makes the decisions.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">There is no developer, no CTO, and no one internally who can evaluate this.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Work repeats often enough that fixing it matters.</x-import>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px;padding-top:24px;border-top:1px solid var(--border-strong)">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">This does not work when</h3>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">You build software. You have the people to do this yourselves.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">You are looking for the cheapest hourly rate.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">You want proof of return before any paid work begins.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">Nothing in the business repeats.</x-import>
+</ul>
+</div>
+</div>
+<div style="margin-top:32px">
+<a href="#" onClick="{{ nav.who }}" style="font:var(--weight-semibold) var(--text-sm)/1.4 var(--font-sans);color:var(--text-link)">See the full profile, and where we are not the right fit →</a>
+</div>
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:96px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:16px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">The sequence</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:18ch;text-wrap:pretty">How an audit runs</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Two to three weeks from kick-off to handover, with three to five of your people involved for 45 minutes each.</p>
+</div>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.StepTracker" steps="{{ auditSteps }}" current="{{ 0 }}" orientation="vertical" hint-size="100%,360px"></x-import>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:96px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isServices }}">
+<div data-screen-label="Services">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-500)">Services</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:20px 0 0;max-width:22ch;text-wrap:pretty">Find it, build it, keep it working.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:60ch;text-wrap:pretty">Three services designed to be taken in order. You are never asked to commit to more than the next step.</p>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:64px">
+
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-data);color:var(--teal-700)">Service 01</span>
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">AI Readiness &amp; Automation Audit</h2>
+<span style="font:var(--type-data);color:var(--text-muted)">2–3 weeks</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Before anyone builds anything, it is worth knowing what is actually worth building. We spend two to three weeks understanding how work moves through your business — the tools, the steps people repeat, and the places things get stuck.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">You finish with a ranked, costed view of where AI fits, and an honest list of the things not worth touching.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty"><strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">You walk away with:</strong> workflow map, readiness scorecard, opportunity matrix, top three to five recommendations, a do-not-automate list, and a 90-day roadmap.</p>
+<a href="#" onClick="{{ nav.audit }}" style="font:var(--weight-semibold) var(--text-sm)/1.4 var(--font-sans);color:var(--text-link)">See the full service →</a>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-data);color:var(--teal-700)">Service 02</span>
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">AI Workflow Implementation</h2>
+<span style="font:var(--type-data);color:var(--text-muted)">2–10 weeks</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">We build one workflow properly, end to end. It connects to the tools you already use, a person reviews the output before it is used, and we test it against your real historical examples before it goes live.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Three sizes, depending on how much of your process is involved: <strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Lite</strong> for one clear repetitive task, <strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Standard</strong> for a full multi-step process, and <strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Growth</strong> for something complex or business-critical.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty"><strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">You walk away with:</strong> a working workflow in your environment, connected to your systems, with documentation, training, and a support window.</p>
+<a href="#" onClick="{{ nav.implementation }}" style="font:var(--weight-semibold) var(--text-sm)/1.4 var(--font-sans);color:var(--text-link)">See the full service →</a>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-data);color:var(--teal-700)">Service 03</span>
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">AI Workflow Optimization Retainer</h2>
+<span style="font:var(--type-data);color:var(--text-muted)">Monthly, rolling</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">An AI-assisted workflow is not something you install and forget. Your business changes, your tools update, and the kinds of work coming in shift. Without maintenance, quality drifts until people stop trusting it and go back to doing the work by hand.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Three levels, matched to what you are running: <strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Light</strong> for a single workflow, <strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Standard</strong> for an active process several people rely on, and <strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Growth</strong> for workflows the business genuinely depends on.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty"><strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">You walk away with:</strong> someone accountable for keeping it working, and a monthly conversation about what to improve next.</p>
+<a href="#" onClick="{{ nav.retainer }}" style="font:var(--weight-semibold) var(--text-sm)/1.4 var(--font-sans);color:var(--text-link)">See the full service →</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:72px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<div style="max-width:760px;background:var(--surface-accent-soft);border:1px solid var(--border-accent);border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">On price</span>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">We publish our prices, but not here. Tell us which service you are considering and we will send the one-pager with the numbers on it. No form maze, no discovery call required first.</p>
+<div style="display:flex">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" variant="secondary" onClick="{{ nav.contact }}" hint-size="150px,40px">Ask for the pricing</x-import>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAudit }}">
+<div data-screen-label="Audit">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-data);color:var(--teal-500);letter-spacing:.04em">Service 01</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:18px 0 0;max-width:26ch;text-wrap:pretty">Find out exactly where AI will save your team time — before you spend anything building it.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:62ch;text-wrap:pretty">A structured review of how your business actually runs, and a ranked plan of the work AI can take off your team's hands.</p>
+<div style="display:flex;gap:12px;margin-top:36px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" size="lg" variant="inverse" onClick="{{ nav.contact }}" hint-size="210px,44px">Book a 30-minute call</x-import>
+</div>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:44px">
+
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">Who this is for</span>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Founder-led service businesses of 10 to 80 people with no technical team of their own. You have heard that AI could help. You do not have anyone internally who can tell you where, or whether it is worth it.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">The problem</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">Your team spends hours every week on work that repeats: sorting requests, chasing information, writing the same documents, moving information between systems.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">You have tried a few AI tools. Some people use them, most do not, and nothing changed at the level of the business.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">Every supplier who approaches you wants to build something. Nobody has looked at how you actually work first.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">You do not want to spend money finding out the hard way that it was the wrong thing to automate.</x-import>
+</ul>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">What we do</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">We spend time with you and your team to understand how work moves through your business — the tools you use, the steps people repeat, and where things get stuck. Then we tell you plainly what is worth automating, what is not, and in what order.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">What you get</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" title="Tool and system review." hint-size="100%,24px">What you use, what overlaps, what is not being used.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" title="Workflow map." hint-size="100%,24px">How work actually moves through your business, step by step.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" title="Readiness scorecard." hint-size="100%,24px">An honest view of how prepared your business is, with the gaps named.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" title="Opportunity matrix." hint-size="100%,24px">Every opportunity we found, ranked by time saved against effort to build.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" title="Top three to five recommendations." hint-size="100%,24px">The specific workflows worth doing first, with the expected impact of each.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" title="Do-not-automate list." hint-size="100%,24px">The things that look tempting but carry risk or will not pay back.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" title="90-day roadmap." hint-size="100%,24px">What to do first, second, and third.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Written report and a live walkthrough session.</x-import>
+</ul>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:20px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">How it works</h2>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.StepTracker" steps="{{ auditSteps }}" current="{{ 0 }}" orientation="vertical" hint-size="100%,360px"></x-import>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:32px;border-top:1px solid var(--border-subtle)">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">What we need from you</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Access to three to five people for 45 minutes each, a view of the tools you currently use, and a handful of real examples of the work in question.</p>
+</div>
+
+</div>
+
+<div style="position:sticky;top:104px;display:flex;flex-direction:column;gap:24px">
+<div style="background:var(--grey-050);border:1px solid var(--border-subtle);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:20px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">At a glance</span>
+<div style="display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.StatBlock" value="2–3 weeks" label="Timeline" detail="Kick-off to handover" hint-size="100%,74px"></x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.StatBlock" value="3–5 people" label="Interviewed" detail="45 minutes each" hint-size="100%,74px"></x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.StatBlock" value="8" label="Deliverables" detail="Report and live walkthrough included" hint-size="100%,74px"></x-import>
+</div>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" fullWidth="{{ true }}" onClick="{{ nav.contact }}" hint-size="100%,40px">Book a 30-minute call</x-import>
+</div>
+<p style="font:var(--type-small);color:var(--text-muted);margin:0;text-wrap:pretty">Prices are not published here. Ask us and we will send the one-pager with the numbers on it.</p>
+</div>
+</div>
+</section>
+
+<section style="background:var(--amber-050);border-top:1px solid var(--amber-300);border-bottom:1px solid var(--amber-300);padding:72px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-caution)">The limits</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:16ch">What this is not</h2>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Not a sales pitch dressed as a report. The do-not-automate section exists for a reason.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Not a technology procurement exercise.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Not an AI strategy deck full of industry trends.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Not a commitment to build anything with us.</x-import>
+</ul>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:56px">
+<div style="max-width:66ch;display:flex;flex-direction:column;gap:16px">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">The outcome</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">You finish with a clear, ranked, costed view of where AI fits in your business — and the confidence to either move forward or decide the timing is not right.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Most clients pick one workflow from the top of the list and have us build it. That is a separate engagement, quoted separately, and entirely your choice.</p>
+</div>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isImpl }}">
+<div data-screen-label="Implementation">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-data);color:var(--teal-500);letter-spacing:.04em">Service 02</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:18px 0 0;max-width:24ch;text-wrap:pretty">Built properly, tested against your real work, handed over working.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:62ch;text-wrap:pretty">One workflow, connected to the systems you already use, with a person reviewing the output before it is used.</p>
+<div style="display:flex;gap:12px;margin-top:36px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" size="lg" variant="inverse" onClick="{{ nav.contact }}" hint-size="210px,44px">Book a 30-minute call</x-import>
+</div>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="How we build" title="Four things that do not change" hint-size="100%,110px"></x-import>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px">
+<div style="border-top:1px solid var(--teal-600);padding-top:20px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">We start from your real examples.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Every workflow is tested against work your business has actually done, not sample data.</p>
+</div>
+<div style="border-top:1px solid var(--teal-600);padding-top:20px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">A person always checks.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Review steps are built into the design, not bolted on at the end.</p>
+</div>
+<div style="border-top:1px solid var(--teal-600);padding-top:20px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">It connects to what you already run.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">We do not ask you to replace your systems.</p>
+</div>
+<div style="border-top:1px solid var(--teal-600);padding-top:20px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0">You get it documented.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Written guides, team training, and a support window after go-live.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:88px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="Three sizes" title="Scope, side by side" lead="Which size you need depends on how much of your process is involved — not on how ambitious the technology is." hint-size="100%,150px"></x-import>
+<div style="margin-top:36px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.DataTable" columns="{{ implCols }}" rows="{{ implRows }}" dense="{{ dense }}" hint-size="100%,420px"></x-import>
+</div>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:48px">
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding-top:28px;border-top:1px solid var(--border-subtle)">
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:var(--type-data);color:var(--teal-700)">Lite</span>
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">One job off your team</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Best when the task is well defined, happens often, involves reading, writing, sorting, or summarising, and touches one or two of your systems.</p>
+<p style="font:var(--type-small);color:var(--text-muted);margin:0;max-width:72ch;text-wrap:pretty"><strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Examples:</strong> call recordings turned into follow-up notes · enquiry forms turned into structured briefs · incoming requests sorted, prioritised, and drafted · long documents turned into the points that matter.</p>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding-top:28px;border-top:1px solid var(--border-subtle)">
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:var(--type-data);color:var(--teal-700)">Standard</span>
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">A whole process rebuilt</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Best when an entire process is slow, not just one task. Information gets re-entered, handoffs get missed, and the same summary gets written three times by three people.</p>
+<p style="font:var(--type-small);color:var(--text-muted);margin:0;max-width:72ch;text-wrap:pretty"><strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Examples:</strong> a sales call turned into a complete CRM record, follow-up email, and proposal angle · a signed contract triggering the project brief, missing-information list, and kick-off agenda · weekly project reporting assembled across your systems · enquiries turned into scoped draft proposals.</p>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding-top:28px;border-top:1px solid var(--border-subtle)">
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:var(--type-data);color:var(--teal-700)">Growth</span>
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0;text-wrap:pretty">The process that runs your business</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Best when one process carries real commercial weight and getting it wrong is expensive. Usually the process the founder has tried to fix twice already.</p>
+<p style="font:var(--type-small);color:var(--text-muted);margin:0;max-width:72ch;text-wrap:pretty"><strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Examples:</strong> enquiry through to signed contract, end to end · delivery risk and margin monitoring across your project, time, and finance tools · the full client reporting cycle · case and claim handling from intake to resolution.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background:var(--amber-050);border-top:1px solid var(--amber-300);border-bottom:1px solid var(--amber-300);padding:72px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-caution)">The limits</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:16ch">What is not included</h2>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Replacing or rebuilding your core business systems.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Building custom software from scratch.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Connections to systems with no viable way to connect.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Fully automatic decisions with no human review.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Unlimited scope changes mid-build.</x-import>
+</ul>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:56px">
+<div style="max-width:66ch;display:flex;flex-direction:column;gap:16px">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">Where to start</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">If you already know exactly which task is costing you time, we can scope an implementation directly. If you are not sure, start with an <a href="#" onClick="{{ nav.audit }}">audit</a> — it will tell you which workflow to build first, and the cost comes off nothing but guesswork.</p>
+</div>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRetainer }}">
+<div data-screen-label="Retainer">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-data);color:var(--teal-500);letter-spacing:.04em">Service 03</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:18px 0 0;max-width:24ch;text-wrap:pretty">Keep it working — without hiring anyone to look after it.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:62ch;text-wrap:pretty">Maintenance, quality tuning, and someone to ask when something looks wrong.</p>
+<div style="display:flex;gap:12px;margin-top:36px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" size="lg" variant="inverse" onClick="{{ nav.contact }}" hint-size="210px,44px">Book a 30-minute call</x-import>
+</div>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">Why this exists</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:20ch;text-wrap:pretty">An AI-assisted workflow is not a machine you install and forget.</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Real use changes things.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">Your business changes — new services, new clients, new document formats.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">The tools you use release updates.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">Output quality drifts as the kinds of work coming in shift.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="excluded" hint-size="100%,24px">Your team finds small things that would make it noticeably better.</x-import>
+</ul>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Without someone maintaining it, a workflow quietly degrades until people stop trusting it and go back to doing the work by hand. That is the most common way an AI project fails — not with a breakdown, but with a slow loss of confidence.</p>
+</div>
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:88px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="Three levels" title="Matched to what you are running" hint-size="100%,110px"></x-import>
+<div style="margin-top:36px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.DataTable" columns="{{ retCols }}" rows="{{ retRows }}" dense="{{ dense }}" hint-size="100%,520px"></x-import>
+</div>
+</div>
+</section>
+
+<section style="background:var(--amber-050);border-top:1px solid var(--amber-300);border-bottom:1px solid var(--amber-300);padding:72px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-caution)">The limits</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:16ch">What is not included</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Building entirely new workflows — those are quoted as implementation work.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Major rebuilds or redesigns.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Out-of-hours or on-call support.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" hint-size="100%,24px">Unlimited changes.</x-import>
+</ul>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Anything outside scope is quoted separately, and we will always tell you before doing it.</p>
+</div>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:56px">
+<div style="max-width:66ch;display:flex;flex-direction:column;gap:16px">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">Terms</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Monthly and rolling. Thirty days' notice to cancel. Support hours reset each month and do not carry over. Offered after an implementation rather than sold on its own.</p>
+</div>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApproach }}">
+<div data-screen-label="Approach">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-500)">How we work</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:20px 0 0;max-width:20ch;text-wrap:pretty">We measure before we build.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:64ch;text-wrap:pretty">Most AI projects fail for one of three reasons: the wrong thing was automated, nobody checked the output, or nobody maintained it. Our approach is built around avoiding those three.</p>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="Five principles" title="What we hold to, on every engagement" hint-size="100%,110px"></x-import>
+<div style="display:flex;flex-direction:column;margin-top:40px">
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding:28px 0;border-top:1px solid var(--border-subtle)">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0"><span style="font:var(--type-data);color:var(--teal-700);display:block;margin-bottom:8px">01</span>Diagnosis before building.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">We will not quote you for a build until we understand the process. If you come to us knowing exactly what you want built, we will still spend a day checking that it is the right thing.</p>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding:28px 0;border-top:1px solid var(--border-subtle)">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0"><span style="font:var(--type-data);color:var(--teal-700);display:block;margin-bottom:8px">02</span>A person always reviews.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">AI drafts, sorts, summarises, and checks. People approve. We do not build workflows that make consequential decisions unsupervised, and we will say no if you ask us to.</p>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding:28px 0;border-top:1px solid var(--border-subtle)">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0"><span style="font:var(--type-data);color:var(--teal-700);display:block;margin-bottom:8px">03</span>Your systems, not ours.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">We work with the tools you already pay for. You will not end up on a platform you can only leave by starting over.</p>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding:28px 0;border-top:1px solid var(--border-subtle)">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0"><span style="font:var(--type-data);color:var(--teal-700);display:block;margin-bottom:8px">04</span>Tested on your real work.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Every workflow is tested against your own historical examples before it goes live. Sample data proves nothing.</p>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;padding:28px 0;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle)">
+<h3 style="font:var(--type-h4);color:var(--text-strong);margin:0"><span style="font:var(--type-data);color:var(--teal-700);display:block;margin-bottom:8px">05</span>Handed over, documented.</h3>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Written guides, training for the people who use it, and a support window. If you never speak to us again, the workflow still runs.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:80px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<div style="background:var(--surface-accent-soft);border:1px solid var(--border-accent);border-radius:8px;padding:40px;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">Plainly</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:16ch;text-wrap:pretty">What we are honest about</h2>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">AI gets things wrong. The design assumes it, which is why review steps exist.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Not every process is worth automating. Roughly a third of what we look at is not.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">The first version is rarely the final one. That is why implementations include a stabilisation period.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Savings show up as capacity, not usually as headcount reduction. Most of our clients redeploy the time rather than remove the person.</x-import>
+</ul>
+</div>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWho }}">
+<div data-screen-label="Who it's for">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-500)">Who this is for</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:20px 0 0;max-width:24ch;text-wrap:pretty">We work with businesses that do not build software.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:60ch;text-wrap:pretty">If you have developers, you have the people to do this yourselves. We work with everyone else.</p>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">The profile</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:18ch;text-wrap:pretty">Five things that describe our clients</h2>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Founder-led or owner-operated, and the founder still makes the decisions.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Between 10 and 80 people.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">A service-based or operations-heavy business.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">No CTO, no developers, no internal automation specialist.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Work that repeats often enough that improving it is worth doing.</x-import>
+</ul>
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:80px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.SectionHeading" eyebrow="Industries" title="Industries we work in" hint-size="100%,110px"></x-import>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0 48px;margin-top:32px">
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Recruitment and staffing</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Accounting and bookkeeping</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Legal practices</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Insurance broking</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Marketing, creative, and events agencies</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Architecture and engineering</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Construction and specialist contracting</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Property management and real estate</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Logistics and freight forwarding</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Healthcare, dental, and veterinary groups</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Manufacturing with a heavy back office</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Training and education providers</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Facilities management and field service</span>
+<span style="font:var(--type-body);color:var(--text-body);padding:12px 0;border-bottom:1px solid var(--border-subtle)">Travel and hospitality management</span>
+</div>
+<p style="font:var(--type-body);color:var(--text-body);margin:40px 0 0;max-width:66ch;text-wrap:pretty"><strong style="color:var(--text-strong);font-weight:var(--weight-semibold)">Where we are.</strong> We are based in Madrid and work across Europe. Most engagements run remotely, with on-site discovery where it helps.</p>
+</div>
+</section>
+
+<section style="background:var(--amber-050);border-top:1px solid var(--amber-300);border-bottom:1px solid var(--amber-300);padding:72px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-caution)">Honestly</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:18ch;text-wrap:pretty">When we are not the right fit</h2>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">We would rather tell you this now than three weeks into a project.</p>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" title="You build software." hint-size="100%,24px">You have the internal capability already. We would be selling you something you can do better yourselves.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" title="You are under ten people." hint-size="100%,24px">There is usually not enough repetition yet to justify the work.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" title="You are over eighty people." hint-size="100%,24px">You are likely to need something more governed than we are set up to deliver.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" title="You want the cheapest hourly rate." hint-size="100%,24px">We price by engagement, not by hour.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="caution" title="You need proof of return before any paid work." hint-size="100%,24px">The audit exists precisely to produce that proof. We cannot produce it for free.</x-import>
+</ul>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAbout }}">
+<div data-screen-label="About">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-500)">About</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:20px 0 0;max-width:28ch;text-wrap:pretty">Datonum exists because most AI advice is written for companies that do not need it.</h1>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:20px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">The story</span>
+<p style="font:var(--type-body-lg);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">The useful writing about AI in business is aimed at organisations with engineering teams, data functions, and someone whose job is to evaluate this. That describes almost none of the businesses actually doing the work — the recruitment firm, the accountancy practice, the contractor, the freight forwarder.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">Those businesses have the same repetitive load and none of the internal capability to address it. They get approached by vendors selling excitement and by consultancies selling strategy decks. Very few people show up, look at how the work actually moves, and say plainly what is worth doing.</p>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;max-width:66ch;text-wrap:pretty">That is the gap Datonum works in.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="background:var(--grey-050);border:1px solid var(--border-subtle);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:16px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">Who runs it</span>
+<div style="display:flex;align-items:center;gap:14px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Avatar" name="Rostyslav Bachyk" size="{{ 44 }}" hint-size="44px,44px"></x-import>
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="font:var(--type-h4);color:var(--text-strong)">Rostyslav Bachyk</span>
+<span style="font:var(--type-small);color:var(--text-muted)">Founder</span>
+</div>
+</div>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Datonum is led by Rostyslav Bachyk, working with a small group of specialists brought in by engagement. Background in delivery operations — how service businesses plan work, track it, and lose margin on it.</p>
+</div>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Callout" tone="info" title="Before launch" hint-size="100%,110px">Expand this with a short bio and a photograph. A photograph of a person is the one permitted exception to the no-photography rule, and only on this page.</x-import>
+</div>
+</div>
+</section>
+
+<section style="background:var(--grey-050);padding:80px 0;border-top:1px solid var(--border-subtle)">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">Set-up</span>
+<h2 style="font:var(--type-h2);letter-spacing:var(--tracking-heading);color:var(--text-strong);margin:0;max-width:18ch;text-wrap:pretty">How we are set up</h2>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Based in Madrid, working across Europe.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Small by design. Engagements are run by the person who scoped them.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">We take on a limited number of implementations at a time so stabilisation periods are real rather than nominal.</x-import>
+</ul>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.CTABanner" eyebrow="Next step" title="Not sure where AI fits in your business?" lead="Thirty minutes, no preparation needed. We will tell you honestly whether there is something worth doing." action="Book a 30-minute call" tone="{{ ctaTone }}" onAction="{{ nav.contact }}" hint-size="100%,180px"></x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isContact }}">
+<div data-screen-label="Contact">
+<section style="background:var(--surface-ink);background-image:radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10,37,64,0) 60%);padding:96px 0 80px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-500)">Book a call</span>
+<h1 style="font:var(--type-display-2);letter-spacing:var(--tracking-display);color:var(--white);margin:20px 0 0;max-width:22ch;text-wrap:pretty">Tell us what your team keeps redoing.</h1>
+<p style="font:var(--type-body-lg);color:var(--text-inverse-muted);margin:24px 0 0;max-width:64ch;text-wrap:pretty">Thirty minutes. No preparation needed, no deck. We will ask how work moves through your business and tell you honestly whether there is something here worth doing.</p>
+</div>
+</section>
+<div style="height:10px;border-top:1px solid var(--teal-600);background:repeating-linear-gradient(to right,var(--teal-600) 0 1px,transparent 1px 14px)"></div>
+
+<section style="background:var(--surface-card);padding:88px 0">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">What happens on the call</span>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.StepTracker" steps="{{ callSteps }}" current="{{ 0 }}" orientation="vertical" hint-size="100%,160px"></x-import>
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">If it is nothing at all, we will say so. That happens reasonably often and costs you half an hour.</p>
+</div>
+<div style="padding-top:24px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-700)">Or just email</span>
+<p style="font:var(--type-body);color:var(--text-body);margin:0">If you would rather just email: <a href="mailto:hello@datonum.com">hello@datonum.com</a></p>
+</div>
+</div>
+
+<div style="background:var(--grey-050);border:1px solid var(--border-subtle);border-radius:12px;padding:36px">
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:24px">
+<h2 style="font:var(--type-h3);color:var(--text-strong);margin:0">Book a 30-minute call</h2>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Field" label="Name" required="{{ true }}" hint-size="100%,72px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Input" placeholder="" hint-size="100%,40px"></x-import>
+</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Field" label="Work email" required="{{ true }}" hint-size="100%,72px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Input" type="email" placeholder="" hint-size="100%,40px"></x-import>
+</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Field" label="Company" required="{{ true }}" hint-size="100%,72px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Input" placeholder="" hint-size="100%,40px"></x-import>
+</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Field" label="What keeps getting redone?" required="{{ true }}" hint-size="100%,140px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Textarea" rows="{{ 4 }}" placeholder="For example: our coordinators re-type every enquiry into three systems." hint-size="100%,104px"></x-import>
+</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" size="lg" fullWidth="{{ true }}" onClick="{{ submit }}" hint-size="100%,44px">Book a 30-minute call</x-import>
+<p style="font:var(--type-small);color:var(--text-muted);margin:0;text-wrap:pretty">We use your details only to respond to this enquiry. No newsletter, no list. See our <a href="#" onClick="{{ nav.privacy }}">privacy notice</a>.</p>
+</div>
+</sc-if>
+<sc-if value="{{ sent }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Callout" tone="accent" title="Thanks" hint-size="100%,110px">We will come back to you within one working day with a couple of times.</x-import>
+<div style="display:flex">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" variant="secondary" onClick="{{ nav.home }}" hint-size="150px,40px">Back to the home page</x-import>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLegal }}">
+<div data-screen-label="Legal">
+<section style="background:var(--surface-ink);padding:80px 0 64px">
+<div style="max-width:1180px;margin:0 auto;padding:0 24px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--teal-500)">Legal</span>
+<h1 style="font:var(--type-h1);letter-spacing:var(--tracking-display);color:var(--white);margin:18px 0 0">{{ legalTitle }}</h1>
+</div>
+</section>
+<section style="background:var(--surface-card);padding:72px 0 96px">
+<div style="max-width:760px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:28px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Callout" tone="caution" title="Not yet drafted" hint-size="100%,110px">This page is required before the enquiry form goes live. The content below is the brief, not the notice.</x-import>
+<sc-if value="{{ isPrivacy }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Required for GDPR and for the enquiry form. The notice must cover:</p>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">What is collected.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Lawful basis for processing.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">HubSpot as processor.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Retention period.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Data subject rights.</x-import>
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.ChecklistItem" tone="included" hint-size="100%,24px">Contact for requests.</x-import>
+</ul>
+</div>
+</sc-if>
+<sc-if value="{{ isTerms }}">
+<p style="font:var(--type-body);color:var(--text-body);margin:0;text-wrap:pretty">Light, and site terms only. Engagement terms live in the contract, not here.</p>
+</sc-if>
+<div style="display:flex">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Button" variant="secondary" onClick="{{ nav.home }}" hint-size="150px,40px">Back to the home page</x-import>
+</div>
+</div>
+</section>
+</div>
+</sc-if>
+
+<footer style="background:var(--surface-ink);color:var(--text-inverse-muted)">
+<div style="height:8px;border-top:1px solid var(--teal-500);background:repeating-linear-gradient(to right,var(--teal-500) 0 1px,transparent 1px 14px)"></div>
+<div style="max-width:1180px;margin:0 auto;padding:64px 24px 32px">
+<div style="display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:48px;padding-bottom:48px;border-bottom:1px solid var(--border-ink)">
+<div style="display:flex;flex-direction:column;gap:16px;max-width:36ch">
+<x-import component-from-global-scope="DatonumDesignSystem_de15d1.Logo" variant="lockup" tone="white" height="{{ 24 }}" hint-size="132px,34px"></x-import>
+<p style="font:var(--type-small);color:var(--text-inverse-muted);margin:0;text-wrap:pretty">AI workflow consultancy for founder-led service businesses.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--navy-300)">Services</span>
+<a href="#" onClick="{{ nav.audit }}" style="font:var(--type-small);color:var(--white);border-bottom:none">Audit</a>
+<a href="#" onClick="{{ nav.implementation }}" style="font:var(--type-small);color:var(--white);border-bottom:none">Implementation</a>
+<a href="#" onClick="{{ nav.retainer }}" style="font:var(--type-small);color:var(--white);border-bottom:none">Retainer</a>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--navy-300)">Company</span>
+<a href="#" onClick="{{ nav.approach }}" style="font:var(--type-small);color:var(--white);border-bottom:none">Approach</a>
+<a href="#" onClick="{{ nav.who }}" style="font:var(--type-small);color:var(--white);border-bottom:none">Who it's for</a>
+<a href="#" onClick="{{ nav.about }}" style="font:var(--type-small);color:var(--white);border-bottom:none">About</a>
+<a href="#" onClick="{{ nav.contact }}" style="font:var(--type-small);color:var(--white);border-bottom:none">Book a call</a>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:var(--type-eyebrow);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--navy-300)">Contact</span>
+<a href="mailto:hello@datonum.com" style="font:var(--type-small);color:var(--white);border-bottom:none">hello@datonum.com</a>
+<a href="https://www.linkedin.com" style="font:var(--type-small);color:var(--white);border-bottom:none">LinkedIn</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:24px;padding-top:24px;flex-wrap:wrap">
+<span style="font:var(--font-sans);font-size:var(--text-xs);color:var(--navy-300)">© 2026 Datonum</span>
+<div style="display:flex;gap:16px;align-items:center">
+<a href="#" onClick="{{ nav.privacy }}" style="font-size:var(--text-xs);color:var(--navy-300);border-bottom:none">Privacy</a>
+<span style="font-size:var(--text-xs);color:var(--navy-500)">·</span>
+<a href="#" onClick="{{ nav.terms }}" style="font-size:var(--text-xs);color:var(--navy-300);border-bottom:none">Terms</a>
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;ctaTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ink&quot;,&quot;soft&quot;],&quot;default&quot;:&quot;ink&quot;,&quot;tsType&quot;:&quot;\&quot;ink\&quot; | \&quot;soft\&quot;&quot;,&quot;section&quot;:&quot;Closing CTA&quot;},&quot;denseTables&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comparison tables&quot;}}">
+class Component extends DCLogic {
+  state = { route: "home", sent: false };
+
+  go(r) {
+    if (r === this.state.route) { this.top(); return; }
+    this.setState({ route: r, sent: false }, () => this.top());
+  }
+  top() {
+    try { window.scrollTo(0, 0); } catch (e) {}
+    const d = document.scrollingElement || document.documentElement;
+    if (d) d.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }
+
+  renderVals() {
+    const r = this.state.route;
+    const nav = {};
+    ["home","services","audit","implementation","retainer","approach","who","about","contact","privacy","terms"]
+      .forEach(k => nav[k] = e => { if (e && e.preventDefault) e.preventDefault(); this.go(k); });
+
+    const on = k => (r === k ? "var(--text-strong)" : "var(--text-muted)");
+    const serviceRoutes = ["services","audit","implementation","retainer"];
+
+    const auditSteps = [
+      { label: "Kick-off call, 60 minutes.", detail: "We agree scope, who we speak to, and what success looks like." },
+      { label: "Discovery, one to two weeks.", detail: "Interviews with three to five of your people, a look at your tools, and real examples of the work." },
+      { label: "Analysis.", detail: "We build the workflow map, the readiness scorecard, and the opportunity matrix." },
+      { label: "Presentation, 60 to 90 minutes.", detail: "We walk you and your team through the findings." },
+      { label: "Handover.", detail: "You receive the full written report and a 90-day roadmap." }
+    ];
+    const callSteps = [
+      { label: "You describe the work that keeps repeating." },
+      { label: "We ask about the tools involved and who touches it." },
+      { label: "We tell you whether it looks like an audit, a direct implementation, or nothing at all." }
+    ];
+
+    const tierCols = [
+      { key: "f", label: "" },
+      { key: "lite", label: "Lite" },
+      { key: "std", label: "Standard" },
+      { key: "growth", label: "Growth" }
+    ];
+    const implRows = [
+      { f: "Scope", lite: "One clear repetitive task", std: "A full multi-step process", growth: "Complex or business-critical, or two linked processes" },
+      { f: "AI-assisted steps", lite: "1", std: "2–3", growth: "3–5" },
+      { f: "Connected tools", lite: "1–2", std: "2–4", growth: "3–6" },
+      { f: "Testing", lite: "Real examples", std: "Structured batch testing", growth: "Deep testing with edge cases and fallbacks" },
+      { f: "Rollout", lite: "Handover session", std: "Team training", growth: "Phased rollout with adoption support" },
+      { f: "Support after go-live", lite: "7 days", std: "14 days", growth: "30 days" },
+      { f: "Timeline", lite: "2–3 weeks", std: "4–6 weeks", growth: "6–10 weeks" }
+    ];
+    const retCols = [
+      { key: "f", label: "" },
+      { key: "light", label: "Light" },
+      { key: "std", label: "Standard" },
+      { key: "growth", label: "Growth" }
+    ];
+    const retRows = [
+      { f: "Best for", light: "A single workflow", std: "An active process several people rely on", growth: "Workflows the business depends on" },
+      { f: "Fixes and quality tuning", light: "Included", std: "Included", growth: "Included" },
+      { f: "Monthly written check-in", light: "Included", std: "Included", growth: "Included" },
+      { f: "Monthly review call", light: "—", std: "45 minutes", growth: "45 minutes" },
+      { f: "Quality sample review", light: "—", std: "Monthly", growth: "Deeper, tracked over time" },
+      { f: "Continuous improvement work", light: "—", std: "Minor changes", growth: "Against a prioritised backlog" },
+      { f: "Performance reporting", light: "—", std: "—", growth: "Monthly" },
+      { f: "Multi-team support", light: "—", std: "—", growth: "Included" },
+      { f: "Quarterly review", light: "—", std: "—", growth: "Included" },
+      { f: "Response priority", light: "Standard", std: "Standard", growth: "Priority" }
+    ];
+
+    return {
+      nav,
+      cServices: serviceRoutes.indexOf(r) > -1 ? "var(--text-strong)" : "var(--text-muted)",
+      cApproach: on("approach"),
+      cWho: on("who"),
+      cAbout: on("about"),
+      isHome: r === "home",
+      isServices: r === "services",
+      isAudit: r === "audit",
+      isImpl: r === "implementation",
+      isRetainer: r === "retainer",
+      isApproach: r === "approach",
+      isWho: r === "who",
+      isAbout: r === "about",
+      isContact: r === "contact",
+      isLegal: r === "privacy" || r === "terms",
+      isPrivacy: r === "privacy",
+      isTerms: r === "terms",
+      legalTitle: r === "terms" ? "Terms" : "Privacy notice",
+      ctaTone: this.props.ctaTone || "ink",
+      dense: this.props.denseTables !== false,
+      auditSteps, callSteps,
+      implCols: tierCols, implRows, retCols, retRows,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      submit: e => { if (e && e.preventDefault) e.preventDefault(); this.setState({ sent: true }, () => this.top()); }
+    };
+  }
+}
+</script>
+</body>
+</html>

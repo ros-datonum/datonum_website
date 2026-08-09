@@ -1,0 +1,42 @@
+/* Navy theme. Apply with data-theme="ink" on any container — hero sections, dark
+   documents, the deck's dark slides. Only the semantic aliases move; the ramps do not. */
+[data-theme="ink"]{
+  --text-strong:var(--white);
+  --text-body:var(--navy-200);
+  --text-muted:var(--navy-300);
+  --text-faint:var(--navy-400);
+  --text-inverse:var(--navy-800);
+  --text-inverse-muted:var(--grey-600);
+  --text-link:var(--teal-400);
+  --text-link-hover:var(--white);
+  --text-accent:var(--teal-500);
+  --text-caution:var(--amber-300);
+  --text-negative:var(--red-300);
+
+  --surface-page:var(--navy-900);
+  --surface-card:var(--navy-800);
+  --surface-sunken:var(--navy-700);
+  --surface-ink:var(--navy-950);
+  --surface-ink-raised:var(--navy-800);
+  --surface-accent-soft:rgba(23,166,151,.12);
+  --surface-caution-soft:rgba(214,147,35,.14);
+  --surface-negative-soft:rgba(196,84,74,.14);
+
+  --border-subtle:rgba(255,255,255,.12);
+  --border-strong:rgba(255,255,255,.24);
+  --border-accent:var(--teal-800);
+
+  --action-primary:var(--white);
+  --action-primary-hover:var(--navy-050);
+  --action-primary-text:var(--navy-800);
+  --action-secondary-border:rgba(255,255,255,.3);
+  --action-secondary-hover:rgba(255,255,255,.08);
+
+  --logo-accent:var(--brass-500);
+  --chart-grid:rgba(255,255,255,.14);
+  --chart-axis:var(--navy-400);
+  --chart-1:#8DA2B6;
+  --chart-2:#4FBFB2;
+  --chart-3:#C0CDD9;
+  --chart-4:#EBC787;
+}

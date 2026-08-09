@@ -1,0 +1,61 @@
+:root{
+  /* ---- Size ramp. Display sizes are fluid between the sm and xl breakpoints. ---- */
+  --text-display-1:clamp(38px,1.6rem + 3.2vw,64px);
+  --text-display-2:clamp(32px,1.4rem + 2.2vw,48px);
+  --text-h1:clamp(28px,1.3rem + 1.5vw,38px);
+  --text-h2:clamp(23px,1.2rem + 0.7vw,29px);
+  --text-h3:22px;
+  --text-h4:18px;
+  --text-body-lg:18px;
+  --text-body:16px;
+  --text-sm:14px;
+  --text-xs:13px;
+  --text-micro:11px;
+
+  /* Fixed ramp for artefacts that must not reflow — documents, slides, email, social */
+  --text-fixed-display:64px;
+  --text-fixed-h1:38px;
+  --text-fixed-h2:29px;
+  --slide-title:56px;
+  --slide-body:26px;
+  --doc-h1:34px;
+  --doc-h2:22px;
+  --doc-body:15px;
+
+  --leading-tight:1.08;
+  --leading-snug:1.2;
+  --leading-normal:1.5;
+  --leading-relaxed:1.65;
+
+  --tracking-display:-0.02em;
+  --tracking-heading:-0.01em;
+  --tracking-normal:0;
+  --tracking-label:0.08em;
+  --tracking-eyebrow:0.14em;
+
+  --weight-light:300;
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+
+  /* ---- Semantic type roles ---- */
+  --type-display:var(--weight-light) var(--text-display-1)/var(--leading-tight) var(--font-display);
+  --type-display-2:var(--weight-light) var(--text-display-2)/var(--leading-snug) var(--font-display);
+  --type-h1:var(--weight-light) var(--text-h1)/var(--leading-snug) var(--font-display);
+  --type-h2:var(--weight-medium) var(--text-h2)/1.25 var(--font-display);
+  --type-h3:var(--weight-semibold) var(--text-h3)/1.3 var(--font-sans);
+  --type-h4:var(--weight-semibold) var(--text-h4)/1.4 var(--font-sans);
+  --type-body:var(--weight-regular) var(--text-body)/var(--leading-relaxed) var(--font-sans);
+  --type-body-lg:var(--weight-regular) var(--text-body-lg)/var(--leading-relaxed) var(--font-sans);
+  --type-small:var(--weight-regular) var(--text-sm)/var(--leading-normal) var(--font-sans);
+  --type-label:var(--weight-semibold) var(--text-xs)/1.3 var(--font-sans);
+  --type-eyebrow:var(--weight-semibold) var(--text-micro)/1.2 var(--font-sans);
+  --type-data:var(--weight-medium) var(--text-sm)/1.4 var(--font-mono);
+  --type-data-lg:var(--weight-medium) 24px/1.3 var(--font-mono);
+  --type-quote:var(--weight-light) 26px/1.45 var(--font-display);
+
+  --measure-prose:66ch;
+  --measure-narrow:48ch;
+  --measure-heading:20ch;
+}

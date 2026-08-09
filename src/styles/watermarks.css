@@ -1,0 +1,14 @@
+/* Decorative block-motif watermarks — the measurement/"tick" texture placed at section
+   edges. Copied verbatim from the Claude Design export's page style. `-d*` are the
+   light-on-dark variants for ink sections. --wm-k scales all motifs. */
+:root {
+  --wm-a: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='29' height='28' fill='%230A2540' fill-opacity='.055'><rect x='0' y='16' width='12' height='12' rx='2'/><rect x='17' y='0' width='12' height='12' rx='2' fill='%23B8760B'/></svg>");
+  --wm-da: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='29' height='28' fill='%23FFFFFF' fill-opacity='.070'><rect x='0' y='16' width='12' height='12' rx='2'/><rect x='17' y='0' width='12' height='12' rx='2' fill='%23B8760B'/></svg>");
+  --wm-b: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='28' fill='%230A2540' fill-opacity='.055'><rect x='0' y='0' width='12' height='12' rx='2'/><rect x='0' y='16' width='12' height='12' rx='2' fill='%230E8C7F'/></svg>");
+  --wm-db: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='28' fill='%23FFFFFF' fill-opacity='.070'><rect x='0' y='0' width='12' height='12' rx='2'/><rect x='0' y='16' width='12' height='12' rx='2' fill='%230E8C7F'/></svg>");
+  --wm-c: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='44' fill='%230A2540' fill-opacity='.055'><rect x='0' y='0' width='12' height='12' rx='2' fill='%23B8760B'/><rect x='0' y='16' width='12' height='12' rx='2'/><rect x='0' y='32' width='12' height='12' rx='2'/></svg>");
+  --wm-dc: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='44' fill='%23FFFFFF' fill-opacity='.070'><rect x='0' y='0' width='12' height='12' rx='2' fill='%23B8760B'/><rect x='0' y='16' width='12' height='12' rx='2'/><rect x='0' y='32' width='12' height='12' rx='2'/></svg>");
+  --wm-d: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='29' height='28' fill='%230A2540' fill-opacity='.055'><rect x='0' y='16' width='12' height='12' rx='2' fill='%230E8C7F'/><rect x='17' y='16' width='12' height='12' rx='2'/><rect x='17' y='0' width='12' height='12' rx='2'/></svg>");
+  --wm-dd: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='29' height='28' fill='%23FFFFFF' fill-opacity='.070'><rect x='0' y='16' width='12' height='12' rx='2' fill='%230E8C7F'/><rect x='17' y='16' width='12' height='12' rx='2'/><rect x='17' y='0' width='12' height='12' rx='2'/></svg>");
+  --wm-k: 1;
+}

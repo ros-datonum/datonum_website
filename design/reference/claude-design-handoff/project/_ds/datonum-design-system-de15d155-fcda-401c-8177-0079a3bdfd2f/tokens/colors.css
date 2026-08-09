@@ -1,0 +1,131 @@
+:root{
+  /* ============ Core ramp — Navy. The brand's structural colour. ============ */
+  --navy-950:#04101B;
+  --navy-900:#061726;
+  --navy-800:#0A2540; /* BRAND CORE */
+  --navy-700:#0E2F4F;
+  --navy-600:#1F3D5C;
+  --navy-500:#33587A;
+  --navy-400:#5B7691;
+  --navy-300:#8DA2B6;
+  --navy-200:#C0CDD9;
+  --navy-100:#E3EAF0;
+  --navy-050:#F2F6F9;
+
+  /* ============ Neutrals — cool grey, kept close to the navy hue ============ */
+  --white:#FFFFFF;
+  --grey-050:#F7F9FB;
+  --grey-100:#EEF2F6;
+  --grey-200:#DDE4EB;
+  --grey-300:#C3CEDA;
+  --grey-400:#9AA9B8;
+  --grey-500:#6E7F91;
+  --grey-600:#4A6079;
+  --grey-700:#33475C;
+  --grey-800:#22313F;
+  --grey-900:#12212F;
+  --black:#050B12;
+
+  /* ============ Signal — teal. The single accent. ============ */
+  --teal-900:#053B36;
+  --teal-800:#075249;
+  --teal-700:#0A6F65;
+  --teal-600:#0E8C7F; /* ACCENT CORE */
+  --teal-500:#17A697;
+  --teal-400:#4FBFB2;
+  --teal-300:#8AD5CB;
+  --teal-200:#B9E5DF;
+  --teal-100:#D8EDEA;
+  --teal-050:#EFF7F6;
+
+  /* ============ Caution — amber. "Do not automate", scope limits, risk. ============ */
+  --amber-800:#6B430A;
+  --amber-700:#8F5A06;
+  --amber-600:#B8760B;
+  --amber-500:#D69323;
+  --amber-300:#EBC787;
+  --amber-100:#FAEEDA;
+  --amber-050:#FDF8EF;
+
+  /* ============ Brass — the identity accent. The logo summit block, and sparingly
+     in display graphics. Distinct in NAME from caution, which sits deeper on the ramp. ============ */
+  --brass-700:#8F5A06;
+  --brass-600:#B8760B; /* logo on light surfaces */
+  --brass-500:#D69323; /* logo on navy surfaces */
+  --brass-100:#FAEEDA;
+
+  /* ============ Negative — red. Errors and blockers only. ============ */
+  --red-800:#6E211A;
+  --red-700:#8C2C23;
+  --red-600:#A8342A;
+  --red-500:#C4544A;
+  --red-300:#E2A69F;
+  --red-100:#F8E6E3;
+
+  /* ============ Chart sequence — Datonum is a data brand; charts have a fixed order.
+     Never reorder, never introduce a colour outside this list. ============ */
+  --chart-1:#0A2540;
+  --chart-2:#0E8C7F;
+  --chart-3:#5B7691;
+  --chart-4:#B8760B;
+  --chart-5:#17A697;
+  --chart-6:#8DA2B6;
+  --chart-grid:#DDE4EB;
+  --chart-axis:#9AA9B8;
+  --chart-positive:#0E8C7F;
+  --chart-negative:#A8342A;
+  --chart-neutral:#C3CEDA;
+
+  /* ============ Overlays and transparency ============ */
+  --alpha-scrim:rgba(6,23,38,.45);
+  --alpha-header:rgba(255,255,255,.88);
+  --alpha-ink-header:rgba(10,37,64,.86);
+  --alpha-hairline-inverse:rgba(255,255,255,.16);
+  --alpha-hover-inverse:rgba(255,255,255,.10);
+  --alpha-glow-teal:rgba(23,166,151,.20);
+
+  /* ============ Semantic aliases — always prefer these in components ============ */
+  --text-strong:var(--navy-800);
+  --text-body:var(--grey-600);
+  --text-muted:var(--grey-500);
+  --text-faint:var(--grey-400);
+  --text-inverse:var(--white);
+  --text-inverse-muted:var(--navy-200);
+  --text-link:var(--teal-700);
+  --text-link-hover:var(--navy-800);
+  --text-accent:var(--teal-700);
+  --text-caution:var(--amber-800);
+  --text-negative:var(--red-700);
+
+  --surface-page:var(--grey-050);
+  --surface-card:var(--white);
+  --surface-sunken:var(--grey-100);
+  --surface-ink:var(--navy-800);
+  --surface-ink-raised:var(--navy-700);
+  --surface-accent:var(--teal-600);
+  --surface-accent-soft:var(--teal-050);
+  --surface-caution-soft:var(--amber-100);
+  --surface-negative-soft:var(--red-100);
+
+  --border-subtle:var(--grey-200);
+  --border-strong:var(--grey-300);
+  --border-ink:var(--alpha-hairline-inverse);
+  --border-focus:var(--teal-600);
+  --border-accent:var(--teal-200);
+
+  --action-primary:var(--navy-800);
+  --action-primary-hover:var(--navy-900);
+  --action-primary-text:var(--white);
+  --action-secondary-border:var(--grey-300);
+  --action-secondary-hover:var(--grey-100);
+  --logo-accent:var(--brass-600);
+  --logo-accent-inverse:var(--brass-500);
+  --action-accent:var(--teal-600);
+  --action-accent-hover:var(--teal-700);
+  --action-disabled-opacity:.45; /* @kind other */
+
+  --status-positive:var(--teal-700);
+  --status-caution:var(--amber-700);
+  --status-negative:var(--red-600);
+  --status-neutral:var(--grey-500);
+}

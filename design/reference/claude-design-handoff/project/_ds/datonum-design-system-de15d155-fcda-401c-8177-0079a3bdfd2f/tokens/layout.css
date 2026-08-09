@@ -1,0 +1,40 @@
+:root{
+  --container-max:1180px;
+  --container-narrow:760px;
+  --container-wide:1400px;
+  --container-prose:680px;
+  --gutter:24px;
+  --gutter-lg:48px;
+  --grid-columns:12; /* @kind other */
+  --grid-gap:24px;
+  --header-height:72px;
+  --header-height-compact:56px;
+
+  /* Breakpoints — mirrored in JS as Datonum.breakpoints */
+  --bp-sm:640px;
+  --bp-md:768px;
+  --bp-lg:1024px;
+  --bp-xl:1280px;
+  --bp-2xl:1440px;
+
+  /* Fixed artefact sizes */
+  --page-width-a4:794px;
+  --page-height-a4:1123px;
+  --page-width-letter:816px;
+  --page-height-letter:1056px;
+  --page-margin-print:64px;
+  --slide-width:1280px;
+  --slide-height:720px;
+  --social-square:1080px;
+  --social-landscape-w:1200px;
+  --social-landscape-h:627px;
+  --email-width:600px;
+
+  /* Stacking order */
+  --z-base:0; /* @kind other */
+  --z-raised:10; /* @kind other */
+  --z-sticky:30; /* @kind other */
+  --z-popover:50; /* @kind other */
+  --z-overlay:60; /* @kind other */
+  --z-toast:70; /* @kind other */
+}

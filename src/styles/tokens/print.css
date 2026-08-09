@@ -1,0 +1,11 @@
+/* Print behaviour for every document surface. Fixed-size pages opt in with .page. */
+@media print{
+  :root{--surface-page:#FFFFFF;--shadow-sm:none;--shadow-md:none;--shadow-lg:none;--shadow-overlay:none}
+  body{background:#FFFFFF}
+  .page{box-shadow:none !important;break-after:page;page-break-after:always}
+  .page:last-child{break-after:auto;page-break-after:auto}
+  .no-print{display:none !important}
+  a{color:inherit;border-bottom:none}
+  h1,h2,h3{break-after:avoid}
+  table,figure,ul{break-inside:avoid}
+}
