@@ -1,20 +1,16 @@
 # Deploy on the VPS: `docker compose up -d --build`
-# Caddy runs in its own container and reverse-proxies to this one over a shared Docker
-# network, reaching it by name on its internal port 80 (no host port needed).
+# Standalone container — no shared network with Caddy. The host's Caddy reaches it via
+# host.docker.internal:8080 and handles TLS.
 services:
   web:
     build: .
     image: datonum-website
     container_name: datonum-website
     restart: unless-stopped
-    networks:
-      - caddy
-    # For local debugging you can also expose it on the host loopback:
-    # ports:
-    #   - "127.0.0.1:8080:80"
-
-networks:
-  # The Docker network your Caddy container is attached to. Rename this key to match.
-  # Find it: docker inspect -f '{{json .NetworkSettings.Networks}}' <caddy-container>
-  caddy:
-    external: true
+    ports:
+      # Bind to the Docker bridge gateway, NOT 127.0.0.1: reachable from other containers
+      # via host.docker.internal, but not exposed on the public internet.
+      # 172.17.0.1 is docker0's gateway (what host.docker.internal resolves to by default).
+      # Confirm yours if needed:
+      #   docker network inspect bridge -f '{{(index .IPAM.Config 0).Gateway}}'
+      - "172.17.0.1:8080:80"
