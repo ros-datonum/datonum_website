@@ -1,0 +1,198 @@
+---
+// Deep Audit. Rebuilt from the prototype "Deep Audit" screen. Copy verbatim.
+import PageLayout from '../../layouts/PageLayout.astro';
+import DataTable from '../../components/DataTable.astro';
+import Accordion from '../../components/Accordion.astro';
+import ChecklistItem from '../../components/ChecklistItem.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { stageCols, deepStages, deepFaqs } from '../../data/serviceContent.ts';
+
+const runs = [
+  { n: '01', t: 'We start with the data, then interview.', d: 'System exports are analyzed before interviews begin, so conversations start from what the numbers already show. It changes the quality of the interviews considerably — people respond differently to “this runs four hundred times a month, walk me through it” than to “tell me about your process”.' },
+  { n: '02', t: 'We look across processes, not only along them.', d: 'The same information is often handled by two teams who do not know the other is doing it. That overlap is invisible from inside either process, and is consistently among the largest single opportunities.' },
+  { n: '03', t: 'We score readiness per team.', d: 'An averaged business-wide figure conceals both the team ready to move now and the one that is not.' },
+  { n: '04', t: 'We sequence, not just rank.', d: 'With six or more candidates, order determines whether a program compounds or stalls.' },
+  { n: '05', t: 'We specify the top recommendation in full.', d: 'So the decision afterward is whether to build, not what to build.' },
+];
+const arrives = [
+  { t: 'Measured volume analysis', d: 'Actual counts and durations from your systems, twelve months where available, with the source of each figure named.' },
+  { t: 'Cross-process view', d: 'Where the same information is handled by more than one team, and what it costs in aggregate.' },
+  { t: 'Departmental readiness scorecards', d: 'Six dimensions scored per team, with reasoning.' },
+  { t: 'Dependency and sequencing plan', d: 'What depends on what, what can run in parallel, and the critical path across twelve months.' },
+  { t: 'Build-ready specification for the top recommendation', d: 'The sequence as it will run, every system involved, what good output looks like at each step, review points and who performs them, cases requiring separate handling, and what testing would cover. Detailed enough to build from, by us or anyone.' },
+  { t: 'Twelve-month roadmap', d: 'Quarter by quarter, with the sequencing logic set out.' },
+  { t: 'Leadership session', d: '60 minutes, separate from the walkthrough with the people interviewed. Different audiences need different conversations.' },
+];
+const needFromYou = [
+  'Eight to twelve people for 45 minutes each.',
+  'System exports covering twelve months where available.',
+  'A named contact per system who can obtain that data.',
+  'A list of the software each team pays for.',
+  'Fifteen to twenty real examples of the work.',
+];
+const outside = [
+  'Building anything. This is a review, though it produces a specification that can be built from.',
+  'Software selection or procurement.',
+  'Financial modeling beyond the time and volume figures in the report.',
+  'Organizational or process redesign unrelated to automation.',
+  'Specifications for every recommendation — one is included, further ones are quoted separately.',
+  'Ongoing advisory after the follow-up call.',
+];
+const glance = [
+  ['Processes covered', '6–8, across teams, sites, or entities'],
+  ['Interviews', '8–12'],
+  ['Volume figures', 'Measured from your system data, 12 months'],
+  ['Roadmap', '12 months'],
+  ['Timeline', '4–5 weeks'],
+];
+const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7l-4-4Z"></path><path d="M14 3v4h4"></path><path d="M9 12.5h6"></path><path d="M9 16h6"></path>';
+const clockIcon = '<circle cx="12" cy="12" r="8.5"></circle><path d="M12 7v5.2l3.2 1.9"></path>';
+const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+---
+
+<PageLayout
+  title="Deep Audit — Datonum"
+  description="An AI automation assessment across the whole operation. Four to five weeks: six to eight processes across teams, volumes measured rather than estimated, and a build-ready specification for the highest-value opportunity."
+>
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow-data">Service 02 · Review</span>
+      <h1 class="ihero__title" style="max-width:20ch">AI automation assessment across the whole operation</h1>
+      <p class="ihero__lead">Four to five weeks. Six to eight processes across teams, volumes measured rather than estimated, and a build-ready specification for the highest-value opportunity.</p>
+      <div class="actions" style="margin-top:36px">
+        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card wm-body">
+    <div class="container split split--7-5" style="gap:72px">
+      <div class="stack-lg">
+        <div class="stack-block">
+          <h2 class="h2">What the Deep Audit covers</h2>
+          <p class="lead-muted">Six to eight connected processes, spanning more than one team, department, site, or trading entity.</p>
+          <p class="muted" style="max-width:66ch">Where the AI Readiness Audit maps up to three processes in one part of the business, this covers the operating picture end to end — including the points where the same information is handled separately by two teams who do not know the other is doing it.</p>
+          <div class="accent-note">
+            <h3 class="h3" style="font:var(--type-h4)">Volume is measured, not estimated.</h3>
+            <p class="muted">We work from system exports — ticket counts, invoice volumes, time records, message logs — covering twelve months where the data allows. Estimates are enough to rank three opportunities against each other. They are not enough to justify a decision of this size.</p>
+          </div>
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3">How the assessment runs</h3>
+          <div class="split__body">
+            {runs.map((r, i) => (
+              <div class:list={['ruled-row', i === runs.length - 1 && 'ruled-row--last']}>
+                <span class="num">{r.n}</span>
+                <h3 class="ruled-item__title">{r.t}</h3>
+                <p class="muted" style="max-width:66ch">{r.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3 h3--icon"><span class="h3icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={fileIcon} /></span>What arrives at the end</h3>
+          <p class="muted">Everything in the AI Readiness Audit, plus:</p>
+          <ul class="checklist">
+            {arrives.map((a) => <ChecklistItem tone="included" title={a.t}>{a.d}</ChecklistItem>)}
+          </ul>
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3 h3--icon"><span class="h3icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={clockIcon} /></span>Timeline</h3>
+          <DataTable columns={stageCols} rows={deepStages} />
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3">What we need from you</h3>
+          <ul class="checklist">
+            {needFromYou.map((n) => <ChecklistItem tone="included">{n}</ChecklistItem>)}
+          </ul>
+          <p class="muted" style="max-width:66ch">Around twelve hours in total, spread across teams and five weeks. The system exports are worth arranging early — they usually have the longest lead time.</p>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="side-card">
+          <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={fileIcon} />At a glance</span>
+          {glance.map(([label, value], i) => (
+            <div class:list={['side-card__row', i === glance.length - 1 && 'side-card__row--last']}>
+              <span class="side-card__label">{label}</span><span class="side-card__value">{value}</span>
+            </div>
+          ))}
+          <Button fullWidth href={routes.contact}>Book a 30-minute call</Button>
+        </div>
+        <div class="side-links">
+          <span class="eyebrow eyebrow--teal">Other services</span>
+          <a href={routes.audit}>AI Readiness Audit</a>
+          <a href={routes.impl}>AI Workflow Implementation</a>
+          <a href={routes.retainer}>Optimization Retainer</a>
+          <a href={routes.automate}>What we automate</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="band--caution">
+    <div class="container split split--5-7">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={triIcon} />The limits</span>
+        <h2 class="h2" style="max-width:16ch">Outside this engagement</h2>
+      </div>
+      <ul class="checklist">
+        {outside.map((o) => <ChecklistItem tone="caution">{o}</ChecklistItem>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--grey wm-enough" style="border-bottom:1px solid var(--border-subtle);padding:80px 0">
+    <div class="container split split--4-8">
+      <h2 class="h2">When the AI Readiness Audit is enough</h2>
+      <p class="muted" style="max-width:66ch">Where up to three processes within one part of the business are in question, the <strong>AI Readiness Audit</strong> covers them in two to three weeks for half the fee. Where interview estimates are enough to decide, it is the cheaper and faster route, and we will say so. <a href={routes.services}>Compare the two →</a></p>
+    </div>
+  </section>
+
+  <section class="band band--card wm-faq" style="padding:88px 0">
+    <div class="container split split--4-8">
+      <h2 class="h2">Common questions</h2>
+      <Accordion items={deepFaqs} />
+    </div>
+  </section>
+
+  <section class="band--card band--tail">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .wm-hero {
+    background-image: var(--wm-dd);
+    background-position: left min(calc(50% + 594px + var(--wm-k) * 112px / 2), calc(100% + var(--wm-k) * 112px - 24px)) bottom -18px;
+    background-size: calc(var(--wm-k) * 112px);
+  }
+  .wm-body {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 604px + var(--wm-k) * 118px / 2), calc(100% + var(--wm-k) * 118px - 24px)) bottom -20px;
+    background-size: calc(var(--wm-k) * 118px);
+  }
+  .wm-enough {
+    background-image: var(--wm-d); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 612px + var(--wm-k) * 168px / 2), calc(100% + var(--wm-k) * 168px - 24px)) top -18px;
+    background-size: calc(var(--wm-k) * 168px);
+  }
+  .wm-faq {
+    background-image: var(--wm-b); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 598px + var(--wm-k) * 132px / 2), calc(100% + var(--wm-k) * 132px - 24px)) top 34px;
+    background-size: calc(var(--wm-k) * 132px);
+  }
+  /* number sits above the title in the ruled run-list */
+  .wm-body .ruled-row .num { margin-bottom: 2px; }
+</style>

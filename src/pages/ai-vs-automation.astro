@@ -1,0 +1,157 @@
+---
+// AI vs automation. Rebuilt from the prototype "AI vs automation" screen. Copy verbatim.
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Accordion from '../components/Accordion.astro';
+import ChecklistItem from '../components/ChecklistItem.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { aivsFaqs } from '../data/serviceContent.ts';
+
+const ruleItems = [
+  'Moving a field from one system to another.',
+  'Sending a reminder when a date passes.',
+  'Applying a discount when a value exceeds a threshold.',
+  'Creating a record when a form is submitted.',
+];
+const aiItems = [
+  'Reading a discursive email and identifying what is being asked for.',
+  'Extracting the same fields from documents with no consistent layout.',
+  'Deciding what a request is actually about rather than which keyword it contains.',
+  'Drafting in your house style from material already in your systems.',
+];
+const questions = [
+  { n: '01', t: 'Does the input arrive in the same shape every time?', d: 'If yes, a rule will handle it. If it arrives as a paragraph someone wrote, it will not.' },
+  { n: '02', t: 'Could you write the decision down as instructions?', d: 'If a competent new starter could follow a one-page rule sheet and get it right every time, it is automation, not AI.' },
+  { n: '03', t: 'What happens when the step gets it wrong?', d: 'The higher the cost of a wrong answer, the more the design is about routing and review rather than about the AI itself.' },
+  { n: '04', t: 'How often does it happen?', d: 'A step that needs judgment but runs twice a month is rarely worth building. Volume is what makes the effort repay.' },
+];
+const notAi = [
+  'Anywhere a simple rule would do the job more cheaply and more reliably.',
+  'On a calculation. Arithmetic belongs in the system that already does it.',
+  'On a decision that needs judgment a person should be making.',
+  'On a step that runs rarely enough that the build will never repay itself.',
+];
+const ruleIcon = '<path d="M11 5.5h10"></path><path d="M11 12h10"></path><path d="M11 18.5h10"></path><path d="m3 6 1.5 1.5L7.5 4.5"></path><path d="m3 12.5 1.5 1.5L7.5 11"></path><path d="m3 19 1.5 1.5L7.5 17.5"></path>';
+const workflowIcon = '<rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><path d="M10 6.5h4.5a2 2 0 0 1 2 2V14"></path>';
+const scaleIcon = '<path d="M12 3.5v17"></path><path d="M5 7.5h14"></path><path d="m5 7.5-2.5 6h5l-2.5-6Z"></path><path d="m19 7.5-2.5 6h5l-2.5-6Z"></path>';
+const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+---
+
+<PageLayout
+  title="AI vs automation — Datonum"
+  description="AI automation vs traditional automation — where each one belongs. Most of what a business wants to automate does not need AI at all; knowing which steps do is the difference between a workflow that holds up and one that quietly stops being trusted."
+>
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">AI vs automation</span>
+      <h1 class="ihero__title" style="max-width:20ch">AI automation vs traditional automation — where each one belongs</h1>
+      <p class="ihero__lead">Most of what a business wants to automate does not need AI at all. Knowing which steps do is the difference between a workflow that holds up and one that quietly stops being trusted.</p>
+    </div>
+  </section>
+
+  <!-- The distinction -->
+  <section class="band band--card wm-dist">
+    <div class="container">
+      <SectionHeading eyebrow="The distinction" title="One question decides it: does the step need judgment about language?" />
+      <div class="cols2" style="gap:32px;margin-top:44px">
+        <div class="dcard">
+          <span class="eyebrow eyebrow--teal">Use a rule</span>
+          <div class="info-card__head">
+            <span class="icon-teal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ruleIcon} /></span>
+            <h3 class="h3">Traditional automation</h3>
+          </div>
+          <p class="muted">The input arrives in the same shape every time, and the decision can be written down in advance. Faster, cheaper, and more reliable than AI — and it does exactly the same thing on Tuesday as it did on Monday.</p>
+          <ul class="checklist" style="gap:14px">
+            {ruleItems.map((r) => <ChecklistItem tone="included">{r}</ChecklistItem>)}
+          </ul>
+        </div>
+        <div class="dcard dcard--accent">
+          <span class="eyebrow eyebrow--teal">Use AI</span>
+          <div class="info-card__head">
+            <span class="icon-teal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={workflowIcon} /></span>
+            <h3 class="h3">AI automation</h3>
+          </div>
+          <p class="muted">The input arrives as free text, speech, or documents that vary every time, and a person currently has to read it before anything can happen. No rule can be written for what it means.</p>
+          <ul class="checklist" style="gap:14px">
+            {aiItems.map((a) => <ChecklistItem tone="included">{a}</ChecklistItem>)}
+          </ul>
+        </div>
+      </div>
+      <p class="lead-strong" style="margin:40px 0 0;max-width:70ch">Almost every workflow we build uses both: rules, then an AI step, then rules again, with a review point before anything is used.</p>
+    </div>
+  </section>
+
+  <!-- Four questions -->
+  <section class="band band--grey band--bordered wm-q">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--teal">How to tell</span>
+        <h2 class="h2">
+          <span class="h2mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={scaleIcon} /></span>Four questions to ask about any step
+        </h2>
+      </div>
+      <div class="split__body">
+        {questions.map((q, i) => (
+          <div class:list={['ruled-row', i === questions.length - 1 && 'ruled-row--last']}>
+            <span class="num">{q.n}</span>
+            <h3 class="ruled-item__title">{q.t}</h3>
+            <p class="muted" style="max-width:66ch">{q.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Where we will not put AI -->
+  <section class="band--caution">
+    <div class="container split split--5-7">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={triIcon} />Plainly</span>
+        <h2 class="h2" style="max-width:18ch">Where we will not put AI</h2>
+      </div>
+      <ul class="checklist">
+        {notAi.map((o) => <ChecklistItem tone="caution">{o}</ChecklistItem>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ + CTA -->
+  <section class="band band--card wm-faq" style="padding:88px 0">
+    <div class="container" style="display:flex;flex-direction:column;gap:56px">
+      <div class="split split--4-8">
+        <h2 class="h2">Common questions</h2>
+        <Accordion items={aivsFaqs} />
+      </div>
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .ihero.wm-hero { padding: 104px 0 88px; }
+  .wm-hero {
+    background-image: var(--wm-dd);
+    background-position: left min(calc(50% + 612px + var(--wm-k) * 168px / 2), calc(100% + var(--wm-k) * 168px - 24px)) top -18px;
+    background-size: calc(var(--wm-k) * 168px);
+  }
+  .wm-dist {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 596px + var(--wm-k) * 188px / 2), calc(100% + var(--wm-k) * 188px - 24px)) top 38%;
+    background-size: calc(var(--wm-k) * 188px);
+  }
+  .wm-q {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 608px + var(--wm-k) * 142px / 2), calc(100% + var(--wm-k) * 142px - 24px)) bottom 22%;
+    background-size: calc(var(--wm-k) * 142px);
+  }
+  .wm-faq {
+    background-image: var(--wm-d); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 606px + var(--wm-k) * 126px / 2), calc(100% + var(--wm-k) * 126px - 24px)) bottom -28px;
+    background-size: calc(var(--wm-k) * 126px);
+  }
+  .dcard { border: 1px solid var(--border-subtle); border-radius: 8px; padding: 32px; display: flex; flex-direction: column; gap: 18px; }
+  .dcard--accent { border-color: var(--border-accent); background: var(--surface-accent-soft); }
+</style>

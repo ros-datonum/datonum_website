@@ -1,0 +1,298 @@
+---
+// AI Workflow Implementation. Rebuilt from the prototype "Implementation" screen. Copy verbatim.
+import PageLayout from '../../layouts/PageLayout.astro';
+import DataTable from '../../components/DataTable.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ChecklistItem from '../../components/ChecklistItem.astro';
+import Badge from '../../components/Badge.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { tierCols, implRows } from '../../data/serviceContent.ts';
+
+const truths = [
+  { t: 'We start from your real examples.', d: 'Tested against work your business has actually done, not sample data.' },
+  { t: 'A person always checks.', d: 'Review steps are designed into the sequence, not added at the end.' },
+  { t: 'It connects to what you already run.', d: 'Nothing is replaced.' },
+  { t: 'Nothing depends on us afterward.', d: 'Documentation, training, and a support window — and nothing running on a credential only we hold.' },
+];
+
+const sizes = [
+  {
+    n: 'Size 01', title: 'Lite — one recurring task handled by AI', band: 'band--card', wm: 'wm-s1',
+    work: 'One task that recurs weekly or more often, where a single step requires reading, writing, sorting, or summarizing, touching one or two systems.',
+    why: "The input arrives as free text, speech, or documents that vary every time. A rule cannot read a supplier's email and decide what it is about.",
+    tech: 'Claude or OpenAI for the reading and drafting step · Make or n8n to connect · your existing storage, project, or CRM system.',
+    flow: [
+      { n: '01', t: 'Recording lands in shared folder' },
+      { n: '02', t: 'AI produces structured notes: decisions, actions, owners, dates' },
+      { n: '03', t: 'Draft appears in the project system, marked for review' },
+      { n: '04', t: 'A person checks and approves', review: true },
+      { n: '05', t: 'Sent' },
+    ],
+    cols: 1, variant: 'grey', stack: false,
+    examples: [
+      {
+        title: 'Meeting recordings into client-ready notes',
+        body: 'An architecture practice records client and site meetings. Someone spends around six hours a week listening back and writing up decisions, actions, and who owns them.',
+        fields: [
+          { l: 'The AI-requiring step', h: 'Distinguishing a decision from a discussion, an action from an aside, and attributing each correctly — judgment about meaning that no rule can encode.' },
+          { l: 'How it runs', h: "The recording lands in shared storage. Claude produces a structured note with decisions, actions, owners, and dates in the practice's own format, flagging anything ambiguous rather than guessing. The draft appears in the project system for the architect to approve." },
+        ],
+        scope: 'Scope: one AI step, two connected systems, tested against 15 historical recordings. Two to three weeks.',
+      },
+    ],
+    note: 'Where the whole sequence around this needs rebuilding rather than one step, that is Standard.',
+  },
+  {
+    n: 'Size 02', title: 'Standard — a full sequence rebuilt with AI', band: 'band--grey band--bordered', wm: 'wm-s2',
+    work: 'A sequence with several steps involving more than one person, spanning two to four systems, where two or three steps involve reading, writing, sorting, or checking.',
+    why: 'More than one point in the sequence requires interpreting something written by a human — an inquiry, a document, a conversation — and producing something structured from it.',
+    tech: 'Claude or OpenAI for extraction and drafting · Make or n8n for the sequence · HubSpot or your CRM · document storage · email.',
+    flow: [
+      { n: '01', t: 'Inquiry arrives — email, form, phone note' },
+      { n: '02', t: 'AI extracts requirements, scope signals, and what is missing' },
+      { n: '03', t: 'Structured record created in the CRM' },
+      { n: '04', t: 'AI drafts a scoped proposal from your template library' },
+      { n: '05', t: 'A person reviews, adjusts, and sends', review: true },
+      { n: '06', t: 'Follow-up scheduled; response classified when it arrives' },
+    ],
+    cols: 2, variant: 'card', stack: false,
+    examples: [
+      {
+        title: 'Inquiry to scoped proposal',
+        body: 'A commercial fit-out contractor receives inquiries as long, unstructured emails, often with drawings attached. Each one is read by an estimator, summarized, entered into the CRM, and turned into a proposal — a sequence of two to three hours before anyone has priced anything.',
+        fields: [
+          { l: 'The AI-requiring steps', h: 'Reading a discursive email and identifying scope, timescale, site constraints, and what has not been specified; then producing a first-pass proposal in the firm’s own structure and language.' },
+          { l: 'How it runs', h: 'The inquiry is read and reduced to a structured record — scope, location, indicative value, timescale, and an explicit list of what is still unknown. That record populates the CRM. A proposal is drafted from the firm’s template library using their own wording. The estimator receives a draft with the open questions listed, rather than a blank page.' },
+        ],
+        scope: 'Scope: three AI steps, four connected systems, tested against 40 historical inquiries. Four to six weeks.',
+      },
+      {
+        title: 'Supplier invoices into a coded ledger',
+        body: 'An accountancy practice receives client bookkeeping in whatever form it arrives — photographs, PDFs, forwarded emails, occasionally a shoebox. Junior staff extract the details and code each item.',
+        fields: [
+          { l: 'The AI-requiring steps', h: 'Reading documents with no consistent layout, and deciding the correct account code from a supplier name and description that vary between clients.' },
+          { l: 'How it runs', h: 'Documents arriving in a monitored inbox are read and the supplier, date, net, tax, and total extracted. A code is proposed based on the practice’s own historical coding for that client, with a confidence signal. Anything below the threshold routes to a person with the reason. Approved entries post to Xero or QuickBooks.' },
+        ],
+        scope: 'Scope: two AI steps, three connected systems, tested against 50 historical documents including deliberately poor scans. Four to six weeks.',
+      },
+    ],
+    note: 'Where the sequence is genuinely one task, Lite covers it for less. Where it spans five or more systems or several teams, that is Advanced.',
+  },
+  {
+    n: 'Size 03', title: 'Advanced — complex and business-critical AI workflows', band: 'band--card', wm: 'wm-s3',
+    work: 'A sequence where several steps involve judgment, drafting, checking, or analysis, spanning three to six systems, with multiple roles involved and output that reaches clients or drives decisions.',
+    why: 'The sequence carries genuine variation, and the cases outside the normal pattern have to be identified and routed rather than forced through.',
+    tech: 'Claude or OpenAI for classification, extraction, and drafting · n8n or Make for the sequence and routing · your project, finance, document, and CRM systems · a reporting layer where needed.',
+    flow: [
+      { n: '01', t: 'Documents and data arrive from several systems' },
+      { n: '02', t: 'AI classifies, extracts, and cross-checks against your standards' },
+      { n: '03', t: 'Anything outside the pattern routed to a named person, with the reason', review: true },
+      { n: '04', t: 'AI drafts the output: report, response, assessment, or summary' },
+      { n: '05', t: 'Role-based review — the right person checks the right part', review: true },
+      { n: '06', t: 'Published to the client-facing system, with a record of what was decided and why' },
+    ],
+    cols: 3, variant: 'grey', stack: true,
+    examples: [
+      {
+        title: 'Candidate screening and shortlist notes',
+        body: 'A recruitment agency receives large volumes of applications per role. Consultants read each CV against the brief, form a view, and write shortlist notes for the client.',
+        fields: [
+          { l: 'The AI-requiring steps', h: 'Reading a CV written in any format and assessing it against a specific brief; recognizing that unrelated job titles describe relevant experience; and writing a shortlist note in the consultant’s own voice.' },
+          { l: 'How it runs', h: 'Applications are read against the role brief and scored on the criteria the agency actually uses, with the evidence for each score quoted from the CV rather than asserted. Anything borderline is flagged for a consultant rather than rejected. Shortlist notes are drafted in the agency’s house style. <strong>Every rejection remains a human decision</strong> — the workflow ranks and evidences, it does not decline anyone.' },
+        ],
+        scope: 'Scope: four AI steps, five connected systems, deliberate testing against historical applications including ones the agency judged marginal. Six to ten weeks with a phased rollout by desk.',
+      },
+      {
+        title: 'Policy renewal review',
+        body: 'An insurance brokerage reviews client policies ahead of renewal. Each review means reading the existing policy, the client’s updated details, and the market alternatives, then producing a recommendation.',
+        fields: [
+          { l: 'The AI-requiring steps', h: 'Comparing policy wordings that express the same cover differently; identifying where a client’s circumstances have changed in a way that affects cover; and drafting a recommendation with reasoning a client can follow.' },
+          { l: 'How it runs', h: 'The current policy, claims history, and updated client information are read and reduced to a structured comparison. Changes in exposure are identified and flagged. A renewal recommendation is drafted with the reasoning set out. <strong>Any recommendation involving a coverage change is reviewed by a broker before it reaches the client</strong>, and anything the workflow cannot assess confidently is routed with the reason rather than assumed.' },
+        ],
+        scope: 'Scope: four AI steps, six connected systems, deep testing against historical renewals including disputed ones. Six to ten weeks.',
+      },
+      {
+        title: 'Delivery and margin monitoring',
+        body: 'A marketing agency runs client work across a project system, a time tracker, and accounting software. Whether a job is running below margin becomes clear when it is invoiced, which is too late to act.',
+        fields: [
+          { l: 'The AI-requiring steps', h: 'Reading project updates, notes, and client correspondence to identify scope movement that has not been formally recorded — the phrase in an email that means the job has grown but no change order was raised.' },
+          { l: 'How it runs', h: 'Activity across the three systems is assembled weekly. Time booked is compared against fee. Written updates and correspondence are read for signals of scope movement. The output is a weekly view of which jobs are drifting, which are running below expected margin, and which have grown without a change order — with the evidence quoted rather than asserted.' },
+        ],
+        scope: 'Scope: three AI steps, five connected systems, tested against twelve months of historical project data. Six to ten weeks.',
+      },
+    ],
+    note: 'Where a sequence spans two to four systems and one team, Standard covers it in four to six weeks.',
+  },
+];
+
+const outside = [
+  'Replacing or rebuilding core business systems.',
+  'Custom software built from scratch.',
+  'Connections to systems with no viable way to connect.',
+  'Output used without human review.',
+  'Unlimited scope changes mid-build.',
+];
+const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+const compassIcon = '<circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>';
+---
+
+<PageLayout
+  title="AI Workflow Implementation — Datonum"
+  description="AI process automation, built, tested, and handed over running. One workflow, connected to the systems you already use, tested against your own historical work, with a person reviewing the output before it is used."
+>
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow-data">Service 03 · Build</span>
+      <h1 class="ihero__title" style="max-width:20ch">AI process automation — built, tested, and handed over running</h1>
+      <p class="ihero__lead">One workflow, connected to the systems you already use, tested against your own historical work, with a person reviewing the output before it is used.</p>
+      <div class="actions" style="margin-top:36px">
+        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- How we build -->
+  <section class="band band--card wm-build">
+    <div class="container">
+      <SectionHeading eyebrow="How we build" title="Four things that are true of every build" />
+      <div class="cols2" style="gap:0 56px;margin-top:36px">
+        {truths.map((t) => (
+          <div class="ruled-item" style="gap:8px">
+            <h3 class="ruled-item__title">{t.t}</h3>
+            <p class="muted">{t.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Sizes table -->
+  <section class="band band--grey band--bordered wm-sizes">
+    <div class="container">
+      <SectionHeading eyebrow="Sizes" title="Three sizes of AI workflow implementation" />
+      <div style="margin-top:36px">
+        <DataTable columns={tierCols} rows={implRows} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Size detail blocks -->
+  {sizes.map((s) => (
+    <section class:list={['band', s.band, s.wm]}>
+      <div class="container size-block">
+        <div class="stage">
+          <span class="num">{s.n}</span>
+          <h2 class="h2">{s.title}</h2>
+        </div>
+        <div class="split split--6-6">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div class="field"><span class="field__label">The work</span><p class="muted" style="max-width:60ch">{s.work}</p></div>
+            <div class="field"><span class="field__label">Why this needs AI</span><p class="muted" style="max-width:60ch">{s.why}</p></div>
+            <div class="field"><span class="field__label">Typical technology</span><p class="muted" style="max-width:60ch">{s.tech}</p></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <span class="eyebrow eyebrow--teal">What the workflow looks like</span>
+            <ol class="flow">
+              {s.flow.map((f) => (
+                <li class:list={['flow__row', f.review && 'flow__row--review']}>
+                  <span class="flow__n">{f.n}</span><span class="flow__t">{f.t}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+        <div class:list={[s.cols === 1 ? '' : s.cols === 2 ? 'cols2-ex' : 'cols3-ex']}>
+          {s.examples.map((ex) => (
+            <div class:list={['example-card', s.variant === 'grey' && 'example-card--grey']}>
+              <div class:list={['example-head', s.stack && 'example-head--stack']}>
+                <Badge tone="neutral">Example</Badge>
+                <h3 class="case-card__title">{ex.title}</h3>
+              </div>
+              <p class="muted">{ex.body}</p>
+              {ex.fields.map((fl) => (
+                <div class="field" style="gap:6px"><span class="field__label">{fl.l}</span><p class="muted" set:html={fl.h} /></div>
+              ))}
+              <p class="scope-note" set:html={ex.scope.replace('Scope:', '<strong>Scope:</strong>')} />
+            </div>
+          ))}
+        </div>
+        <p class="note-italic">{s.note}</p>
+      </div>
+    </section>
+  ))}
+
+  <!-- Outside this engagement -->
+  <section class="band--caution">
+    <div class="container split split--5-7">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={triIcon} />The limits</span>
+        <h2 class="h2" style="max-width:16ch">Outside this engagement</h2>
+      </div>
+      <ul class="checklist">
+        {outside.map((o) => <ChecklistItem tone="caution">{o}</ChecklistItem>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Where to start + CTA -->
+  <section class="band band--card wm-start" style="padding:88px 0">
+    <div class="container" style="display:flex;flex-direction:column;gap:56px">
+      <div class="split split--4-8">
+        <h2 class="h2"><span class="h2mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={compassIcon} /></span>Where to start</h2>
+        <p class="muted" style="max-width:66ch">If the task is already identified and agreed internally, we can scope an implementation directly. If it has not been settled, an <a href={routes.audit}>AI readiness audit</a> identifies and ranks the candidates — and usually finds more than one. Where several teams are involved, the <a href={routes.deep}>Deep Audit</a> includes a build-ready specification for the top recommendation.</p>
+      </div>
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .wm-hero {
+    background-image: var(--wm-da);
+    background-position: left min(calc(50% + 590px + var(--wm-k) * 150px / 2), calc(100% + var(--wm-k) * 150px - 24px)) top 52px;
+    background-size: calc(var(--wm-k) * 150px);
+  }
+  .wm-build {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 596px + var(--wm-k) * 188px / 2), calc(100% + var(--wm-k) * 188px - 24px)) top 38%;
+    background-size: calc(var(--wm-k) * 188px);
+  }
+  .wm-sizes {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 608px + var(--wm-k) * 142px / 2), calc(100% + var(--wm-k) * 142px - 24px)) bottom 22%;
+    background-size: calc(var(--wm-k) * 142px);
+  }
+  .wm-s1 {
+    background-image: var(--wm-d); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 606px + var(--wm-k) * 126px / 2), calc(100% + var(--wm-k) * 126px - 24px)) bottom -28px;
+    background-size: calc(var(--wm-k) * 126px);
+  }
+  .wm-s2 {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 600px + var(--wm-k) * 96px / 2), calc(100% + var(--wm-k) * 96px - 24px)) top 60px;
+    background-size: calc(var(--wm-k) * 96px);
+  }
+  .wm-s3 {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 610px + var(--wm-k) * 160px / 2), calc(100% + var(--wm-k) * 160px - 24px)) bottom 40px;
+    background-size: calc(var(--wm-k) * 160px);
+  }
+  .wm-start {
+    background-image: var(--wm-b); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 592px + var(--wm-k) * 176px / 2), calc(100% + var(--wm-k) * 176px - 24px)) top 24%;
+    background-size: calc(var(--wm-k) * 176px);
+  }
+  .cols2-ex { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .cols3-ex { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 1024px) {
+    .cols3-ex { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .cols2-ex, .cols3-ex { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,139 @@
+---
+// Optimization Retainer. Rebuilt from the prototype "Retainer" screen. Copy verbatim.
+import PageLayout from '../../layouts/PageLayout.astro';
+import DataTable from '../../components/DataTable.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Accordion from '../../components/Accordion.astro';
+import ChecklistItem from '../../components/ChecklistItem.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { tierCols, retRows, retainerFaqs } from '../../data/serviceContent.ts';
+
+const reasons = [
+  { t: 'New client types arrive with documents laid out differently.', d: 'The workflow was tuned on what came before.' },
+  { t: 'Suppliers change their forms.', d: 'Extraction that was reliable starts missing a field.' },
+  { t: 'The team starts using it for adjacent work.', d: 'Work it was not tested on.' },
+  { t: 'Model providers release updates.', d: 'Output that was consistent shifts in tone or structure.' },
+  { t: 'Your own standards change.', d: 'What counted as a good draft last year is not what you want now.' },
+];
+const outside = [
+  'New workflows — quoted as implementation work.',
+  'Rebuilds and redesigns.',
+  'Out-of-hours or on-call response.',
+  'Unlimited changes.',
+];
+const refreshIcon = '<path d="M20.5 11A8.5 8.5 0 0 0 6 5.5L3.5 8"></path><path d="M3.5 13A8.5 8.5 0 0 0 18 18.5l2.5-2.5"></path><path d="M3.5 3.5V8H8"></path><path d="M20.5 20.5V16H16"></path>';
+const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+---
+
+<PageLayout
+  title="Optimization Retainer — Datonum"
+  description="AI workflow maintenance and optimization: maintenance, quality tuning, and improvement work, with someone accountable when the output looks off."
+>
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow-data">Service 04 · Keep it running</span>
+      <h1 class="ihero__title" style="max-width:18ch">AI workflow maintenance and optimization</h1>
+      <p class="ihero__lead" style="max-width:62ch">Maintenance, quality tuning, and improvement work, with someone accountable when the output looks off.</p>
+      <div class="actions" style="margin-top:36px">
+        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card wm-why">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--teal">Why this exists</span>
+        <h2 class="h2">
+          <span class="h2mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={refreshIcon} /></span>Why AI workflows need maintaining
+        </h2>
+        <p class="muted">An AI workflow is not something you install and leave. Ordinary changes move its output.</p>
+      </div>
+      <div class="split__body" style="gap:28px">
+        <div class="split__body">
+          {reasons.map((r, i) => (
+            <div class:list={['ruled-row', i === reasons.length - 1 && 'ruled-row--last']} style="gap:6px">
+              <h3 class="ruled-item__title">{r.t}</h3>
+              <p class="muted" style="max-width:66ch">{r.d}</p>
+            </div>
+          ))}
+        </div>
+        <p class="lead-muted">None of these stop it working. They move the output gradually — from reliable, to occasionally needing an edit, to needing a careful check every time. At that point people quietly return to doing the work by hand, and the conclusion becomes that AI did not suit the business.</p>
+        <p class="h3" style="margin:0">Maintenance is what prevents that.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--grey band--bordered wm-levels">
+    <div class="container">
+      <SectionHeading eyebrow="Levels" title="Three levels of AI workflow support" />
+      <div style="margin-top:36px">
+        <DataTable columns={tierCols} rows={retRows} />
+      </div>
+    </div>
+  </section>
+
+  <section class="band--caution">
+    <div class="container split split--5-7">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={triIcon} />The limits</span>
+        <h2 class="h2" style="max-width:16ch">Outside this engagement</h2>
+      </div>
+      <div class="split__body" style="gap:20px">
+        <ul class="checklist">
+          {outside.map((o) => <ChecklistItem tone="caution">{o}</ChecklistItem>)}
+        </ul>
+        <p class="muted" style="max-width:66ch">Anything outside scope is quoted before the work is done, never after.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card wm-terms" style="padding:88px 0">
+    <div class="container" style="display:flex;flex-direction:column;gap:64px">
+      <div class="split split--4-8">
+        <h2 class="h2">Terms</h2>
+        <div class="split__body" style="gap:16px">
+          <p class="muted" style="max-width:66ch">Monthly and rolling. Thirty days’ notice either side. Hours reset monthly and do not carry over. Available after an implementation. Move between levels at any point, effective the following month.</p>
+          <p class="muted" style="max-width:66ch">If several months pass with little to do, we will say so and suggest moving down a level.</p>
+        </div>
+      </div>
+      <div class="split split--4-8">
+        <h2 class="h2">Common questions about AI workflow maintenance</h2>
+        <Accordion items={retainerFaqs} />
+      </div>
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .wm-hero {
+    background-image: var(--wm-db);
+    background-position: right min(calc(50% + 600px + var(--wm-k) * 104px / 2), calc(100% + var(--wm-k) * 104px - 24px)) bottom 64px;
+    background-size: calc(var(--wm-k) * 104px);
+  }
+  .wm-why {
+    background-image: var(--wm-d); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 594px + var(--wm-k) * 112px / 2), calc(100% + var(--wm-k) * 112px - 24px)) bottom -18px;
+    background-size: calc(var(--wm-k) * 112px);
+  }
+  .wm-why .split__side { position: sticky; top: 104px; }
+  .wm-levels {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 590px + var(--wm-k) * 150px / 2), calc(100% + var(--wm-k) * 150px - 24px)) top 52px;
+    background-size: calc(var(--wm-k) * 150px);
+  }
+  .wm-terms {
+    background-image: var(--wm-b); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 600px + var(--wm-k) * 104px / 2), calc(100% + var(--wm-k) * 104px - 24px)) bottom 64px;
+    background-size: calc(var(--wm-k) * 104px);
+  }
+  @media (max-width: 1024px) {
+    .wm-why .split__side { position: static; top: auto; }
+  }
+</style>

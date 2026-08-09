@@ -1,0 +1,152 @@
+---
+// Contact. Rebuilt from the prototype "Contact" screen. Copy verbatim.
+// The inquiry submits to the HubSpot Forms Submissions API (client-side fetch); IDs come
+// from PUBLIC_HUBSPOT_* env vars so nothing account-specific is hardcoded.
+import PageLayout from '../layouts/PageLayout.astro';
+import StepTracker from '../components/StepTracker.astro';
+import Field from '../components/Field.astro';
+import Input from '../components/Input.astro';
+import Textarea from '../components/Textarea.astro';
+import Callout from '../components/Callout.astro';
+import Button from '../components/Button.astro';
+import { routes } from '../data/navigation.ts';
+import { callSteps } from '../data/serviceContent.ts';
+
+const contactEmail = 'hello@datonum.com';
+const compassIcon = '<circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>';
+const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.5l-3.5-7-7-3.5 17-6.5Z"></path>';
+---
+
+<PageLayout
+  title="Book a call — Datonum"
+  description="Tell us what your team keeps redoing. Thirty minutes, no preparation needed — we will tell you honestly whether AI would help or whether simpler automation would do the job."
+>
+  <section class="contact-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">Book a call</span>
+      <h1 class="ihero__title" style="max-width:20ch">Tell us what your team keeps redoing</h1>
+      <p class="ihero__lead">Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job.</p>
+    </div>
+  </section>
+
+  <section class="band band--card wm-body">
+    <div class="container split split--5-7" style="gap:72px">
+      <div style="display:flex;flex-direction:column;gap:32px">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={compassIcon} />What happens on the call</span>
+          <StepTracker steps={callSteps} current={0} orientation="vertical" />
+          <p class="muted">If it is nothing at all, we will say so. That happens reasonably often and costs you half an hour.</p>
+        </div>
+        <div style="padding-top:24px;border-top:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:8px">
+          <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={sendIcon} />Or just email</span>
+          <p class="muted">If you would rather just email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <form id="contact-form" novalidate>
+          <div class="form-stack">
+            <h2 class="h3">Book a 30-minute call</h2>
+            <div class="name-row">
+              <Field label="First name" required htmlFor="cf-firstname"><Input id="cf-firstname" name="firstname" required /></Field>
+              <Field label="Last name" required htmlFor="cf-lastname"><Input id="cf-lastname" name="lastname" required /></Field>
+            </div>
+            <Field label="Work email" required htmlFor="cf-email"><Input id="cf-email" name="email" type="email" required /></Field>
+            <Field label="Company" required htmlFor="cf-company"><Input id="cf-company" name="company" required /></Field>
+            <Field label="What keeps getting redone?" required htmlFor="cf-message">
+              <Textarea id="cf-message" name="message" rows={4} required placeholder="For example: our coordinators re-type every inquiry into three systems." />
+            </Field>
+            <Button size="lg" fullWidth type="submit">Book a 30-minute call</Button>
+            <p class="form-error" id="cf-error" hidden></p>
+            <p class="side-card__label" style="text-wrap:pretty">We use your details only to respond to this inquiry. No newsletter, no list. See our <a href={routes.privacy}>privacy notice</a>.</p>
+          </div>
+        </form>
+        <div class="form-stack" id="contact-thanks" hidden>
+          <Callout tone="accent" title="Thanks">We will come back to you within one working day with a couple of times.</Callout>
+          <div style="display:flex"><Button variant="secondary" href={routes.home}>Back to the home page</Button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .contact-hero {
+    padding: 104px 0 88px;
+    background-color: var(--surface-ink);
+    background-image: radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10, 37, 64, 0) 60%), var(--wm-db);
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right min(calc(50% + 600px + var(--wm-k) * 104px / 2), calc(100% + var(--wm-k) * 104px - 24px)) bottom 64px;
+    background-size: auto, calc(var(--wm-k) * 104px);
+  }
+  .wm-body {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 590px + var(--wm-k) * 150px / 2), calc(100% + var(--wm-k) * 150px - 24px)) top 52px;
+    background-size: calc(var(--wm-k) * 150px);
+  }
+  .form-card { background: var(--grey-050); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 36px; }
+  .form-stack { display: flex; flex-direction: column; gap: 24px; }
+  .form-error { font: var(--type-small); color: var(--status-negative); margin: 0; }
+  .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 480px) { .name-row { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const thanks = document.getElementById('contact-thanks');
+  const errorEl = document.getElementById('cf-error');
+
+  const PORTAL = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID;
+  const GUID = import.meta.env.PUBLIC_HUBSPOT_FORM_GUID;
+  const REGION = import.meta.env.PUBLIC_HUBSPOT_REGION || 'na1';
+
+  function showError(msg: string) {
+    if (!errorEl) return;
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (errorEl) errorEl.hidden = true;
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (!PORTAL || !GUID) {
+      showError('The form is not connected yet. Please email hello@datonum.com in the meantime.');
+      return;
+    }
+
+    const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (submit) submit.disabled = true;
+
+    const data = new FormData(form);
+    const fields = ['firstname', 'lastname', 'email', 'company', 'message'].map((name) => ({
+      name,
+      value: String(data.get(name) ?? ''),
+    }));
+
+    // na1 posts to api.hsforms.com; other regions use api-<region>.hsforms.com
+    const host = REGION === 'na1' ? 'api.hsforms.com' : `api-${REGION}.hsforms.com`;
+    const endpoint = `https://${host}/submissions/v3/integration/submit/${PORTAL}/${GUID}`;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields,
+          context: { pageUri: window.location.href, pageName: document.title },
+        }),
+      });
+      if (!res.ok) throw new Error(`HubSpot responded ${res.status}`);
+      form.hidden = true;
+      if (thanks) thanks.hidden = false;
+    } catch (err) {
+      if (submit) submit.disabled = false;
+      showError('Something went wrong sending that. Please try again, or email hello@datonum.com.');
+    }
+  });
+</script>

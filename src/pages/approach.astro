@@ -1,0 +1,98 @@
+---
+// Approach. Rebuilt from the prototype "Approach" screen. Copy verbatim.
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ChecklistItem from '../components/ChecklistItem.astro';
+import CTABanner from '../components/CTABanner.astro';
+
+const principles = [
+  { n: '01', t: 'Diagnosis before building.', d: 'We will not quote you for a build until we understand the process. If you come to us knowing exactly what you want built, we will still spend a day checking that it is the right thing.' },
+  { n: '02', t: 'A person always reviews.', d: 'AI drafts, sorts, summarizes, and checks. People approve. We do not build workflows that make consequential decisions unsupervised, and we will say no if you ask us to.' },
+  { n: '03', t: 'Your systems, not ours.', d: 'We work with the tools you already pay for. You will not end up on a platform you can only leave by starting over, and nothing runs on a credential only we hold.' },
+  { n: '04', t: 'Tested on your real work.', d: 'Every workflow is tested against your own historical examples before it goes live. Sample data proves nothing.' },
+  { n: '05', t: 'Handed over, documented.', d: 'Written guides, training for the people who use it, and a support window. If you never speak to us again, the workflow still runs.' },
+];
+const honest = [
+  'AI gets things wrong. The design assumes it, which is why review steps exist.',
+  'Not every process is worth automating. Roughly a third of what we look at is not.',
+  'The first version is rarely the final one. That is why implementations include a stabilization period.',
+  'Savings show up as capacity, not usually as headcount reduction. Most teams redeploy the time rather than remove the person.',
+  'Maintenance is not optional. A workflow left alone drifts until people stop trusting it.',
+];
+const scaleIcon = '<path d="M12 3.5v17"></path><path d="M5 7.5h14"></path><path d="m5 7.5-2.5 6h5l-2.5-6Z"></path><path d="m19 7.5-2.5 6h5l-2.5-6Z"></path>';
+---
+
+<PageLayout
+  title="Approach — Datonum"
+  description="We measure before we build. Most AI projects fail because the wrong thing was automated, nobody checked the output, or nobody maintained it — our approach is built around avoiding those three."
+>
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">How we work</span>
+      <h1 class="ihero__title" style="max-width:18ch">We measure before we build</h1>
+      <p class="ihero__lead">Most AI projects fail for one of three reasons: the wrong thing was automated, nobody checked the output, or nobody maintained it. Our approach is built around avoiding those three.</p>
+    </div>
+  </section>
+
+  <section class="band band--card wm-principles">
+    <div class="container">
+      <SectionHeading eyebrow="Five principles" title="What we hold to, on every engagement" />
+      <div class="principles">
+        {principles.map((p, i) => (
+          <div class:list={['principle', 'split', 'split--4-8', i === principles.length - 1 && 'principle--last']}>
+            <h3 class="ruled-item__title"><span class="num" style="display:block;margin-bottom:8px">{p.n}</span>{p.t}</h3>
+            <p class="muted" style="max-width:66ch">{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--grey band--bordered wm-honest">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--teal">Plainly</span>
+        <h2 class="h2" style="max-width:16ch">
+          <span class="h2mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={scaleIcon} /></span>What we are honest about
+        </h2>
+      </div>
+      <ul class="checklist">
+        {honest.map((h) => <ChecklistItem tone="included">{h}</ChecklistItem>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--card band--cta">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .ihero.wm-hero { padding: 104px 0 88px; }
+  .wm-hero {
+    background-image: var(--wm-db);
+    background-position: right min(calc(50% + 598px + var(--wm-k) * 132px / 2), calc(100% + var(--wm-k) * 132px - 24px)) top 34px;
+    background-size: calc(var(--wm-k) * 132px);
+  }
+  .wm-principles {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 600px + var(--wm-k) * 96px / 2), calc(100% + var(--wm-k) * 96px - 24px)) top 60px;
+    background-size: calc(var(--wm-k) * 96px);
+  }
+  .wm-honest {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 610px + var(--wm-k) * 160px / 2), calc(100% + var(--wm-k) * 160px - 24px)) bottom 40px;
+    background-size: calc(var(--wm-k) * 160px);
+  }
+  .principles { display: flex; flex-direction: column; margin-top: 40px; }
+  .principle { gap: 48px; padding: 28px 0; border-top: 1px solid var(--border-subtle); align-items: start; }
+  .principle--last { border-bottom: 1px solid var(--border-subtle); }
+  @media (max-width: 1024px) {
+    .principle { gap: 12px; }
+  }
+</style>

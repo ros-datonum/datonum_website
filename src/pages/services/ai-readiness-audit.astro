@@ -1,0 +1,198 @@
+---
+// AI Readiness Audit. Rebuilt from the prototype "AI Readiness Audit" screen. Copy verbatim.
+import PageLayout from '../../layouts/PageLayout.astro';
+import DataTable from '../../components/DataTable.astro';
+import Accordion from '../../components/Accordion.astro';
+import ChecklistItem from '../../components/ChecklistItem.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { rankCols, rankRows, stageCols, auditStages, auditFaqs } from '../../data/serviceContent.ts';
+
+const arrives = [
+  'Tool and system review.',
+  'Workflow map.',
+  'Readiness scorecard across six dimensions.',
+  'Opportunity matrix.',
+  'Top three to five recommendations.',
+  'The leave-alone list.',
+  '90-day roadmap.',
+  'Written report and live walkthrough.',
+];
+const needFromYou = [
+  'Three to five people for 45 minutes each.',
+  'A list of the software you pay for.',
+  'Five to ten real examples of the work.',
+  'Rough monthly volume figures.',
+];
+const outside = [
+  'Building anything. This is a review.',
+  'Software selection or procurement.',
+  'Financial modeling or a formal business case.',
+  'Volume measured from system exports — figures here come from what your team reports.',
+  'A build-ready specification for any recommendation.',
+  'Ongoing advisory after the follow-up call.',
+];
+const runSteps = [
+  'We map what happens rather than what is documented.',
+  'We speak to the people doing the work.',
+  'We put numbers behind every recommendation.',
+  'We say what we would leave alone.',
+];
+const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7l-4-4Z"></path><path d="M14 3v4h4"></path><path d="M9 12.5h6"></path><path d="M9 16h6"></path>';
+const clockIcon = '<circle cx="12" cy="12" r="8.5"></circle><path d="M12 7v5.2l3.2 1.9"></path>';
+const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+---
+
+<PageLayout
+  title="AI Readiness Audit — Datonum"
+  description="A ranked, costed view of where AI fits. Two to three weeks: we map how work moves through your business, then hand you a written plan of what to automate, in what order."
+>
+  <section class="ai-hero">
+    <div class="container">
+      <span class="ai-hero__eyebrow">Service 01 · Review</span>
+      <h1 class="ai-hero__title">AI readiness audit — a ranked, costed view of where AI fits</h1>
+      <p class="ai-hero__lead">Two to three weeks. We map how work moves through your business, then hand you a written plan of what to automate, in what order.</p>
+      <div class="actions" style="margin-top:36px">
+        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card wm-body">
+    <div class="container split split--7-5" style="gap:72px">
+      <div class="stack-lg">
+        <div class="stack-block">
+          <h2 class="h2">What an AI readiness audit covers</h2>
+          <p class="lead-muted">Up to three connected processes within one part of the business, traced from the point work arrives to the point it is finished.</p>
+          <p class="muted" style="max-width:66ch">We look at the systems you pay for and what each is genuinely used for, the steps your team repeats and how often, and the points where information is carried by hand between systems — which is usually where most of the recoverable time sits.</p>
+          <p class="muted" style="max-width:66ch">Volume figures come from what your team reports and from sample examples. That is enough to rank three opportunities against each other reliably.</p>
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3">How the audit runs</h3>
+          <div class="steps2">
+            {runSteps.map((s, i) => (
+              <div class="step"><span class="step__n">{String(i + 1).padStart(2, '0')}</span><span class="step__t">{s}</span></div>
+            ))}
+          </div>
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3 h3--icon"><span class="h3icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={fileIcon} /></span>What arrives at the end</h3>
+          <ul class="checklist">
+            {arrives.map((a) => <ChecklistItem tone="included">{a}</ChecklistItem>)}
+          </ul>
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3">How we rank AI automation opportunities</h3>
+          <DataTable columns={rankCols} rows={rankRows} />
+          <p class="muted" style="max-width:66ch">Anything scoring low on AI suitability goes on the leave-alone list with a note on what would handle it more cheaply.</p>
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3 h3--icon"><span class="h3icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={clockIcon} /></span>Timeline</h3>
+          <DataTable columns={stageCols} rows={auditStages} />
+        </div>
+
+        <div class="stack-block stack-block--tight">
+          <h3 class="h3">What we need from you</h3>
+          <ul class="checklist">
+            {needFromYou.map((n) => <ChecklistItem tone="included">{n}</ChecklistItem>)}
+          </ul>
+          <p class="muted">Around five hours in total.</p>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="side-card">
+          <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={fileIcon} />At a glance</span>
+          <div class="side-card__row"><span class="side-card__label">Processes covered</span><span class="side-card__value">Up to 3, in one part of the business</span></div>
+          <div class="side-card__row"><span class="side-card__label">Interviews</span><span class="side-card__value">3–5</span></div>
+          <div class="side-card__row"><span class="side-card__label">Roadmap</span><span class="side-card__value">90 days</span></div>
+          <div class="side-card__row side-card__row--last"><span class="side-card__label">Timeline</span><span class="side-card__value">2–3 weeks</span></div>
+          <Button fullWidth href={routes.contact}>Book a 30-minute call</Button>
+        </div>
+        <div class="side-links">
+          <span class="eyebrow eyebrow--teal">Other services</span>
+          <a href={routes.deep}>Deep Audit</a>
+          <a href={routes.impl}>AI Workflow Implementation</a>
+          <a href={routes.retainer}>Optimization Retainer</a>
+          <a href={routes.automate}>What we automate</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="band--caution">
+    <div class="container split split--5-7">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={triIcon} />The limits</span>
+        <h2 class="h2" style="max-width:16ch">Outside this engagement</h2>
+      </div>
+      <ul class="checklist">
+        {outside.map((o) => <ChecklistItem tone="caution">{o}</ChecklistItem>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--grey wm-deep" style="border-bottom:1px solid var(--border-subtle);padding:80px 0">
+    <div class="container split split--4-8">
+      <h2 class="h2">When the Deep Audit is the better fit</h2>
+      <div class="split__body" style="gap:18px">
+        <p class="muted" style="max-width:66ch">Where six to eight processes across more than one team, site, or entity are in question, the <strong>Deep Audit</strong> covers them in four to five weeks. It adds volume measured from your own system data, a cross-process view of where the same information is handled twice, readiness scored per team, a sequencing plan, and a build-ready specification for the top recommendation.</p>
+        <p class="muted" style="max-width:66ch">Where three processes and reported volume figures are enough to decide, this engagement is the faster and cheaper route. <a href={routes.services}>Compare the two →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card wm-faq" style="padding:88px 0">
+    <div class="container split split--4-8">
+      <h2 class="h2">Common questions about AI readiness audits</h2>
+      <Accordion items={auditFaqs} />
+    </div>
+  </section>
+
+  <section class="band--card band--tail">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .ai-hero {
+    padding: 96px 0 84px;
+    background-color: var(--surface-ink);
+    background-image: var(--wm-db);
+    background-repeat: no-repeat;
+    background-position: left min(calc(50% + 592px + var(--wm-k) * 176px / 2), calc(100% + var(--wm-k) * 176px - 24px)) top 24%;
+    background-size: calc(var(--wm-k) * 176px);
+  }
+  .ai-hero__eyebrow { font: var(--type-data); color: var(--teal-500); }
+  .ai-hero__title { font: var(--type-display-2); letter-spacing: var(--tracking-display); color: var(--white); margin: 18px 0 0; max-width: 22ch; text-wrap: pretty; }
+  .ai-hero__lead { font: var(--type-body-lg); color: var(--text-inverse-muted); margin: 26px 0 0; max-width: 64ch; text-wrap: pretty; }
+
+  .h3--icon { display: flex; align-items: center; gap: 10px; }
+  .h3icon { color: var(--teal-700); display: flex; }
+
+  .wm-body {
+    background-image: var(--wm-d); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 594px + var(--wm-k) * 112px / 2), calc(100% + var(--wm-k) * 112px - 24px)) bottom -18px;
+    background-size: calc(var(--wm-k) * 112px);
+  }
+  .wm-deep {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 590px + var(--wm-k) * 150px / 2), calc(100% + var(--wm-k) * 150px - 24px)) top 52px;
+    background-size: calc(var(--wm-k) * 150px);
+  }
+  .wm-faq {
+    background-image: var(--wm-b); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 600px + var(--wm-k) * 104px / 2), calc(100% + var(--wm-k) * 104px - 24px)) bottom 64px;
+    background-size: calc(var(--wm-k) * 104px);
+  }
+</style>

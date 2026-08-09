@@ -1,0 +1,331 @@
+---
+// Home page. Rebuilt from the Claude Design prototype (Home screen). Copy is verbatim.
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ChecklistItem from '../components/ChecklistItem.astro';
+import CTABanner from '../components/CTABanner.astro';
+import Button from '../components/Button.astro';
+import { routes } from '../data/navigation.ts';
+import { caseStudies, caseStudyPath } from '../data/caseStudies.ts';
+
+const cases = [
+  {
+    n: '01',
+    title: 'Opportunity scoring with reasons',
+    body: 'Inconsistent inquiries become a consistent qualification decision — with the evidence recorded, and anything unclear routed to a person.',
+  },
+  {
+    n: '02',
+    title: 'Answers from your own documents',
+    body: 'Questions asked in plain language, answered from your approved documents, with the source of every statement shown.',
+  },
+  {
+    n: '03',
+    title: 'Supplier and product qualification',
+    body: 'Thousands of inconsistent records scored in two stages, every rejection reason kept, and nothing published without approval.',
+  },
+];
+
+const recognition = [
+  {
+    n: '01',
+    title: 'The same information, entered twice.',
+    body: 'An inquiry arrives as free text, and someone re-enters it into the system that runs the job, then again into the one that raises the invoice.',
+  },
+  {
+    n: '02',
+    title: 'Documents assembled by hand from material that already exists.',
+    body: 'Reports, client updates, briefs, and proposals written from scratch each time.',
+  },
+  {
+    n: '03',
+    title: 'Long documents read for the few points that matter.',
+    body: 'Contracts, tender packs, meeting recordings, and reports read end to end so that three decisions can be extracted.',
+  },
+  {
+    n: '04',
+    title: 'Requests read and sorted one at a time.',
+    body: 'Inquiries, tickets, and applications categorized by hand and answered from something close to a standard reply.',
+  },
+];
+
+const trust = [
+  { title: 'AI and your rules stay separate.', body: 'The criteria you set are applied as fixed rules. An AI interpretation cannot quietly override a must-have.' },
+  { title: 'Every decision carries its reasons.', body: 'Not a number, but the evidence behind it, the risks identified, and what information was missing.' },
+  { title: 'Uncertainty stops the line.', body: 'Low confidence, contradictory information, or a missing field routes to a person with an explanation attached.' },
+  { title: 'Nothing fails quietly.', body: 'A failed step becomes a visible exception. It never becomes a wrong answer sitting in your system looking correct.' },
+  { title: 'Decisions stay inspectable.', body: 'What went in, what the AI proposed, what was decided, and what a person changed — recorded and reviewable.' },
+];
+
+const exclusions = [
+  'We will not use AI where a simple rule would do the job more cheaply and more reliably.',
+  'We will not automate something because it is technically possible. It has to repay the effort.',
+  'We will not remove a person from a decision that needs judgment.',
+  'We will not replace the systems you already run. We work with them.',
+  'We will not leave you dependent on us. Everything is documented and handed over.',
+];
+---
+
+<PageLayout
+  title="Datonum — AI workflow automation"
+  description="We build AI workflow automation into the systems you already run — turning the inquiries, documents, and requests that arrive every day into drafts, records, and decisions your team approves rather than produces."
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero__eyebrow">AI workflow automation</span>
+      <h1 class="hero__title">AI does the reading. Your team does the deciding.</h1>
+      <p class="hero__lead">
+        We build AI workflow automation into the systems you already run — reading the inquiries,
+        documents, and requests that arrive every day, and turning them into drafts, records, and
+        decisions your team approves rather than produces. Built on n8n, Make, or Zapier.
+      </p>
+      <div class="hero__actions">
+        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+        <Button size="lg" variant="inverse-outline" href={routes.cases}>See what we have built</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Built work -->
+  <section class="band band--card wm-builtwork">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Built work"
+        title="Systems we have designed and built"
+        lead="Each one shows the same thing: where AI does the reading and judging, where fixed rules take over, and where a person stays in control."
+      />
+      <div class="cards3">
+        {cases.map((c, i) => (
+          <a href={caseStudyPath(caseStudies[i].slug)} class="case-card">
+            <span class="num">{c.n}</span>
+            <h3 class="case-card__title">{c.title}</h3>
+            <p class="muted">{c.body}</p>
+            <span class="case-card__more">See how it works →</span>
+          </a>
+        ))}
+      </div>
+      <div class="band__footer">
+        <p class="lead-strong" style="max-width:62ch">In each case the interesting part is not what the AI does. It is what happens when the AI is not sure.</p>
+        <a href={routes.cases} class="nowrap">See all five case studies →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recognition -->
+  <section class="band band--grey band--bordered wm-recognition">
+    <div class="container">
+      <SectionHeading eyebrow="Recognition" title="Work your team is doing that a machine should be finishing" />
+      <div class="cols2">
+        {recognition.map((r) => (
+          <div class="ruled-item">
+            <span class="num">{r.n}</span>
+            <h3 class="ruled-item__title">{r.title}</h3>
+            <p class="muted">{r.body}</p>
+          </div>
+        ))}
+      </div>
+      <div class="row-cta">
+        <p class="lead-strong" style="max-width:70ch">Each of these has a step in it that needs judgment about language — which is exactly where AI does work that rule-based automation cannot.</p>
+        <Button href={routes.contact}>Book a 30-minute call</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust -->
+  <section class="band band--card wm-trust">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--teal">Trust</span>
+        <h2 class="h2">Why this is safe to put near work that matters</h2>
+      </div>
+      <div class="split__body">
+        {trust.map((t, i) => (
+          <div class:list={['ruled-row', i === trust.length - 1 && 'ruled-row--last']}>
+            <h3 class="ruled-item__title">{t.title}</h3>
+            <p class="muted" style="max-width:66ch">{t.body}</p>
+          </div>
+        ))}
+        <div class="row-between">
+          <p class="lead-strong" style="max-width:56ch">Most AI demonstrations show the happy path. The engineering is in everything else.</p>
+          <a href={routes.approach} class="nowrap">How we work →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The services -->
+  <section class="band band--grey band--bordered wm-services">
+    <div class="container">
+      <SectionHeading eyebrow="The services" title="AI implementation in three stages" />
+      <div class="cards3 cards3--gap32">
+        <div class="stage">
+          <span class="stage__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path><path d="m8.4 11 2 2 4-4"></path></svg>
+          </span>
+          <span class="num">01</span>
+          <h3 class="h3">Find out what is worth doing</h3>
+          <p class="muted">Two review engagements, depending on breadth. The <strong>AI Readiness Audit</strong> covers up to three processes in two to three weeks. The <strong>Deep Audit</strong> covers six to eight across teams, with volumes measured from your own system data. Both produce a ranked plan and a list of what to leave alone.</p>
+          <div class="stage__links">
+            <a href={routes.audit}>AI Readiness Audit →</a>
+            <a href={routes.deep}>Deep Audit →</a>
+          </div>
+        </div>
+        <div class="stage">
+          <span class="stage__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><path d="M10 6.5h4.5a2 2 0 0 1 2 2V14"></path></svg>
+          </span>
+          <span class="num">02</span>
+          <h3 class="h3">Build it properly</h3>
+          <p class="muted"><strong>AI Workflow Implementation</strong> in three sizes — Lite, Standard, Advanced. Two to ten weeks depending on scope. One workflow built end to end, connected to the tools you already use, tested against your own historical work.</p>
+          <div class="stage__links">
+            <a href={routes.impl}>Read more →</a>
+          </div>
+        </div>
+        <div class="stage">
+          <span class="stage__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11A8.5 8.5 0 0 0 6 5.5L3.5 8"></path><path d="M3.5 13A8.5 8.5 0 0 0 18 18.5l2.5-2.5"></path><path d="M3.5 3.5V8H8"></path><path d="M20.5 20.5V16H16"></path></svg>
+          </span>
+          <span class="num">03</span>
+          <h3 class="h3">Keep it running</h3>
+          <p class="muted"><strong>AI Workflow Optimization Retainer</strong> in three levels — Lite, Standard, Advanced. Monthly and rolling. Maintenance, quality tuning, and improvement, so output stays reliable as the work coming through changes.</p>
+          <div class="stage__links">
+            <a href={routes.retainer}>Read more →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we will not automate -->
+  <section class="band band--caution">
+    <div class="container split split--5-7">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--caution">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path></svg>
+          The limits
+        </span>
+        <h2 class="h2" style="max-width:16ch">What we will not automate</h2>
+        <p class="muted">Every audit includes a list of what to leave alone. It is usually the section people find most useful.</p>
+      </div>
+      <ul class="checklist">
+        {exclusions.map((e) => <ChecklistItem tone="caution">{e}</ChecklistItem>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Technology -->
+  <section class="band band--card wm-technology">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="eyebrow eyebrow--teal">Technology</span>
+        <h2 class="h2" style="max-width:16ch">The technology we build with</h2>
+      </div>
+      <div class="tech__body">
+        <p class="lead-muted">We build with <strong>Claude</strong> and <strong>OpenAI</strong> models for the steps that involve reading, writing, and judgment, connected through <strong>Make</strong>, <strong>n8n</strong>, or direct connections to the systems you already run — Microsoft 365, Google Workspace, HubSpot, Airtable, Xero, QuickBooks, and most mainstream business software.</p>
+        <p class="muted">You keep your systems. Nothing moves to a platform of ours.</p>
+        <div><a href={routes.automate}>See the full technology list →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- See the workflows in detail -->
+  <section class="band band--ink wm-detail">
+    <div class="container detail">
+      <div class="detail__copy">
+        <span class="eyebrow eyebrow--teal-ink">In detail</span>
+        <h2 class="h2 h2--inverse">See the workflows in detail</h2>
+        <p class="lead-inverse">Full write-ups of all five systems — what each does, where AI is required, how it runs stage by stage, and what happens when it is unsure.</p>
+      </div>
+      <Button size="lg" variant="inverse" href={routes.cases}>See the case studies</Button>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="band band--card band--bordered band--cta">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  /* watermark placements (mirrors the prototype) */
+  .wm-builtwork {
+    background-image: var(--wm-d);
+    background-repeat: no-repeat;
+    background-position: right min(calc(50% + 606px + var(--wm-k) * 126px / 2), calc(100% + var(--wm-k) * 126px - 24px)) bottom -28px;
+    background-size: calc(var(--wm-k) * 126px);
+  }
+  .wm-recognition {
+    background-image: var(--wm-c);
+    background-repeat: no-repeat;
+    background-position: left min(calc(50% + 600px + var(--wm-k) * 96px / 2), calc(100% + var(--wm-k) * 96px - 24px)) top 60px;
+    background-size: calc(var(--wm-k) * 96px);
+  }
+  .wm-trust {
+    background-image: var(--wm-a);
+    background-repeat: no-repeat;
+    background-position: right min(calc(50% + 610px + var(--wm-k) * 160px / 2), calc(100% + var(--wm-k) * 160px - 24px)) bottom 40px;
+    background-size: calc(var(--wm-k) * 160px);
+  }
+  .wm-services {
+    background-image: var(--wm-b);
+    background-repeat: no-repeat;
+    background-position: left min(calc(50% + 592px + var(--wm-k) * 176px / 2), calc(100% + var(--wm-k) * 176px - 24px)) top 24%;
+    background-size: calc(var(--wm-k) * 176px);
+  }
+  .wm-technology {
+    background-image: var(--wm-d);
+    background-repeat: no-repeat;
+    background-position: left min(calc(50% + 594px + var(--wm-k) * 112px / 2), calc(100% + var(--wm-k) * 112px - 24px)) bottom -18px;
+    background-size: calc(var(--wm-k) * 112px);
+  }
+  .wm-detail {
+    background-image: var(--wm-dc);
+    background-repeat: no-repeat;
+    background-position: right min(calc(50% + 604px + var(--wm-k) * 118px / 2), calc(100% + var(--wm-k) * 118px - 24px)) bottom -20px;
+    background-size: calc(var(--wm-k) * 118px);
+  }
+
+  /* hero */
+  .hero {
+    padding: 112px 0 96px;
+    background-color: var(--surface-ink);
+    background-image: radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10, 37, 64, 0) 60%), var(--wm-da);
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, left min(calc(50% + 590px + var(--wm-k) * 150px / 2), calc(100% + var(--wm-k) * 150px - 24px)) top 52px;
+    background-size: auto, calc(var(--wm-k) * 150px);
+  }
+  .hero__eyebrow {
+    font: var(--type-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--teal-500);
+  }
+  .hero__title {
+    font: var(--type-display);
+    letter-spacing: var(--tracking-display);
+    color: var(--white);
+    margin: 22px 0 0;
+    max-width: 15ch;
+    text-wrap: pretty;
+  }
+  .hero__lead {
+    font: var(--type-body-lg);
+    color: var(--text-inverse-muted);
+    margin: 28px 0 0;
+    max-width: 66ch;
+    text-wrap: pretty;
+  }
+  .hero__actions { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+
+  /* Home-only: the Trust section pins its heading while the list scrolls. */
+  .wm-trust .split__side { position: sticky; top: 104px; }
+  @media (max-width: 1024px) {
+    .wm-trust .split__side { position: static; top: auto; }
+  }
+</style>

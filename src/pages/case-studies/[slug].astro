@@ -1,0 +1,132 @@
+---
+// Case study detail. One template for all five; content from caseStudies.ts. Copy verbatim.
+import PageLayout from '../../layouts/PageLayout.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import { routes } from '../../data/navigation.ts';
+import { caseStudies, caseStudyPath } from '../../data/caseStudies.ts';
+
+export function getStaticPaths() {
+  return caseStudies.map((cs, index) => ({
+    params: { slug: cs.slug },
+    props: { cs, index },
+  }));
+}
+
+const { cs, index } = Astro.props;
+const prev = index > 0 ? caseStudies[index - 1] : null;
+const next = index < caseStudies.length - 1 ? caseStudies[index + 1] : null;
+
+const heroBg = `background-image:var(${cs.heroWm.img});background-repeat:no-repeat;background-position:${cs.heroWm.pos};background-size:${cs.heroWm.size}`;
+const bodyBg = `background-image:var(${cs.bodyWm.img});background-repeat:no-repeat;background-position:${cs.bodyWm.pos};background-size:${cs.bodyWm.size}`;
+
+const shieldIcon = '<path d="M12 3 5 6v5.5c0 4.2 2.9 7.6 7 9.5 4.1-1.9 7-5.3 7-9.5V6l-7-3Z"></path><path d="m9 12 2 2 4-4"></path>';
+const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7l-4-4Z"></path><path d="M14 3v4h4"></path><path d="M9 12.5h6"></path><path d="M9 16h6"></path>';
+---
+
+<PageLayout title={`${cs.title} — Datonum`} description={cs.lead}>
+  <section class="ihero cs-hero" style={heroBg}>
+    <div class="container">
+      <a href={routes.cases} class="cs-back">← Case studies</a>
+      <span class="cs-kicker">Case study {cs.num}</span>
+      <h1 class="ihero__title" style="max-width:22ch">{cs.title}</h1>
+      <p class="ihero__lead">{cs.lead}</p>
+    </div>
+  </section>
+
+  <section class="band band--card" style={bodyBg}>
+    <div class="container split split--7-5" style="gap:72px">
+      <div class="stack-lg" style="gap:44px">
+        <div class="stack-block" style="gap:14px">
+          <span class="eyebrow eyebrow--teal">The situation it addresses</span>
+          {cs.situation.map((p, i) => (
+            <p class={i === 0 ? 'lead-muted' : 'muted'} style="max-width:66ch">{p}</p>
+          ))}
+        </div>
+
+        {cs.whereAI && (
+          <div class="stack-block" style="gap:14px">
+            <span class="eyebrow eyebrow--teal">Where AI is required</span>
+            <p class="muted" style="max-width:66ch">{cs.whereAI}</p>
+          </div>
+        )}
+
+        <div class="stack-block" style="gap:18px">
+          <span class="eyebrow eyebrow--teal">How it runs</span>
+          <ol class="flow flow--cs">
+            {cs.howItRuns.map((f) => (
+              <li class:list={['flow__row', f.review && 'flow__row--review']}>
+                <span class="flow__n">{f.n}</span><span class="flow__t">{f.t}</span>
+              </li>
+            ))}
+          </ol>
+          {cs.outputLine && (
+            <p class="scope-note" style="border:0;padding:0"><strong>{cs.outputLine.label}</strong> {cs.outputLine.text}</p>
+          )}
+        </div>
+
+        <div class="stack-block" style="gap:14px">
+          <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={shieldIcon} />What makes it trustworthy</span>
+          <p class="muted" style="max-width:66ch">{cs.trustworthy}</p>
+        </div>
+
+        {cs.buyerNote && (
+          <div class="accent-note" style="margin-top:0">
+            <span class="eyebrow eyebrow--teal">{cs.buyerNote.label}</span>
+            <p class="muted" style="max-width:66ch">{cs.buyerNote.text}</p>
+          </div>
+        )}
+      </div>
+
+      <aside class="cs-side">
+        <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={fileIcon} />At a glance</span>
+        <div class="side-card__row"><span class="side-card__label">Built with</span><span class="side-card__value">{cs.builtWith}</span></div>
+        <div class="side-card__row"><span class="side-card__label">This maps to</span>{cs.mapsTo.map((m) => <a href={m.href} class="cs-map">{m.label}</a>)}</div>
+        <div class="cs-nav">
+          {prev && <a href={caseStudyPath(prev.slug)} class="cs-nav__prev">← Previous: {prev.navName}</a>}
+          {next
+            ? <a href={caseStudyPath(next.slug)} class="cs-nav__next">Next: {next.navName} →</a>
+            : <a href={routes.cases} class="cs-nav__next">All five case studies →</a>}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="band--card band--tail">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .cs-hero { padding: 88px 0 80px; }
+  .cs-back { font: var(--type-small); color: var(--navy-300); border-bottom: none; }
+  .cs-kicker { display: block; font: var(--type-data); color: var(--teal-500); margin-top: 28px; }
+  .cs-hero .ihero__title { margin-top: 18px; }
+
+  .flow--cs .flow__row { grid-template-columns: 44px 1fr; gap: 20px; padding: 14px 0; }
+
+  .cs-side {
+    position: sticky;
+    top: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--grey-050);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 28px;
+  }
+  .cs-side .side-card__row { gap: 6px; padding-bottom: 16px; }
+  .cs-map { font: var(--type-body); align-self: flex-start; width: fit-content; }
+  .cs-nav { display: flex; flex-direction: column; gap: 12px; }
+  .cs-nav__prev { font: var(--type-label); border-bottom: none; color: var(--text-muted); }
+  .cs-nav__next { font: var(--type-label); border-bottom: none; color: var(--teal-700); }
+
+  @media (max-width: 1024px) {
+    .cs-side { position: static; top: auto; }
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+// Legal template → /privacy and /terms. Rebuilt from the prototype "Legal" screen.
+// The design ships these as briefs (not the final notices); reproduced verbatim to fill later.
+import PageLayout from '../layouts/PageLayout.astro';
+import Callout from '../components/Callout.astro';
+import ChecklistItem from '../components/ChecklistItem.astro';
+import Button from '../components/Button.astro';
+import { routes } from '../data/navigation.ts';
+
+export function getStaticPaths() {
+  return [
+    { params: { legal: 'privacy' }, props: { variant: 'privacy', title: 'Privacy notice' } },
+    { params: { legal: 'terms' }, props: { variant: 'terms', title: 'Terms' } },
+  ];
+}
+
+const { variant, title } = Astro.props;
+const privacyCovers = [
+  'What is collected.',
+  'Lawful basis for processing.',
+  'HubSpot as processor.',
+  'Retention period.',
+  'Data subject rights.',
+  'Contact for requests.',
+];
+---
+
+<PageLayout title={`${title} — Datonum`} description={`${title} for datonum.com.`}>
+  <section class="legal-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">Legal</span>
+      <h1 class="legal-title">{title}</h1>
+    </div>
+  </section>
+
+  <section class="band band--card" style="padding:72px 0 96px">
+    <div class="legal-body">
+      <Callout tone="caution" title="Not yet drafted">This page is required before the inquiry form goes live. The content below is the brief, not the notice.</Callout>
+
+      {variant === 'privacy' && (
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <p class="muted">Required for GDPR and for the inquiry form. The notice must cover:</p>
+          <ul class="checklist" style="gap:14px">
+            {privacyCovers.map((c) => <ChecklistItem tone="included">{c}</ChecklistItem>)}
+          </ul>
+        </div>
+      )}
+
+      {variant === 'terms' && (
+        <p class="muted">Light, and site terms only. Engagement terms live in the contract, not here.</p>
+      )}
+
+      <div style="display:flex"><Button variant="secondary" href={routes.home}>Back to the home page</Button></div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .legal-hero {
+    padding: 80px 0 64px;
+    background-color: var(--surface-ink);
+    background-image: var(--wm-dc);
+    background-repeat: no-repeat;
+    background-position: left min(calc(50% + 608px + var(--wm-k) * 142px / 2), calc(100% + var(--wm-k) * 142px - 24px)) bottom 22%;
+    background-size: calc(var(--wm-k) * 142px);
+  }
+  .legal-title { font: var(--type-h1); letter-spacing: var(--tracking-display); color: var(--white); margin: 18px 0 0; }
+  .legal-body { max-width: 760px; margin: 0 auto; padding: 0 var(--gutter); display: flex; flex-direction: column; gap: 28px; }
+</style>

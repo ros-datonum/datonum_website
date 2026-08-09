@@ -1,0 +1,194 @@
+---
+// What we automate. Rebuilt from the prototype "What we automate" screen. Copy verbatim.
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import DataTable from '../components/DataTable.astro';
+import CTABanner from '../components/CTABanner.astro';
+import Button from '../components/Button.astro';
+import { routes } from '../data/navigation.ts';
+import { sysCols, sysRows } from '../data/serviceContent.ts';
+
+const platforms = [
+  { name: 'n8n', icon: '<rect x="3" y="4" width="18" height="7" rx="2"></rect><rect x="3" y="13" width="18" height="7" rx="2"></rect><path d="M7 7.5h.01"></path><path d="M7 16.5h.01"></path>', body: 'Self-hosted or cloud. The right choice when everything must run on infrastructure you control, when volumes make per-task pricing expensive, or when a workflow needs logic that visual builders handle awkwardly. We set it up on your own server where that matters — common in legal, healthcare, and finance.' },
+  { name: 'Make', icon: '<path d="m12 3 9 4.5-9 4.5-9-4.5L12 3Z"></path><path d="m3 16.5 9 4.5 9-4.5"></path><path d="m3 12 9 4.5L21 12"></path>', body: 'Quick to build and readable by your team afterward. Strong for multi-step sequences with branching, and good value at moderate volume. Often the right balance when nobody internally will maintain code.' },
+  { name: 'Zapier', icon: '<path d="M9 3v6"></path><path d="M15 3v6"></path><path d="M5.5 9h13v2.5a6.5 6.5 0 0 1-13 0V9Z"></path><path d="M12 18v4"></path>', body: 'The widest app coverage of the three. Where a system you depend on connects to only one platform, it is usually this one. Simple to hand over.' },
+];
+const workflowIcon = '<rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><path d="M10 6.5h4.5a2 2 0 0 1 2 2V14"></path>';
+const compassIcon = '<circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>';
+const gridIcon = '<rect x="3" y="3" width="7.5" height="7.5" rx="1.5"></rect><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"></rect><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"></rect><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"></rect>';
+const plugIcon = '<path d="M9 3v6"></path><path d="M15 3v6"></path><path d="M5.5 9h13v2.5a6.5 6.5 0 0 1-13 0V9Z"></path><path d="M12 18v4"></path>';
+
+const processes = [
+  {
+    n: '01', fn: 'Marketing', title: 'One piece of source material into a full campaign',
+    trigger: 'A webinar recording, a customer interview, a product update, or a set of notes lands in a shared folder.',
+    sequence: 'The source is transcribed and read · the arguments and evidence worth keeping are extracted · a long-form draft is written in your house voice · social posts, an email, and a landing headline are produced from the same material · every factual claim is checked against your approved product and compliance wording · drafts land in your CMS and scheduler for a person to approve.',
+    ai: 'Writing in a consistent voice from unstructured source material, and recognizing when a claim in the draft is not supported by anything in the approved wording. No rule can do either.',
+    built: 'Make or n8n · Claude or OpenAI · your CMS, Google Drive or SharePoint, and HubSpot.',
+    maps: 'Implementation — Standard.',
+  },
+  {
+    n: '02', fn: 'Sales', title: 'Inquiry to scoped proposal',
+    trigger: 'An inquiry arrives by form, email, or a phone note typed up afterward.',
+    sequence: 'The inquiry is read and reduced to a structured record — what is wanted, scale, timeline, budget signals, and an explicit list of what has not been specified · the company is enriched from public sources · the record is created or updated in the CRM with no duplicates · a scoped proposal is drafted from your template library in your own wording · follow-up is scheduled · when a reply arrives it is classified and the deal stage moved.',
+    ai: 'Reading a discursive inquiry and identifying not only what was asked for but what was left out — and drafting a proposal that reads like your firm wrote it.',
+    built: 'n8n or Make · Claude or OpenAI · HubSpot or your CRM.',
+    maps: 'Implementation — Standard.',
+  },
+];
+---
+
+<PageLayout
+  title="What we automate — Datonum"
+  description="AI workflow automation with n8n, Make, and Zapier. Real sequences, one per function, each showing where AI does the reading and judging and where fixed rules take over."
+>
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">What we automate</span>
+      <h1 class="ihero__title" style="max-width:20ch">AI workflow automation with n8n, Make, and Zapier</h1>
+      <p class="ihero__lead">Real sequences, one per function, each showing where AI does the reading and judging and where fixed rules take over. Some of this will sound familiar.</p>
+    </div>
+  </section>
+
+  <!-- Platforms -->
+  <section class="band band--card wm-plat">
+    <div class="container">
+      <SectionHeading eyebrow="Platforms" title="n8n, Make, and Zapier — and how we choose" />
+      <div class="cards3" style="margin-top:36px">
+        {platforms.map((p) => (
+          <div class="info-card">
+            <div class="info-card__head">
+              <span class="icon-teal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={p.icon} /></span>
+              <h3 class="h3">{p.name}</h3>
+            </div>
+            <p class="muted">{p.body}</p>
+          </div>
+        ))}
+      </div>
+      <div class="cols2" style="gap:48px;margin-top:40px">
+        <div class="tfield">
+          <h3 class="ruled-item__title h3--icon"><span class="h3icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={compassIcon} /></span>How we choose</h3>
+          <p class="muted">On what you already run, the volume involved, where your data is allowed to be processed, and who will maintain it after handover. If you already use one, we build there rather than moving you. If you are on the wrong one for what you are trying to do, we will say so — and migration between them is work we do.</p>
+        </div>
+        <div class="tfield">
+          <h3 class="ruled-item__title h3--icon"><span class="h3icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={workflowIcon} /></span>What we add on top</h3>
+          <p class="muted">These platforms move information between systems reliably. They do not read a supplier's email and work out what it means. That is the AI step, built with Claude or OpenAI, sitting inside the sequence at the point where judgment about language is genuinely required.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The processes -->
+  <section class="band band--grey band--bordered wm-proc">
+    <div class="container">
+      <SectionHeading
+        eyebrow="The work"
+        title="The processes we automate"
+        lead="Each is a real sequence, not a task — with the step that needs AI named, the platform it typically runs on, and the tier it maps to."
+      />
+      <div style="display:flex;flex-direction:column;gap:48px;margin-top:40px">
+        {processes.map((p) => (
+          <div class="split split--4-8 split--topbar" style="gap:56px">
+            <div class="split__side" style="gap:10px">
+              <span class="num">{p.n}</span>
+              <span class="eyebrow eyebrow--teal">{p.fn}</span>
+              <h3 class="h3">{p.title}</h3>
+            </div>
+            <div class="split__body" style="gap:18px">
+              <div class="pair"><span class="pair__label">What triggers it</span><p class="muted" style="max-width:66ch">{p.trigger}</p></div>
+              <div class="pair"><span class="pair__label">The sequence</span><p class="muted" style="max-width:66ch">{p.sequence}</p></div>
+              <div class="pair"><span class="pair__label">Where AI is required</span><p class="muted" style="max-width:66ch">{p.ai}</p></div>
+              <div class="pair-grid">
+                <div class="pair"><span class="pair__label">Typically built on</span><p class="muted">{p.built}</p></div>
+                <div class="pair"><span class="pair__label">Maps to</span><p class="muted">{p.maps}</p></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology -->
+  <section class="band band--grey band--bordered wm-tech">
+    <div class="container" style="display:flex;flex-direction:column;gap:40px">
+      <SectionHeading eyebrow="Technology" title="The technology we build with" />
+      <div class="cols2" style="gap:32px;margin:0">
+        <div class="info-card">
+          <h3 class="ruled-item__title h3--icon"><span class="h3icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={workflowIcon} /></span>For the AI steps</h3>
+          <p class="muted">Claude (Anthropic) and OpenAI models. Selected per workflow on accuracy for the specific task, cost per run, and where the data is processed.</p>
+        </div>
+        <div class="info-card">
+          <h3 class="ruled-item__title h3--icon"><span class="h3icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={plugIcon} /></span>For connecting systems</h3>
+          <p class="muted">Make, n8n, or direct connections. n8n where a business wants everything running on infrastructure it controls.</p>
+        </div>
+      </div>
+      <div class="stack-block--tight" style="display:flex;flex-direction:column;gap:18px">
+        <h3 class="h3 h3--icon"><span class="h3icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={gridIcon} /></span>Systems we commonly connect</h3>
+        <DataTable columns={sysCols} rows={sysRows} />
+      </div>
+      <div class="cols2" style="gap:32px;margin:0">
+        <div class="tfield"><h3 class="ruled-item__title">Where your data goes</h3><p class="muted">Named per workflow before the build starts, in writing. Processing region, retention, and whether anything is used for model training — the answer to that last one is no, and it is confirmed in the contract.</p></div>
+        <div class="tfield"><h3 class="ruled-item__title">You keep your systems</h3><p class="muted">Nothing moves to a platform of ours, and nothing runs on a credential only we hold.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples pointer -->
+  <section class="band band--card wm-examples" style="padding:80px 0">
+    <div class="container detail">
+      <div class="detail__copy" style="max-width:62ch">
+        <span class="eyebrow eyebrow--teal">Built work</span>
+        <h2 class="h2">AI workflow examples</h2>
+        <p class="muted">Five systems we designed and built, each showing the sequence, the step where AI is required, the systems involved, and what happens when it is unsure.</p>
+      </div>
+      <Button variant="secondary" href={routes.cases}>See the case studies</Button>
+    </div>
+  </section>
+
+  <!-- Which is costing you -->
+  <section class="band--brass" style="padding:76px 0">
+    <div class="container split split--5-7">
+      <h2 class="h2" style="max-width:18ch">Which of these is costing you the most?</h2>
+      <div style="display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+        <p class="lead-muted">If one of the above took a name and a face as you read it — the person who does it, the morning it takes — that is the place to start. Tell us which one, and we will give you an honest view on whether AI is the right answer or whether something simpler would do.</p>
+        <p class="muted">Half an hour, no preparation, no obligation.</p>
+        <Button href={routes.contact}>Book a 30-minute call</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card band--cta">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .ihero.wm-hero { padding: 104px 0 88px; }
+  .wm-hero {
+    background-image: var(--wm-dc);
+    background-position: right min(calc(50% + 604px + var(--wm-k) * 118px / 2), calc(100% + var(--wm-k) * 118px - 24px)) bottom -20px;
+    background-size: calc(var(--wm-k) * 118px);
+  }
+  .wm-plat {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 604px + var(--wm-k) * 118px / 2), calc(100% + var(--wm-k) * 118px - 24px)) bottom -20px;
+    background-size: calc(var(--wm-k) * 118px);
+  }
+  .wm-proc, .wm-tech {
+    background-image: var(--wm-d); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 612px + var(--wm-k) * 168px / 2), calc(100% + var(--wm-k) * 168px - 24px)) top -18px;
+    background-size: calc(var(--wm-k) * 168px);
+  }
+  .wm-examples {
+    background-image: var(--wm-b); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 598px + var(--wm-k) * 132px / 2), calc(100% + var(--wm-k) * 132px - 24px)) top 34px;
+    background-size: calc(var(--wm-k) * 132px);
+  }
+  .tfield { padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px; }
+</style>

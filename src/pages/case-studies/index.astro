@@ -1,0 +1,131 @@
+---
+// Case studies index. Rebuilt from the prototype "Case studies" screen. Copy verbatim.
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ChecklistItem from '../../components/ChecklistItem.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import { routes } from '../../data/navigation.ts';
+import { caseStudies, caseStudyPath } from '../../data/caseStudies.ts';
+
+const principles = [
+  { t: 'AI and rules are kept separate.', d: 'Criteria you set cannot be quietly overridden by an AI interpretation.' },
+  { t: 'Every decision comes with its reasons.', d: 'A score without evidence is not useful to anyone reviewing it.' },
+  { t: 'Uncertain cases stop.', d: 'Low confidence, contradictory information, or missing fields route to a person with an explanation.' },
+  { t: 'Nothing fails silently.', d: 'A failed step becomes a visible exception, not a quiet wrong answer sitting in your system.' },
+  { t: 'Decisions stay inspectable.', d: 'What went in, what the AI proposed, what was decided, and what a person changed — all recorded.' },
+];
+const compassIcon = '<circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>';
+---
+
+<PageLayout
+  title="Case studies — Datonum"
+  description="AI implementation case studies — systems we have designed and built. Each shows where AI does the reading and judging, where fixed rules take over, and where a person stays in control."
+>
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">Case studies</span>
+      <h1 class="ihero__title" style="max-width:22ch">AI implementation case studies — systems we have designed and built</h1>
+      <p class="ihero__lead">Each one shows the same thing: where AI does the reading and judging, where fixed rules take over, and where a person stays in control. That boundary is the whole craft.</p>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="band band--card wm-principles">
+    <div class="container">
+      <SectionHeading eyebrow="In common" title="Five systems, one set of principles" lead="Different work, the same engineering decisions in every case." />
+      <ul class="checklist checklist-grid">
+        {principles.map((p) => <ChecklistItem tone="included" title={p.t}>{p.d}</ChecklistItem>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- The five -->
+  <section class="band band--grey band--bordered wm-five">
+    <div class="container">
+      <SectionHeading eyebrow="The five" title="Read each one in detail" />
+      <div class="cs-list">
+        {caseStudies.map((c) => (
+          <a href={caseStudyPath(c.slug)} class="cs-row">
+            <span class="num">{c.num}</span>
+            <h3 class="case-card__title">{c.indexTitle}</h3>
+            <p class="muted">{c.indexDesc}</p>
+            <span class="cs-row__more">Read →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Your work won't look exactly like these -->
+  <section class="band band--card wm-yours">
+    <div class="container split split--4-8">
+      <h2 class="h2">
+        <span class="h2mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={compassIcon} /></span>Your work will not look exactly like these
+      </h2>
+      <div class="split__body" style="gap:20px">
+        <p class="lead-muted">It rarely does. What carries across is the shape: find the step that genuinely needs judgment about language, put fixed rules around it, give every decision its reasons, and keep a person on anything consequential.</p>
+        <p class="muted" style="max-width:66ch">An audit works out which step in your business that is. <a href={routes.audit}>See the AI Readiness Audit →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band--card band--tail">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .ihero.wm-hero { padding: 104px 0 88px; }
+  .wm-hero {
+    background-image: var(--wm-dd);
+    background-position: left min(calc(50% + 612px + var(--wm-k) * 168px / 2), calc(100% + var(--wm-k) * 168px - 24px)) top -18px;
+    background-size: calc(var(--wm-k) * 168px);
+  }
+  .wm-principles {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 590px + var(--wm-k) * 150px / 2), calc(100% + var(--wm-k) * 150px - 24px)) top 52px;
+    background-size: calc(var(--wm-k) * 150px);
+  }
+  .wm-five {
+    background-image: var(--wm-b); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 600px + var(--wm-k) * 104px / 2), calc(100% + var(--wm-k) * 104px - 24px)) bottom 64px;
+    background-size: calc(var(--wm-k) * 104px);
+  }
+  .wm-yours {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 604px + var(--wm-k) * 118px / 2), calc(100% + var(--wm-k) * 118px - 24px)) bottom -20px;
+    background-size: calc(var(--wm-k) * 118px);
+  }
+
+  .checklist-grid {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 48px;
+  }
+
+  .cs-list { display: flex; flex-direction: column; margin-top: 36px; border-top: 1px solid var(--border-subtle); }
+  .cs-row {
+    border-bottom: 1px solid var(--border-subtle);
+    display: grid;
+    grid-template-columns: 64px minmax(0, 4fr) minmax(0, 6fr) 140px;
+    gap: 32px;
+    align-items: baseline;
+    padding: 28px 12px;
+    color: inherit;
+    transition: background 120ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+  .cs-row:hover { background: var(--surface-card); }
+  .cs-row__more { font: var(--type-label); color: var(--teal-700); text-align: right; }
+
+  @media (max-width: 1024px) {
+    .checklist-grid { grid-template-columns: 1fr; }
+    .cs-row { grid-template-columns: 1fr; gap: 8px; }
+    .cs-row__more { text-align: left; }
+  }
+</style>

@@ -1,0 +1,138 @@
+---
+// Services overview. Rebuilt from the prototype "Services" screen. Copy verbatim.
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import DataTable from '../../components/DataTable.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { reviewCols, reviewRows } from '../../data/serviceContent.ts';
+---
+
+<PageLayout
+  title="Services — Datonum"
+  description="Four services across three stages: assessment, implementation, and ongoing support. Most start with a review, and you are never asked to commit to more than the next step."
+>
+  <section class="svc-hero">
+    <div class="container">
+      <span class="svc-hero__eyebrow">Services</span>
+      <h1 class="svc-hero__title">AI automation for business — assessment, implementation, and ongoing support</h1>
+      <p class="svc-hero__lead">Four services across three stages. Most start with a review, and you are never asked to commit to more than the next step.</p>
+    </div>
+  </section>
+
+  <!-- Stage 01 -->
+  <section class="band band--card wm-a1">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Stage 01"
+        title="Two ways to find out what is worth building"
+        lead="The clearest place on the site to make the boundary between the two reviews visible."
+      />
+      <div style="margin-top:36px">
+        <DataTable columns={reviewCols} rows={reviewRows} />
+      </div>
+      <div class="actions" style="margin-top:32px">
+        <Button href={routes.audit}>See the AI Readiness Audit</Button>
+        <Button variant="secondary" href={routes.deep}>See the Deep Audit</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stage 02 -->
+  <section class="band band--grey band--bordered wm-a2">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="num">Stage 02</span>
+        <h2 class="h2">
+          <span class="h2mark">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><path d="M10 6.5h4.5a2 2 0 0 1 2 2V14"></path></svg>
+          </span>AI Workflow Implementation — build it properly
+        </h2>
+      </div>
+      <div class="split__body" style="gap:20px">
+        <p class="lead-muted">We build one workflow end to end. It connects to the tools you already use, a person reviews the output before it is used, and it is tested against your real historical work before it goes live.</p>
+        <p class="muted" style="max-width:66ch">Three sizes: <strong>Lite</strong> for one recurring task, <strong>Standard</strong> for a full multi-step sequence, and <strong>Advanced</strong> for something complex or commercially significant.</p>
+        <div class="pair-grid">
+          <div class="pair"><span class="pair__label">You walk away with</span><span class="pair__value">A working workflow in your environment, connected to your systems, with documentation, training, and a support window.</span></div>
+          <div class="pair"><span class="pair__label">Timeline</span><span class="pair__value">Two to ten weeks depending on scope.</span></div>
+        </div>
+        <div style="margin-top:8px"><a href={routes.impl} class="linkline">See the full service →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stage 03 -->
+  <section class="band band--card wm-a3">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="num">Stage 03</span>
+        <h2 class="h2">
+          <span class="h2mark">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11A8.5 8.5 0 0 0 6 5.5L3.5 8"></path><path d="M3.5 13A8.5 8.5 0 0 0 18 18.5l2.5-2.5"></path><path d="M3.5 3.5V8H8"></path><path d="M20.5 20.5V16H16"></path></svg>
+          </span>AI Workflow Optimization Retainer — keep output reliable
+        </h2>
+      </div>
+      <div class="split__body" style="gap:20px">
+        <p class="lead-muted">A workflow is not something you install and leave. New client types arrive with documents laid out differently. Suppliers change their forms. The tools it connects to release updates. Without maintenance the output shifts gradually, from reliable to needing a careful check every time.</p>
+        <p class="muted" style="max-width:66ch">Three levels: <strong>Lite</strong> for a single workflow, <strong>Standard</strong> for a sequence several people depend on, and <strong>Advanced</strong> for workflows the business genuinely runs on.</p>
+        <div class="pair-grid">
+          <div class="pair"><span class="pair__label">You walk away with</span><span class="pair__value">Someone accountable for keeping it working, and a monthly conversation about what to improve next.</span></div>
+          <div class="pair"><span class="pair__label">Timeline</span><span class="pair__value">Monthly, rolling, thirty days’ notice.</span></div>
+        </div>
+        <div style="margin-top:8px"><a href={routes.retainer} class="linkline">See the full service →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Not sure which fits -->
+  <section class="band--brass">
+    <div class="container split split--4-8 split--center">
+      <h2 class="h2" style="max-width:16ch">Not sure which of these fits?</h2>
+      <div style="display:flex;flex-direction:column;gap:24px;align-items:flex-start">
+        <p class="lead-muted">That is the conversation. Thirty minutes, no preparation needed — describe the work that keeps recurring and we will tell you which engagement it points to, or whether it points to none of them yet.</p>
+        <Button href={routes.contact}>Book a 30-minute call</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card band--cta">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .svc-hero {
+    padding: 104px 0 88px;
+    background-color: var(--surface-ink);
+    background-image: var(--wm-da);
+    background-repeat: no-repeat;
+    background-position: right min(calc(50% + 610px + var(--wm-k) * 160px / 2), calc(100% + var(--wm-k) * 160px - 24px)) bottom 40px;
+    background-size: calc(var(--wm-k) * 160px);
+  }
+  .svc-hero__eyebrow { font: var(--type-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--teal-500); }
+  .svc-hero__title { font: var(--type-display-2); letter-spacing: var(--tracking-display); color: var(--white); margin: 22px 0 0; max-width: 22ch; text-wrap: pretty; }
+  .svc-hero__lead { font: var(--type-body-lg); color: var(--text-inverse-muted); margin: 26px 0 0; max-width: 64ch; text-wrap: pretty; }
+  .h2mark { color: var(--teal-700); display: block; margin-bottom: 12px; }
+
+  .wm-a1 {
+    background-image: var(--wm-c); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 600px + var(--wm-k) * 96px / 2), calc(100% + var(--wm-k) * 96px - 24px)) top 60px;
+    background-size: calc(var(--wm-k) * 96px);
+  }
+  .wm-a2 {
+    background-image: var(--wm-a); background-repeat: no-repeat;
+    background-position: right min(calc(50% + 610px + var(--wm-k) * 160px / 2), calc(100% + var(--wm-k) * 160px - 24px)) bottom 40px;
+    background-size: calc(var(--wm-k) * 160px);
+  }
+  .wm-a3 {
+    background-image: var(--wm-b); background-repeat: no-repeat;
+    background-position: left min(calc(50% + 592px + var(--wm-k) * 176px / 2), calc(100% + var(--wm-k) * 176px - 24px)) top 24%;
+    background-size: calc(var(--wm-k) * 176px);
+  }
+</style>
