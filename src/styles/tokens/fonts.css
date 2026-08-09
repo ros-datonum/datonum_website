@@ -1,8 +1,11 @@
 /* Datonum webfonts.
    The supplied wordmark is set in DM Sans — confirmed by the brand owner — so DM Sans is the
    brand face and carries display, headings, UI and body. DM Mono carries figures and data.
-   Both are Google Fonts: no licensing step, no font files to install, and a safe fallback stack. */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..500&family=DM+Mono:wght@400;500&display=swap");
+   Both are Google Fonts: no licensing step, no font files to install, and a safe fallback stack.
+
+   The webfont stylesheet is loaded non-blocking from the <head> (see BaseLayout.astro), NOT
+   via @import here — an @import inside the CSS bundle chains an extra render-blocking request
+   and hurts First Contentful Paint. font-display:swap paints fallback text immediately. */
 :root{
   --font-display:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-sans:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
