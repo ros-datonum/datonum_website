@@ -1,0 +1,25 @@
+---
+// Datonum logo. Renders the official SVG artwork from public/brand/logo/ as an <img>.
+// `height` is the rendered pixel height. The source files carry the correct mark/wordmark
+// proportions and brand colours, so no reconstruction is needed.
+interface Props {
+  variant?: 'lockup' | 'mark' | 'wordmark' | 'stacked' | 'tile';
+  tone?: 'navy' | 'white';
+  height?: number;
+  mono?: boolean;
+  class?: string;
+}
+const { variant = 'lockup', tone = 'navy', height = 28, mono = false, class: className } = Astro.props;
+
+const inverse = tone === 'white';
+
+// Resolve the artwork file for the requested variant/tone/mono.
+function resolveFile(): string {
+  if (variant === 'tile') return mono ? 'datonum-app-tile-mono' : 'datonum-app-tile';
+  if (mono) return `datonum-${variant}-mono${inverse ? '-white' : ''}`;
+  return `datonum-${variant}${inverse ? '-white' : ''}`;
+}
+const src = `/brand/logo/${resolveFile()}.svg`;
+---
+
+<img src={src} alt="Datonum" class={className} style={`display:block;height:${height}px;width:auto;max-width:100%;align-self:flex-start`} />

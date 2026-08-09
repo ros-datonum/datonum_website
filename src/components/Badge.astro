@@ -1,0 +1,29 @@
+---
+// Small label badge. Ported from DS Badge.jsx.
+interface Props {
+  tone?: 'neutral' | 'navy' | 'positive' | 'caution' | 'negative' | 'inverse';
+  class?: string;
+}
+const { tone = 'neutral', class: className } = Astro.props;
+---
+
+<span class:list={['badge', `badge--${tone}`, className]}><slot /></span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border-radius: var(--radius-xs);
+    font: var(--type-eyebrow);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+  .badge--neutral { background: var(--grey-100); color: var(--grey-600); }
+  .badge--navy { background: var(--navy-100); color: var(--navy-800); }
+  .badge--positive { background: var(--teal-100); color: var(--teal-700); }
+  .badge--caution { background: var(--amber-100); color: var(--amber-700); }
+  .badge--negative { background: var(--red-100); color: var(--red-700); }
+  .badge--inverse { background: rgba(255, 255, 255, 0.14); color: var(--white); }
+</style>

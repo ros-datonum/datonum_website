@@ -1,0 +1,34 @@
+---
+// Form field wrapper: label (+ required marker) over a control, with hint/error. Ported from DS Field.jsx.
+interface Props {
+  label?: string;
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  htmlFor?: string;
+  class?: string;
+}
+const { label, hint, error, required = false, htmlFor, class: className } = Astro.props;
+---
+
+<div class:list={['field-control', className]}>
+  {label && (
+    <label class="field-control__label" for={htmlFor}>
+      {label}{required && <span class="field-control__req">*</span>}
+    </label>
+  )}
+  <slot />
+  {error ? (
+    <span class="field-control__error">{error}</span>
+  ) : hint ? (
+    <span class="field-control__hint">{hint}</span>
+  ) : null}
+</div>
+
+<style>
+  .field-control { display: flex; flex-direction: column; gap: 6px; }
+  .field-control__label { font: var(--type-label); color: var(--text-strong); }
+  .field-control__req { color: var(--status-negative); margin-left: 4px; }
+  .field-control__error { font: var(--type-small); font-size: var(--text-xs); color: var(--status-negative); }
+  .field-control__hint { font: var(--type-small); font-size: var(--text-xs); color: var(--text-muted); }
+</style>

@@ -1,0 +1,74 @@
+---
+// Data table. Ported from DS DataTable.jsx. Columns may be strings or
+// { key, label, align?, numeric? }. Scrolls horizontally on narrow screens.
+export interface Column {
+  key: string;
+  label: string;
+  align?: 'left' | 'center' | 'right';
+  numeric?: boolean;
+}
+interface Props {
+  columns: Column[];
+  rows: Record<string, string>[];
+  dense?: boolean;
+}
+// Roomy by default (design's non-dense value); pass dense to tighten a specific table.
+const { columns, rows, dense = false } = Astro.props;
+const pad = dense ? '8px 12px' : '12px 16px';
+---
+
+<div class="datatable">
+  <div class="datatable__scroll">
+    <table>
+      <thead>
+        <tr>
+          {columns.map((c) => (
+            <th style={`text-align:${c.align ?? 'left'};padding:${pad}`}>{c.label}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r, i) => (
+          <tr class={i === rows.length - 1 ? 'is-last' : undefined}>
+            {columns.map((c) => (
+              <td
+                class:list={['cell', c.numeric && 'cell--num']}
+                style={`text-align:${c.align ?? 'left'};padding:${pad}`}
+              >
+                {r[c.key]}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .datatable {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--surface-card);
+  }
+  .datatable__scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font: var(--type-eyebrow);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--surface-sunken);
+    border-bottom: 1px solid var(--border-subtle);
+    white-space: nowrap;
+  }
+  .cell {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-body);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  tr.is-last .cell { border-bottom: none; }
+  .cell--num { font: var(--type-data); font-variant-numeric: tabular-nums; }
+</style>

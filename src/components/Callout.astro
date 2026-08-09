@@ -1,0 +1,52 @@
+---
+// Callout. Ported from DS Callout.jsx. tone drives colour + default icon.
+import Icon from './Icon.astro';
+
+interface Props {
+  tone?: 'info' | 'accent' | 'caution' | 'negative';
+  title?: string;
+  class?: string;
+}
+const { tone = 'info', title, class: className } = Astro.props;
+
+const icons = {
+  info: 'lightbulb',
+  accent: 'lightbulb',
+  caution: 'triangle-alert',
+  negative: 'triangle-alert',
+} as const;
+---
+
+<div class:list={['callout', `callout--${tone}`, className]}>
+  <span class="callout__icon"><Icon name={icons[tone]} size={18} /></span>
+  <div class="callout__body">
+    {title && <span class="callout__title">{title}</span>}
+    <div class="callout__text"><slot /></div>
+  </div>
+</div>
+
+<style>
+  .callout {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius-card);
+  }
+  .callout--info { background: var(--navy-050); border-color: var(--navy-100); }
+  .callout--accent { background: var(--teal-050); border-color: var(--teal-100); }
+  .callout--caution { background: var(--amber-100); border-color: #efdcba; }
+  .callout--negative { background: var(--red-100); border-color: #efd2cd; }
+  .callout__icon { display: flex; margin-top: 1px; }
+  .callout--info .callout__icon { color: var(--navy-800); }
+  .callout--accent .callout__icon { color: var(--teal-700); }
+  .callout--caution .callout__icon { color: var(--amber-700); }
+  .callout--negative .callout__icon { color: var(--red-700); }
+  .callout__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .callout__title { font: var(--weight-semibold) var(--text-sm) / 1.35 var(--font-sans); }
+  .callout--info .callout__title { color: var(--navy-800); }
+  .callout--accent .callout__title { color: var(--teal-700); }
+  .callout--caution .callout__title { color: var(--amber-700); }
+  .callout--negative .callout__title { color: var(--red-700); }
+  .callout__text { font-family: var(--font-sans); font-size: var(--text-sm); line-height: var(--leading-normal); color: var(--text-body); }
+</style>

@@ -1,0 +1,93 @@
+---
+// Site footer. Dark ink surface with a brass top rule. Ported from the prototype footer.
+import Logo from './Logo.astro';
+import { routes, serviceLinks, footerCompanyLinks } from '../data/navigation.ts';
+
+const contactEmail = 'hello@datonum.com';
+const linkedInUrl = 'https://www.linkedin.com/';
+---
+
+<footer class="site-footer">
+  <div class="site-footer__rule"></div>
+  <div class="site-footer__inner">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <Logo variant="lockup" tone="white" height={20} />
+        <p class="site-footer__tagline">AI workflow implementation.</p>
+      </div>
+
+      <div class="site-footer__col">
+        <span class="site-footer__heading">Services</span>
+        {serviceLinks.map((l) => <a href={l.href} class="site-footer__link">{l.label}</a>)}
+      </div>
+
+      <div class="site-footer__col">
+        <span class="site-footer__heading">Company</span>
+        {footerCompanyLinks.map((l) => <a href={l.href} class="site-footer__link">{l.label}</a>)}
+      </div>
+
+      <div class="site-footer__col">
+        <span class="site-footer__heading">Contact</span>
+        <a href={`mailto:${contactEmail}`} class="site-footer__link">{contactEmail}</a>
+        <a href={linkedInUrl} class="site-footer__link">LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span class="site-footer__copy">© 2026 Datonum</span>
+      <div class="site-footer__legal">
+        <a href={routes.privacy} class="site-footer__legal-link">Privacy</a>
+        <a href={routes.terms} class="site-footer__legal-link">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--surface-ink);
+    color: var(--text-inverse-muted);
+  }
+  .site-footer__rule { height: 2px; background: var(--brass-600); }
+  .site-footer__inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 64px var(--gutter) 32px;
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border-ink);
+  }
+  .site-footer__brand { display: flex; flex-direction: column; gap: 16px; max-width: 34ch; }
+  .site-footer__tagline { font: var(--type-small); color: var(--text-inverse-muted); margin: 0; text-wrap: pretty; }
+
+  .site-footer__col { display: flex; flex-direction: column; gap: 12px; }
+  .site-footer__heading {
+    font: var(--type-eyebrow);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--navy-300);
+  }
+  .site-footer__link { font: var(--type-small); color: var(--white); border-bottom: none; }
+  .site-footer__link:hover { color: var(--teal-400); }
+
+  .site-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 24px;
+    flex-wrap: wrap;
+  }
+  .site-footer__copy { font: var(--type-small); color: var(--navy-300); }
+  .site-footer__legal { display: flex; gap: 20px; }
+  .site-footer__legal-link { font: var(--type-small); color: var(--navy-300); border-bottom: none; }
+  .site-footer__legal-link:hover { color: var(--white); }
+
+  @media (max-width: 760px) {
+    .site-footer__grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+</style>

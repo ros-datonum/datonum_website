@@ -1,0 +1,45 @@
+---
+// Avatar. Ported from DS Avatar.jsx: image, else initials, else the logo tile.
+import Logo from './Logo.astro';
+
+interface Props {
+  name?: string;
+  src?: string;
+  size?: number;
+  tone?: 'navy' | 'teal';
+  class?: string;
+}
+const { name, src, size = 40, tone = 'navy', class: className } = Astro.props;
+const initials = (name ?? '')
+  .split(' ')
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((w) => w[0])
+  .join('')
+  .toUpperCase();
+const dims = `width:${size}px;height:${size}px`;
+---
+
+{src ? (
+  <img class={className} src={src} alt={name ?? ''} style={`${dims};border-radius:var(--radius-pill);object-fit:cover;display:block;flex:0 0 auto`} />
+) : name ? (
+  <span
+    class:list={['avatar', `avatar--${tone}`, className]}
+    aria-label={name}
+    style={`${dims};font:var(--weight-semibold) ${Math.round(size * 0.36)}px/1 var(--font-sans)`}
+  >{initials}</span>
+) : (
+  <Logo variant="tile" height={size} class={className} />
+)}
+
+<style>
+  .avatar {
+    border-radius: var(--radius-pill);
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .avatar--navy { background: var(--navy-100); color: var(--navy-800); }
+  .avatar--teal { background: var(--teal-100); color: var(--teal-700); }
+</style>

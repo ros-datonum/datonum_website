@@ -1,0 +1,42 @@
+---
+// Text input. Ported from DS Input.jsx; JS focus state reworked as CSS :focus.
+interface Props {
+  name?: string;
+  id?: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  size?: 'sm' | 'md';
+  error?: boolean;
+  class?: string;
+}
+const { name, id, type = 'text', placeholder, required = false, size = 'md', error = false, class: className } = Astro.props;
+---
+
+<input
+  class:list={['input', size === 'sm' && 'input--sm', error && 'is-error', className]}
+  name={name}
+  id={id}
+  type={type}
+  placeholder={placeholder}
+  required={required || undefined}
+/>
+
+<style>
+  .input {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-strong);
+    background: var(--surface-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-control);
+    padding: 10px 12px;
+    outline: none;
+    transition: var(--transition-control);
+  }
+  .input--sm { padding: 7px 10px; font-size: var(--text-xs); }
+  .input::placeholder { color: var(--text-muted); }
+  .input:focus { border-color: var(--border-focus); box-shadow: var(--ring-focus); }
+  .input.is-error { border-color: var(--status-negative); }
+</style>

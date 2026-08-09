@@ -1,0 +1,70 @@
+---
+// Section heading block: eyebrow + title + lead. Ported from DS SectionHeading.jsx.
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  align?: 'left' | 'center';
+  tone?: 'light' | 'ink';
+  level?: 'h1' | 'h2' | 'h3';
+  class?: string;
+}
+const {
+  eyebrow,
+  title,
+  lead,
+  align = 'left',
+  tone = 'light',
+  level = 'h2',
+  class: className,
+} = Astro.props;
+const Tag = level;
+---
+
+<div class:list={['section-heading', `is-${align}`, `is-${tone}`, `level-${level}`, className]}>
+  {eyebrow && <span class="section-heading__eyebrow">{eyebrow}</span>}
+  {title && <Tag class="section-heading__title">{title}</Tag>}
+  {lead && <p class="section-heading__lead">{lead}</p>}
+</div>
+
+<style>
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: flex-start;
+    text-align: left;
+  }
+  .section-heading.is-center {
+    align-items: center;
+    text-align: center;
+    max-width: var(--measure-prose);
+    margin-inline: auto;
+  }
+  .section-heading__eyebrow {
+    font: var(--type-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--teal-700);
+  }
+  .is-ink .section-heading__eyebrow { color: var(--teal-500); }
+
+  .section-heading__title {
+    font: var(--type-h2);
+    letter-spacing: var(--tracking-heading);
+    color: var(--text-strong);
+    margin: 0;
+    max-width: 20ch;
+  }
+  .is-ink .section-heading__title { color: var(--white); }
+  .level-h1 .section-heading__title { font: var(--type-h1); }
+
+  .section-heading__lead {
+    font: var(--type-body-lg);
+    color: var(--text-body);
+    max-width: var(--measure-prose);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .is-ink .section-heading__lead { color: var(--text-inverse-muted); }
+</style>

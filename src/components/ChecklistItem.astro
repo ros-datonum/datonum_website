@@ -1,0 +1,47 @@
+---
+// Checklist row with a leading mark. Ported from DS ChecklistItem.jsx.
+import Icon from './Icon.astro';
+
+interface Props {
+  tone?: 'included' | 'excluded' | 'caution';
+  title?: string;
+}
+const { tone = 'included', title } = Astro.props;
+
+const map = {
+  included: { icon: 'check', colour: 'var(--teal-600)' },
+  excluded: { icon: 'x', colour: 'var(--grey-400)' },
+  caution: { icon: 'minus', colour: 'var(--amber-600)' },
+} as const;
+const { icon, colour } = map[tone];
+---
+
+<li class="checklist-item">
+  <span class="checklist-item__mark" style={`color:${colour}`}>
+    <Icon name={icon} size={16} />
+  </span>
+  <span class="checklist-item__text">
+    {title && <strong>{title} </strong>}
+    <slot />
+  </span>
+</li>
+
+<style>
+  .checklist-item {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    list-style: none;
+  }
+  .checklist-item__mark { display: flex; margin-top: 3px; }
+  .checklist-item__text {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-body);
+  }
+  .checklist-item__text strong {
+    color: var(--text-strong);
+    font-weight: var(--weight-semibold);
+  }
+</style>

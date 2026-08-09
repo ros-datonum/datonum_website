@@ -1,0 +1,83 @@
+---
+// Closing call-to-action band. Ported from DS CTABanner.jsx. Reproduces the subtle
+// ink-tone radial glow from the source component (noted as a design-system exception
+// to the "no gradients" rule). Stacks below the tablet breakpoint.
+import Button from './Button.astro';
+import { routes } from '../data/navigation.ts';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  action?: string;
+  href?: string;
+  tone?: 'ink' | 'soft';
+}
+const {
+  eyebrow = 'Next step',
+  title,
+  lead,
+  action = 'Book a 30-minute call',
+  href = routes.contact,
+  tone = 'ink',
+} = Astro.props;
+
+const ink = tone === 'ink';
+---
+
+<div class:list={['cta', ink ? 'cta--ink' : 'cta--soft']}>
+  <div class="cta__copy">
+    {eyebrow && <span class="cta__eyebrow">{eyebrow}</span>}
+    <span class="cta__title">{title}</span>
+    {lead && <span class="cta__lead">{lead}</span>}
+  </div>
+  <Button size="lg" variant={ink ? 'inverse' : 'primary'} href={href} class="cta__action">{action}</Button>
+</div>
+
+<style>
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+    padding: var(--space-10);
+    border-radius: var(--radius-panel);
+  }
+  .cta--ink {
+    background: var(--surface-ink);
+    background-image: radial-gradient(110% 140% at 92% 0%, var(--alpha-glow-teal) 0%, rgba(10, 37, 64, 0) 62%);
+  }
+  .cta--soft { background: var(--surface-sunken); }
+
+  .cta__copy { display: flex; flex-direction: column; gap: var(--space-3); }
+  .cta__eyebrow {
+    font: var(--type-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+  }
+  .cta--ink .cta__eyebrow { color: var(--teal-500); }
+  .cta--soft .cta__eyebrow { color: var(--teal-700); }
+
+  .cta__title {
+    font: var(--type-h2);
+    letter-spacing: var(--tracking-heading);
+    max-width: 22ch;
+    text-wrap: pretty;
+  }
+  .cta--ink .cta__title { color: var(--white); }
+  .cta--soft .cta__title { color: var(--text-strong); }
+
+  .cta__lead { font: var(--type-body-lg); }
+  .cta--ink .cta__lead { color: var(--text-inverse-muted); }
+  .cta--soft .cta__lead { color: var(--text-body); }
+
+  .cta__action { flex: 0 0 auto; }
+
+  @media (max-width: 768px) {
+    .cta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-8);
+    }
+  }
+</style>

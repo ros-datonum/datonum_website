@@ -1,0 +1,42 @@
+---
+// Textarea. Ported from DS Textarea.jsx; JS focus state reworked as CSS :focus.
+interface Props {
+  name?: string;
+  id?: string;
+  placeholder?: string;
+  rows?: number;
+  required?: boolean;
+  error?: boolean;
+  class?: string;
+}
+const { name, id, placeholder, rows = 4, required = false, error = false, class: className } = Astro.props;
+---
+
+<textarea
+  class:list={['textarea', error && 'is-error', className]}
+  name={name}
+  id={id}
+  placeholder={placeholder}
+  rows={rows}
+  required={required || undefined}
+></textarea>
+
+<style>
+  .textarea {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-strong);
+    background: var(--surface-card);
+    resize: vertical;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-control);
+    padding: 10px 12px;
+    outline: none;
+    transition: var(--transition-control);
+  }
+  .textarea::placeholder { color: var(--text-muted); }
+  .textarea:focus { border-color: var(--border-focus); box-shadow: var(--ring-focus); }
+  .textarea.is-error { border-color: var(--status-negative); }
+</style>

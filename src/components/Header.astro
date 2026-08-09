@@ -1,0 +1,201 @@
+---
+// Site header. Sticky, blurred, with a Services hover/focus dropdown and a mobile
+// menu. Ported from the prototype header; active state resolved from the URL.
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import { routes, serviceLinks, isActive } from '../data/navigation.ts';
+
+const path = Astro.url.pathname;
+const servicesActive = isActive(path, routes.services) || serviceLinks.some((l) => isActive(path, l.href));
+const casesActive = isActive(path, routes.cases);
+const automateActive = isActive(path, routes.automate);
+const approachActive = isActive(path, routes.approach);
+const aboutActive = isActive(path, routes.about);
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href={routes.home} class="site-header__logo" aria-label="Datonum — home">
+      <Logo variant="lockup" height={22} />
+    </a>
+
+    <nav class="site-header__nav" aria-label="Primary">
+      <a href={routes.cases} class:list={['navlink', casesActive && 'is-active']}>Case studies</a>
+
+      <div class="services">
+        <a href={routes.services} class:list={['navlink', 'services__trigger', servicesActive && 'is-active']} aria-haspopup="true">
+          Services
+          <span class="services__caret" aria-hidden="true"></span>
+        </a>
+        <div class="services__panel" role="menu">
+          {serviceLinks.map((l) => (
+            <a href={l.href} class="services__item" role="menuitem">{l.label}</a>
+          ))}
+        </div>
+      </div>
+
+      <a href={routes.automate} class:list={['navlink', automateActive && 'is-active']}>What we automate</a>
+      <a href={routes.approach} class:list={['navlink', approachActive && 'is-active']}>Approach</a>
+      <a href={routes.about} class:list={['navlink', aboutActive && 'is-active']}>About</a>
+      <Button size="sm" href={routes.contact}>Book a call</Button>
+    </nav>
+
+    <button type="button" class="site-header__burger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <a href={routes.cases} class="mobile-menu__link">Case studies</a>
+    <span class="mobile-menu__group">Services</span>
+    {serviceLinks.map((l) => (
+      <a href={l.href} class="mobile-menu__link mobile-menu__link--nested">{l.label}</a>
+    ))}
+    <a href={routes.automate} class="mobile-menu__link">What we automate</a>
+    <a href={routes.approach} class="mobile-menu__link">Approach</a>
+    <a href={routes.about} class="mobile-menu__link">About</a>
+    <a href={routes.contact} class="mobile-menu__link mobile-menu__link--cta">Book a call</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky, 30);
+    background: var(--alpha-header);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .site-header__inner {
+    height: var(--header-height);
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+  .site-header__logo { display: flex; border-bottom: none; }
+
+  .site-header__nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-left: auto;
+  }
+
+  .navlink {
+    font: var(--type-label);
+    color: var(--text-muted);
+    border-bottom: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: var(--transition-control);
+  }
+  .navlink:hover { color: var(--text-strong); }
+  .navlink.is-active { color: var(--text-strong); }
+
+  .services { position: relative; display: flex; align-items: center; }
+  .services__trigger { display: flex; align-items: center; gap: 7px; }
+  .services__caret {
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid currentColor;
+    opacity: 0.6;
+  }
+  .services__panel {
+    position: absolute;
+    top: 100%;
+    left: -20px;
+    margin-top: 14px;
+    width: 290px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms;
+  }
+  .services:hover .services__panel,
+  .services:focus-within .services__panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .services__item {
+    font: var(--type-body);
+    color: var(--text-strong);
+    border-bottom: none;
+    padding: 10px 14px;
+    border-radius: 5px;
+  }
+  .services__item:hover { background: var(--grey-050); }
+
+  .site-header__burger {
+    display: none;
+    margin-left: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    padding: 0 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .site-header__burger span {
+    display: block;
+    height: 1.5px;
+    background: var(--navy-800);
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 8px var(--gutter) 20px;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--surface-page);
+  }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-menu__link {
+    font: var(--type-body);
+    color: var(--text-strong);
+    border-bottom: none;
+    padding: 12px 4px;
+  }
+  .mobile-menu__link--nested { padding-left: 18px; color: var(--text-body); }
+  .mobile-menu__link--cta { color: var(--text-accent); font-weight: var(--weight-semibold); }
+  .mobile-menu__group {
+    font: var(--type-eyebrow);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 14px 4px 4px;
+  }
+
+  @media (max-width: 900px) {
+    .site-header__nav { display: none; }
+    .site-header__burger { display: flex; }
+  }
+</style>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>('.site-header__burger');
+  const menu = document.getElementById('mobile-menu');
+  burger?.addEventListener('click', () => {
+    const open = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!open));
+    if (menu) menu.hidden = open;
+  });
+</script>

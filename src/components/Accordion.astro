@@ -1,0 +1,55 @@
+---
+// FAQ accordion. The DS component used React state; here it's native <details>
+// (accessible, no runtime). Matches the DS look: chevron rotates when open.
+import Icon from './Icon.astro';
+
+export interface AccordionItem {
+  question: string;
+  answer: string;
+}
+interface Props {
+  items: AccordionItem[];
+}
+const { items } = Astro.props;
+---
+
+<div class="accordion">
+  {items.map((it) => (
+    <details class="accordion__item">
+      <summary class="accordion__summary">
+        {it.question}
+        <span class="accordion__chevron"><Icon name="chevron-down" size={18} /></span>
+      </summary>
+      <div class="accordion__answer">{it.answer}</div>
+    </details>
+  ))}
+</div>
+
+<style>
+  .accordion { border-top: 1px solid var(--border-subtle); }
+  .accordion__item { border-bottom: 1px solid var(--border-subtle); }
+  .accordion__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    cursor: pointer;
+    list-style: none;
+    padding: var(--space-5) 0;
+    font: var(--type-h4);
+    color: var(--text-strong);
+  }
+  .accordion__summary::-webkit-details-marker { display: none; }
+  .accordion__chevron {
+    color: var(--text-muted);
+    display: flex;
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+  .accordion__item[open] .accordion__chevron { transform: rotate(180deg); }
+  .accordion__answer {
+    padding: 0 0 var(--space-5);
+    max-width: var(--measure-prose);
+    font: var(--type-body);
+    color: var(--text-body);
+  }
+</style>
