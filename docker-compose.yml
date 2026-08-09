@@ -1,0 +1,11 @@
+# Deploy on the VPS: `docker compose up -d --build`
+# The container serves the static site on 127.0.0.1:8080 only; the host's existing Caddy
+# reverse-proxies datonum.com to it and handles TLS (see the Caddy snippet in the README/runbook).
+services:
+  web:
+    build: .
+    image: datonum-website
+    restart: unless-stopped
+    ports:
+      # Bind to localhost so it's reachable only via the host Caddy, not the public internet.
+      - "127.0.0.1:8080:80"
