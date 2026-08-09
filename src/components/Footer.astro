@@ -87,7 +87,12 @@ const linkedInUrl = 'https://www.linkedin.com/';
   .site-footer__legal-link { font: var(--type-small); color: var(--navy-300); border-bottom: none; }
   .site-footer__legal-link:hover { color: var(--white); }
 
-  @media (max-width: 760px) {
-    .site-footer__grid { grid-template-columns: 1fr; gap: 36px; }
+  /* Tablet: 2 columns so link labels aren't cramped. */
+  @media (max-width: 900px) {
+    .site-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px 48px; }
+  }
+  /* Mobile: single column. */
+  @media (max-width: 560px) {
+    .site-footer__grid { grid-template-columns: 1fr; gap: 32px; }
   }
 </style>
