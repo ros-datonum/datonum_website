@@ -100,6 +100,9 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
   const GUID = import.meta.env.PUBLIC_HUBSPOT_FORM_GUID;
   const REGION = import.meta.env.PUBLIC_HUBSPOT_REGION || 'na1';
 
+  // Umami custom event, fired only after HubSpot confirms the lead was created.
+  const CONTACT_SUBMIT_EVENT = 'contact_form_submit';
+
   function showError(msg: string) {
     if (!errorEl) return;
     errorEl.textContent = msg;
@@ -142,6 +145,8 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
         }),
       });
       if (!res.ok) throw new Error(`HubSpot responded ${res.status}`);
+      const analytics = (window as unknown as { umami?: { track: (event: string) => void } }).umami;
+      analytics?.track(CONTACT_SUBMIT_EVENT);
       form.hidden = true;
       if (thanks) thanks.hidden = false;
     } catch (err) {
