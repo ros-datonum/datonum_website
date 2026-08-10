@@ -1,31 +1,36 @@
 ---
-// Legal template → /privacy and /terms. Rebuilt from the prototype "Legal" screen.
-// The design ships these as briefs (not the final notices); reproduced verbatim to fill later.
+// Legal template → /privacy and /terms.
+// Privacy Notice: GDPR (Reg. EU 2016/679) + LOPDGDD (LO 3/2018) + LSSI-CE (Ley 34/2002).
+// Terms of Use: combined aviso legal (Art. 10 LSSI) + website conditions of use.
+// IDENTITY placeholders (nif, address) are required by law — fill before publishing.
 import PageLayout from '../layouts/PageLayout.astro';
-import Callout from '../components/Callout.astro';
-import ChecklistItem from '../components/ChecklistItem.astro';
 import Button from '../components/Button.astro';
 import { routes } from '../data/navigation.ts';
 
 export function getStaticPaths() {
   return [
-    { params: { legal: 'privacy' }, props: { variant: 'privacy', title: 'Privacy notice' } },
-    { params: { legal: 'terms' }, props: { variant: 'terms', title: 'Terms' } },
+    { params: { legal: 'privacy' }, props: { variant: 'privacy', title: 'Privacy Notice' } },
+    { params: { legal: 'terms' }, props: { variant: 'terms', title: 'Terms of Use' } },
   ];
 }
 
 const { variant, title } = Astro.props;
-const privacyCovers = [
-  'What is collected.',
-  'Lawful basis for processing.',
-  'HubSpot as processor.',
-  'Retention period.',
-  'Data subject rights.',
-  'Contact for requests.',
-];
+
+const lastUpdated = '10 August 2026';
+const contactEmail = 'hello@datonum.com';
+// Legally required identification of the data controller / service provider.
+const legalName = 'Rostyslav Bachyk';
+const commercialName = 'Datonum';
+const nif = 'Z0041311P';
+const address = 'Avenida Fabraquer 3, 17J, El Campello, 03560 Alicante, Spain';
+
+const description =
+  variant === 'privacy'
+    ? 'How Datonum collects, uses and protects personal data, and your rights under the GDPR and Spanish data protection law.'
+    : 'The terms that govern your use of the datonum.com website.';
 ---
 
-<PageLayout title={`${title} — Datonum`} description={`${title} for datonum.com.`}>
+<PageLayout title={`${title} — Datonum`} description={description}>
   <section class="legal-hero">
     <div class="container">
       <span class="ihero__eyebrow">Legal</span>
@@ -33,24 +38,278 @@ const privacyCovers = [
     </div>
   </section>
 
-  <section class="band band--card" style="padding:72px 0 96px">
+  <section class="band band--card" style="padding:64px 0 96px">
     <div class="legal-body">
-      <Callout tone="caution" title="Not yet drafted">This page is required before the inquiry form goes live. The content below is the brief, not the notice.</Callout>
+      <p class="legal-meta">Last updated: {lastUpdated}</p>
 
       {variant === 'privacy' && (
-        <div style="display:flex;flex-direction:column;gap:20px">
-          <p class="muted">Required for GDPR and for the inquiry form. The notice must cover:</p>
-          <ul class="checklist" style="gap:14px">
-            {privacyCovers.map((c) => <ChecklistItem tone="included">{c}</ChecklistItem>)}
+        <div class="legal-prose">
+          <p class="legal-lead">
+            This Privacy Notice explains how {commercialName} collects, uses and protects the personal
+            data of people who visit datonum.com or get in touch with us. We process personal data in
+            accordance with Regulation (EU) 2016/679 (GDPR), Spanish Organic Law 3/2018 on Data
+            Protection and Digital Rights (LOPDGDD), and Law 34/2002 on Information Society Services
+            and Electronic Commerce (LSSI-CE).
+          </p>
+
+          <h2>1. Who is responsible for your data</h2>
+          <p>The data controller is:</p>
+          <ul>
+            <li>{legalName}, operating under the commercial name “{commercialName}”</li>
+            <li>Tax identification number (NIE): {nif}</li>
+            <li>Address: {address}</li>
+            <li>Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></li>
           </ul>
+          <p>
+            We have not appointed a Data Protection Officer, as our processing does not meet the
+            thresholds in Article 37 GDPR. You can raise any privacy matter with us at the email above.
+          </p>
+
+          <h2>2. Scope</h2>
+          <p>
+            This Notice covers personal data collected through this website, our inquiry form and email
+            correspondence with us. It does not cover third-party websites we link to, which have their
+            own privacy policies.
+          </p>
+
+          <h2>3. What personal data we collect</h2>
+          <p><strong>Information you give us.</strong> When you complete the inquiry form or email us,
+            we collect your first name, last name, email address, company name and the content of your
+            message, together with anything else you choose to include.</p>
+          <p><strong>Information collected automatically.</strong> When you visit the site, our hosting
+            and security provider processes limited technical data — such as IP address, browser and
+            device type, and the date, time and pages of your request — in server logs, in order to
+            deliver and protect the site.</p>
+          <p><strong>Usage analytics.</strong> We use Umami, a privacy-focused, cookieless analytics
+            tool that we host on our own infrastructure, to understand how the site is used. It records
+            aggregated information such as the pages viewed, the referring website, and your approximate
+            location, browser and device type. It does not use cookies, does not store your IP address,
+            and does not create a persistent identifier or track you across other websites.</p>
+          <p>
+            We do not intentionally collect special categories of data (such as health, political or
+            religious information). Please do not include sensitive personal data in your message.
+          </p>
+
+          <h2>4. Why we use it, and our legal basis</h2>
+          <ul>
+            <li><strong>To respond to your inquiry</strong> and take steps at your request before any
+              possible engagement — Article 6(1)(b) GDPR, and, where you contact us on behalf of an
+              organisation, our legitimate interest in responding, Article 6(1)(f).</li>
+            <li><strong>To manage and follow up on business inquiries</strong> and keep records in our
+              CRM — Article 6(1)(f), our legitimate interest in developing and managing business
+              relationships.</li>
+            <li><strong>To operate and secure the website</strong> (server logs, abuse prevention) —
+              Article 6(1)(f), our legitimate interest in the security and proper functioning of the
+              site.</li>
+            <li><strong>To measure and improve how the site is used</strong> through privacy-friendly,
+              cookieless analytics — Article 6(1)(f), our legitimate interest in understanding and
+              improving our website.</li>
+            <li><strong>To meet legal, accounting and tax obligations</strong> — Article 6(1)(c).</li>
+            <li><strong>To send marketing communications</strong>, only where you have expressly asked
+              us to — Article 6(1)(a) consent, which you may withdraw at any time.</li>
+          </ul>
+          <p>
+            Where we rely on legitimate interests, we have assessed that they are not overridden by your
+            rights and freedoms. You may object to this processing at any time (see “Your rights”).
+          </p>
+
+          <h2>5. Who we share it with</h2>
+          <p>We do not sell your personal data. We share it only with:</p>
+          <ul>
+            <li><strong>HubSpot</strong> — our customer relationship management platform; inquiry-form
+              submissions are stored there, on servers in the European Union (acting as our processor).</li>
+            <li><strong>Cloudflare</strong> — website hosting, content delivery and security (processor).</li>
+            <li><strong>Professional advisers</strong> (such as accountants or legal advisers), where
+              necessary and under a duty of confidentiality.</li>
+            <li><strong>Public authorities</strong>, where we are legally required to disclose.</li>
+          </ul>
+          <p>
+            Where a provider processes personal data on our behalf, it does so under a data processing
+            agreement as required by Article 28 GDPR.
+          </p>
+
+          <h2>6. International data transfers</h2>
+          <p>
+            The personal data you submit through our inquiry form is stored by HubSpot on servers
+            located in the European Union. HubSpot and Cloudflare are, however, US-based companies, and
+            in limited circumstances — such as technical support, security or content delivery — some
+            data may be accessed from outside the European Economic Area. Where that happens, the
+            transfer is protected by appropriate safeguards: the EU–US Data Privacy Framework (European
+            Commission adequacy decision of 10 July 2023) and/or the European Commission’s Standard
+            Contractual Clauses. You may request a copy of the relevant safeguards using the contact
+            details above.
+          </p>
+
+          <h2>7. How long we keep it</h2>
+          <ul>
+            <li><strong>Inquiries that do not lead to a business relationship:</strong> up to 12 months
+              from our last contact, after which they are deleted or anonymised.</li>
+            <li><strong>Data relating to a client relationship:</strong> for the duration of the
+              relationship and thereafter for the periods required by law — for example, tax and
+              accounting records are kept for up to 6 years under Spanish commercial and tax law.</li>
+            <li><strong>Server logs:</strong> retained only for a limited period for security and
+              diagnostic purposes.</li>
+          </ul>
+          <p>We keep personal data no longer than necessary for the purposes described above.</p>
+
+          <h2>8. Your rights</h2>
+          <p>
+            You have the right to request access to your personal data, and its rectification or
+            erasure; to restrict or object to its processing; to data portability; and not to be
+            subject to decisions based solely on automated processing that produce legal or similarly
+            significant effects (we do not carry out such decision-making). Where processing is based on
+            your consent, you may withdraw it at any time, without affecting processing carried out
+            beforehand.
+          </p>
+          <p>
+            To exercise your rights, email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. We may
+            need to confirm your identity. We will respond within one month (extendable by two further
+            months for complex requests), and doing so is free of charge.
+          </p>
+          <p>
+            If you consider that we have not handled your data correctly, you may lodge a complaint with
+            the Spanish Data Protection Agency (Agencia Española de Protección de Datos, AEPD), C/ Jorge
+            Juan 6, 28001 Madrid — <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.
+            We would appreciate the chance to resolve your concern first.
+          </p>
+
+          <h2>9. Security</h2>
+          <p>
+            We apply appropriate technical and organisational measures — including encryption in
+            transit, access controls and the use of reputable providers — to protect personal data
+            against unauthorised access, loss or alteration. No transmission over the internet can be
+            guaranteed to be completely secure.
+          </p>
+
+          <h2>10. Cookies</h2>
+          <p>
+            This website does not use cookies for profiling or advertising, and our usage analytics are
+            cookieless (see “What personal data we collect”). Our hosting and security provider may set
+            strictly necessary technical cookies solely to deliver and protect the site; these are
+            exempt from consent under Article 22.2 LSSI-CE. If we introduce any
+            non-essential cookies in future, we will ask for your consent through a cookie banner
+            beforehand.
+          </p>
+
+          <h2>11. Children</h2>
+          <p>
+            This website and our services are directed at businesses and professionals, not at children.
+            We do not knowingly collect personal data from anyone under 14, the age of digital consent
+            in Spain.
+          </p>
+
+          <h2>12. Changes to this Notice</h2>
+          <p>
+            We may update this Notice from time to time. The version in force, with its date, is always
+            shown on this page, and we will highlight material changes where appropriate.
+          </p>
         </div>
       )}
 
       {variant === 'terms' && (
-        <p class="muted">Light, and site terms only. Engagement terms live in the contract, not here.</p>
+        <div class="legal-prose">
+          <p class="legal-lead">
+            These Terms govern your access to and use of datonum.com. By using the site, you accept
+            these Terms. If you do not agree with them, please do not use the site.
+          </p>
+
+          <h2>1. Who runs this website</h2>
+          <p>In accordance with Article 10 of Law 34/2002 (LSSI-CE), the provider of this website is:</p>
+          <ul>
+            <li>{legalName}, commercial name “{commercialName}”</li>
+            <li>Tax identification number (NIE): {nif}</li>
+            <li>Address: {address}</li>
+            <li>Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></li>
+          </ul>
+
+          <h2>2. Purpose of the site</h2>
+          <p>
+            This website provides general information about {commercialName}’s AI workflow
+            implementation and automation services. It is informational only: no products or services
+            are sold or contracted through this website, and no prices are offered here.
+          </p>
+
+          <h2>3. Inquiries do not create a contract</h2>
+          <p>
+            Completing the inquiry form or contacting us does not create any contractual or client
+            relationship and does not oblige either party to proceed. Any engagement is governed
+            exclusively by a separate written agreement signed by both parties.
+          </p>
+
+          <h2>4. Acceptable use</h2>
+          <p>You agree to use the site lawfully, and not to:</p>
+          <ul>
+            <li>use it for any unlawful or fraudulent purpose;</li>
+            <li>attempt to gain unauthorised access to the site or its underlying systems;</li>
+            <li>introduce malware or otherwise interfere with the site’s operation;</li>
+            <li>copy, scrape or exploit the content except as permitted below; or</li>
+            <li>submit false information, or another person’s data without their authorisation.</li>
+          </ul>
+
+          <h2>5. Intellectual property</h2>
+          <p>
+            All content on this site — including text, graphics, layout, design, the “Datonum” name,
+            logo and marks, and the rising-matrix and measurement motifs — is owned by {legalName} or
+            used under licence, and is protected by intellectual property law. You may view and print
+            pages for your own reference. Any other use — reproduction, distribution, public
+            communication or modification — requires our prior written permission.
+          </p>
+
+          <h2>6. Links to other websites</h2>
+          <p>
+            The site may contain links to third-party websites (for example, LinkedIn). We provide these
+            for convenience only; we do not control or endorse them and accept no responsibility for
+            their content or practices.
+          </p>
+
+          <h2>7. Disclaimers</h2>
+          <p>
+            The content of this site is provided for general information only and does not constitute
+            professional, legal, financial or other advice; you should not rely on it as such. We take
+            reasonable care to keep the site accurate and available, but provide it “as is” and “as
+            available”, without warranties of any kind, and we do not guarantee that it will be
+            uninterrupted, error-free or free of harmful components.
+          </p>
+
+          <h2>8. Limitation of liability</h2>
+          <p>
+            To the fullest extent permitted by law, we are not liable for any indirect or consequential
+            loss, or for loss arising from your use of, or inability to use, the site or from reliance
+            on its content. Nothing in these Terms excludes or limits our liability where it would be
+            unlawful to do so — including liability for wilful misconduct or gross negligence, or any
+            rights you may have as a consumer under mandatory law.
+          </p>
+
+          <h2>9. Availability</h2>
+          <p>
+            We may modify, suspend or withdraw all or part of the site at any time and without notice.
+          </p>
+
+          <h2>10. Privacy</h2>
+          <p>
+            Your use of the site is also governed by our <a href={routes.privacy}>Privacy Notice</a>,
+            which explains how we process personal data.
+          </p>
+
+          <h2>11. Governing law and jurisdiction</h2>
+          <p>
+            These Terms are governed by Spanish law. Any dispute will be subject to the courts of the
+            provider’s domicile, except where mandatory law (for example, consumer protection law)
+            provides otherwise, in which case the courts designated by that law will have jurisdiction.
+          </p>
+
+          <h2>12. Changes to these Terms</h2>
+          <p>
+            We may update these Terms from time to time. The version in force, with its date, is always
+            shown on this page. Continued use of the site after a change constitutes acceptance of the
+            updated Terms.
+          </p>
+
+          <p>Questions about these Terms? Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
+        </div>
       )}
 
-      <div style="display:flex"><Button variant="secondary" href={routes.home}>Back to the home page</Button></div>
+      <div class="legal-back"><Button variant="secondary" href={routes.home}>Back to the home page</Button></div>
     </div>
   </section>
 </PageLayout>
@@ -65,5 +324,25 @@ const privacyCovers = [
     background-size: calc(var(--wm-k) * 142px);
   }
   .legal-title { font: var(--type-h1); letter-spacing: var(--tracking-display); color: var(--white); margin: 18px 0 0; }
-  .legal-body { max-width: 760px; margin: 0 auto; padding: 0 var(--gutter); display: flex; flex-direction: column; gap: 28px; }
+
+  .legal-body { max-width: 760px; margin: 0 auto; padding: 0 var(--gutter); }
+  .legal-meta { font: var(--type-small); color: var(--text-muted); margin: 0 0 24px; }
+
+  .legal-prose { display: flex; flex-direction: column; }
+  .legal-lead { font: var(--type-body-lg); color: var(--grey-600); margin: 0 0 8px; text-wrap: pretty; }
+  .legal-prose h2 {
+    font: var(--type-h3);
+    letter-spacing: var(--tracking-heading);
+    color: var(--text-strong);
+    margin: 36px 0 8px;
+    text-wrap: pretty;
+  }
+  .legal-prose p { font: var(--type-body); color: var(--grey-600); margin: 0 0 10px; text-wrap: pretty; }
+  .legal-prose ul { margin: 4px 0 10px; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .legal-prose li { font: var(--type-body); color: var(--grey-600); text-wrap: pretty; }
+  .legal-prose strong { color: var(--text-strong); font-weight: 600; }
+  .legal-prose a { color: var(--text-link); border-bottom: 1px solid var(--border-accent); }
+  .legal-prose a:hover { color: var(--text-link-hover); }
+
+  .legal-back { display: flex; margin-top: 40px; }
 </style>
