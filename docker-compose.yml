@@ -2,15 +2,17 @@
 # Standalone container — no shared network with Caddy. The host's Caddy reaches it via
 # host.docker.internal:8080 and handles TLS.
 services:
-  web:
+  datonum-website:
     build: .
     image: datonum-website
     container_name: datonum-website
     restart: unless-stopped
-    ports:
-      # Bind to the Docker bridge gateway, NOT 127.0.0.1: reachable from other containers
-      # via host.docker.internal, but not exposed on the public internet.
-      # 172.17.0.1 is docker0's gateway (what host.docker.internal resolves to by default).
-      # Confirm yours if needed:
-      #   docker network inspect bridge -f '{{(index .IPAM.Config 0).Gateway}}'
-      - "172.17.0.1:8080:80"
+    networks:
+      - ai_stack_public_proxy
+    expose:
+      - "80"
+
+networks:
+  ai_stack_public_proxy:
+    external: true
+    name: ai_stack_public_proxy
