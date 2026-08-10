@@ -13,6 +13,11 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Privacy-first analytics (self-hosted Umami). Only rendered when configured,
+// so local dev and previews don't emit tracking.
+const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC;
+const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
 ---
 
 <!doctype html>
@@ -25,6 +30,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    {umamiSrc && umamiWebsiteId && (
+      <script is:inline defer src={umamiSrc} data-website-id={umamiWebsiteId}></script>
+    )}
     <slot name="head" />
   </head>
   <body>
