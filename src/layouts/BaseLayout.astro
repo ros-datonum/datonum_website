@@ -17,6 +17,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 // Privacy-first analytics (self-hosted Umami). Only rendered when configured,
 // so local dev and previews don't emit tracking.
 const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC;
+const umamiRecorderSrc = import.meta.env.PUBLIC_UMAMI_RECORDER_SRC;
 const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
 ---
 
@@ -32,6 +33,9 @@ const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
     {description && <meta name="description" content={description} />}
     {umamiSrc && umamiWebsiteId && (
       <script is:inline defer src={umamiSrc} data-website-id={umamiWebsiteId}></script>
+    )}
+    {umamiRecorderSrc && umamiWebsiteId && (
+      <script is:inline defer src={umamiRecorderSrc} data-website-id={umamiWebsiteId}></script>
     )}
     <slot name="head" />
   </head>
