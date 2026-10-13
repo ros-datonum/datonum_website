@@ -3,9 +3,16 @@
 import Logo from './Logo.astro';
 import { routes, serviceLinks, footerCompanyLinks } from '../data/navigation.ts';
 import { siteIdentity, socialProfiles } from '../data/site.ts';
+import { getInsights } from '../data/insights.ts';
 
 const contactEmail = siteIdentity.contactEmail;
 const linkedInUrl = socialProfiles.linkedIn;
+
+// Insights is linked only once there is something to read.
+const hasInsights = (await getInsights()).length > 0;
+const companyLinks = hasInsights
+  ? [...footerCompanyLinks, { label: 'Insights', href: routes.insights }]
+  : footerCompanyLinks;
 ---
 
 <footer class="site-footer">
@@ -24,7 +31,7 @@ const linkedInUrl = socialProfiles.linkedIn;
 
       <div class="site-footer__col">
         <span class="site-footer__heading">Company</span>
-        {footerCompanyLinks.map((l) => <a href={l.href} class="site-footer__link">{l.label}</a>)}
+        {companyLinks.map((l) => <a href={l.href} class="site-footer__link">{l.label}</a>)}
       </div>
 
       <div class="site-footer__col">

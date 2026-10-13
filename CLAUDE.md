@@ -56,6 +56,27 @@ identity lives in `src/data/site.ts`, schema builders in `src/data/structuredDat
 `/robots.txt` and `/llms.txt` are endpoints in `src/pages/`; the sitemap comes from
 `@astrojs/sitemap`.
 
+## Insights articles
+Articles are Markdown files in `src/content/insights/`; the filename is the slug
+(`ai-automation-roi.md` -> `/insights/ai-automation-roi`). Briefs and drafts live in the
+Notion database "Insights — Articles" (under SEO Strategy); a finished draft is copied
+into a file here. A file in that folder is published on the next deploy — there is no
+draft flag. Frontmatter (schema in `src/content.config.ts`):
+
+```yaml
+title: "..."
+description: "..."        # max 160 chars; meta description and hero lead
+publishedDate: 2026-10-20
+updatedDate: 2026-11-02   # optional
+relatedService: audit      # audit | deep | impl | retainer
+relatedCaseStudy: opportunity-scoring   # optional, a case study slug
+```
+
+Start body headings at `##` (the title is the H1). No prices in articles either.
+While the folder has no articles, `/insights` is noindexed, left out of the sitemap and
+not linked from the footer; all three switch on automatically with the first file.
+The insights pages have no design export: they are composed from existing tokens.
+
 Astro content layer API: use `render(entry)` and `entry.id`,
 NOT the older `entry.render()` / `entry.slug`.
 

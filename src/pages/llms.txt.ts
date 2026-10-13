@@ -5,6 +5,7 @@ import type { APIRoute } from 'astro';
 import { routes, serviceLinks } from '../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../data/caseStudies.ts';
 import { siteIdentity } from '../data/site.ts';
+import { getInsights, insightPath } from '../data/insights.ts';
 
 interface DescribedLink {
   label: string;
@@ -56,7 +57,7 @@ const optionalLinks: readonly DescribedLink[] = [
   { label: 'Terms of Use', href: routes.terms, description: 'The terms that govern use of the website.' },
 ];
 
-export const GET: APIRoute = ({ site }) => {
+export const GET: APIRoute = async ({ site }) => {
   const section = (heading: string, links: readonly DescribedLink[]): string =>
     [
       `## ${heading}`,
@@ -75,6 +76,12 @@ export const GET: APIRoute = ({ site }) => {
     description: study.indexDesc,
   }));
 
+  const insights: DescribedLink[] = (await getInsights()).map((insight) => ({
+    label: insight.data.title,
+    href: insightPath(insight.id),
+    description: insight.data.description,
+  }));
+
   const body = [
     `# ${siteIdentity.name}`,
     '',
@@ -86,6 +93,7 @@ export const GET: APIRoute = ({ site }) => {
     '',
     section('Services', services),
     section('Case studies', cases),
+    ...(insights.length > 0 ? [section('Insights', insights)] : []),
     section('How we work', companyLinks),
     section('Optional', optionalLinks),
   ].join('\n');

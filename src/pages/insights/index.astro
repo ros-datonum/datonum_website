@@ -1,0 +1,77 @@
+---
+// Insights index. Lists every article in the `insights` collection, newest first.
+// No design export covers this screen: it is composed from the case studies index
+// (ink hero, ruled list) using existing tokens only.
+import PageLayout from '../../layouts/PageLayout.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import { getInsights, insightPath, formatArticleDate } from '../../data/insights.ts';
+
+const insights = await getInsights();
+const hasInsights = insights.length > 0;
+---
+
+<PageLayout
+  title="Insights on AI automation for business — Datonum"
+  description="Practical writing on AI workflow automation: what to automate, how to judge readiness and return, and how to keep AI reliable once it is running."
+>
+  {/* An index with nothing to list is not worth a search result. */}
+  {!hasInsights && <meta slot="head" name="robots" content="noindex" />}
+  <section class="ihero insights-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">Insights</span>
+      <h1 class="ihero__title">Practical writing on putting AI to work in a business</h1>
+      <p class="ihero__lead">What to automate, how to judge whether it will pay back, and how to keep it reliable once it is running. Written from delivery, not from a product brochure.</p>
+    </div>
+  </section>
+
+  <section class="band band--grey band--bordered">
+    <div class="container">
+      {hasInsights ? (
+        <div class="insight-list">
+          {insights.map((insight) => (
+            <a href={insightPath(insight.id)} class="insight-row">
+              <time class="num" datetime={insight.data.publishedDate.toISOString()}>{formatArticleDate(insight.data.publishedDate)}</time>
+              <h2 class="case-card__title">{insight.data.title}</h2>
+              <p class="muted">{insight.data.description}</p>
+              <span class="insight-row__more">Read →</span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="lead-muted">The first articles are being written. In the meantime, the case studies show how we work.</p>
+      )}
+    </div>
+  </section>
+
+  <section class="band--grey band--tail">
+    <div class="container">
+      <CTABanner
+        title="Tell us what your team keeps redoing."
+        lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .insights-hero { padding: var(--space-24) 0 var(--space-20); }
+
+  .insight-list { display: flex; flex-direction: column; border-top: 1px solid var(--border-subtle); }
+  .insight-row {
+    border-bottom: 1px solid var(--border-subtle);
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 4fr) minmax(0, 5fr) minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: baseline;
+    padding: var(--space-6) var(--space-3);
+    color: inherit;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+  .insight-row:hover { background-color: var(--surface-card); }
+  .insight-row__more { font: var(--type-label); color: var(--teal-700); text-align: right; }
+
+  @media (max-width: 1024px) {
+    .insight-row { grid-template-columns: 1fr; gap: var(--space-2); }
+    .insight-row__more { text-align: left; }
+  }
+</style>

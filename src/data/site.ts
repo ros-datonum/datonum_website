@@ -12,6 +12,7 @@ export const siteIdentity = {
   countryCode: 'ES',
   language: 'en',
   locale: 'en_GB',
+  dateLocale: 'en-GB',
 } as const;
 
 export const founder = {

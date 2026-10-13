@@ -74,8 +74,24 @@ export function serviceSchema(site: SiteOrigin, service: PageSummary): Structure
   };
 }
 
-export function articleSchema(site: SiteOrigin, article: PageSummary): StructuredDataNode {
+// Insights articles carry a byline and dates; case studies are published by the organization.
+interface Publication {
+  authorName: string;
+  published: Date;
+  updated?: Date;
+}
+
+export function articleSchema(
+  site: SiteOrigin,
+  article: PageSummary,
+  publication?: Publication,
+): StructuredDataNode {
   const url = absoluteUrl(site, article.path);
+  const byline = publication && {
+    author: { '@type': 'Person', name: publication.authorName },
+    datePublished: publication.published.toISOString(),
+    dateModified: (publication.updated ?? publication.published).toISOString(),
+  };
   return {
     '@context': SCHEMA_CONTEXT,
     '@type': 'Article',
@@ -87,6 +103,7 @@ export function articleSchema(site: SiteOrigin, article: PageSummary): Structure
     inLanguage: siteIdentity.language,
     author: organizationReference(site),
     publisher: organizationReference(site),
+    ...byline,
   };
 }
 

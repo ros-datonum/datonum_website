@@ -16,6 +16,7 @@ export const routes = {
   automate: '/what-we-automate',
   aivs: '/ai-vs-automation',
   cases: '/case-studies',
+  insights: '/insights',
   approach: '/approach',
   about: '/about',
   contact: '/contact',
