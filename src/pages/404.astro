@@ -1,0 +1,31 @@
+---
+// Not-found page. nginx serves the built /404.html for every unknown path (see nginx.conf).
+import PageLayout from '../layouts/PageLayout.astro';
+import Button from '../components/Button.astro';
+import { routes } from '../data/navigation.ts';
+---
+
+<PageLayout
+  title="Page not found — Datonum"
+  description="This page does not exist. Head back to the Datonum home page or browse our AI workflow automation services."
+>
+  <meta slot="head" name="robots" content="noindex" />
+  <section class="ihero wm-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">Error <span class="ihero__eyebrow-data">404</span></span>
+      <h1 class="ihero__title">This page does not exist</h1>
+      <p class="ihero__lead">
+        The address may be mistyped, or the page may have moved. The home page and the services
+        overview are the quickest ways back.
+      </p>
+      <div class="not-found__actions">
+        <Button variant="accent" href={routes.home}>Back to home</Button>
+        <Button variant="inverse-outline" href={routes.services}>View services</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .not-found__actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-8); }
+</style>

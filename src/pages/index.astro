@@ -7,6 +7,7 @@ import CTABanner from '../components/CTABanner.astro';
 import Button from '../components/Button.astro';
 import { routes } from '../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../data/caseStudies.ts';
+import { organizationSchema, webSiteSchema } from '../data/structuredData.ts';
 
 const cases = [
   {
@@ -64,11 +65,14 @@ const exclusions = [
   'We will not replace the systems you already run. We work with them.',
   'We will not leave you dependent on us. Everything is documented and handed over.',
 ];
+
+const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site)];
 ---
 
 <PageLayout
-  title="Datonum — AI workflow automation"
-  description="We build AI workflow automation into the systems you already run — turning the inquiries, documents, and requests that arrive every day into drafts, records, and decisions your team approves rather than produces."
+  title="AI audit and AI workflow implementation for business — Datonum"
+  description="Datonum helps businesses turn AI from experimentation into practical operating capability. We start from the business problem, then audit and implement."
+  structuredData={structuredData}
 >
   <!-- Hero -->
   <section class="hero">

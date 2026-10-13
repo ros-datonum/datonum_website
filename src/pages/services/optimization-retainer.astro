@@ -9,6 +9,7 @@ import CTABanner from '../../components/CTABanner.astro';
 import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { tierCols, retRows, retainerFaqs } from '../../data/serviceContent.ts';
+import { serviceSchema, breadcrumbSchema, faqSchema } from '../../data/structuredData.ts';
 
 const reasons = [
   { t: 'New client types arrive with documents laid out differently.', d: 'The workflow was tuned on what came before.' },
@@ -25,11 +26,24 @@ const outside = [
 ];
 const refreshIcon = '<path d="M20.5 11A8.5 8.5 0 0 0 6 5.5L3.5 8"></path><path d="M3.5 13A8.5 8.5 0 0 0 18 18.5l2.5-2.5"></path><path d="M3.5 3.5V8H8"></path><path d="M20.5 20.5V16H16"></path>';
 const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+
+const pageDescription =
+  'AI workflow maintenance and optimization: maintenance, quality tuning, and improvement work, with someone accountable when the output looks off.';
+const service = { name: 'Optimization Retainer', description: pageDescription, path: routes.retainer };
+const structuredData = [
+  serviceSchema(Astro.site, service),
+  breadcrumbSchema(Astro.site, [
+    { label: 'Services', href: routes.services },
+    { label: service.name, href: service.path },
+  ]),
+  faqSchema(retainerFaqs),
+];
 ---
 
 <PageLayout
-  title="Optimization Retainer — Datonum"
-  description="AI workflow maintenance and optimization: maintenance, quality tuning, and improvement work, with someone accountable when the output looks off."
+  title="AI workflow maintenance and optimization retainer — Datonum"
+  description={pageDescription}
+  structuredData={structuredData}
 >
   <section class="ihero wm-hero">
     <div class="container">

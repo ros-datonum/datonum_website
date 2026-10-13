@@ -46,6 +46,14 @@ export const footerCompanyLinks: readonly NavLink[] = [
   { label: 'About', href: routes.about },
 ];
 
+// The static build emits /about.html and /index.html, so the pathname Astro reports at build
+// time carries a file suffix the public URL never has. Returns the public route path.
+const BUILT_PAGE_SUFFIX = /(?:\/index)?\.html$/;
+
+export function toRoutePath(pathname: string): string {
+  return pathname.replace(BUILT_PAGE_SUFFIX, '') || routes.home;
+}
+
 // Marks a link active when the current path is the link or nested beneath it.
 export function isActive(currentPath: string, href: string): boolean {
   if (href === routes.home) return currentPath === routes.home;

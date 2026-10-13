@@ -2,9 +2,10 @@
 // Site footer. Dark ink surface with a brass top rule. Ported from the prototype footer.
 import Logo from './Logo.astro';
 import { routes, serviceLinks, footerCompanyLinks } from '../data/navigation.ts';
+import { siteIdentity, socialProfiles } from '../data/site.ts';
 
-const contactEmail = 'hello@datonum.com';
-const linkedInUrl = 'https://www.linkedin.com/';
+const contactEmail = siteIdentity.contactEmail;
+const linkedInUrl = socialProfiles.linkedIn;
 ---
 
 <footer class="site-footer">
@@ -13,7 +14,7 @@ const linkedInUrl = 'https://www.linkedin.com/';
     <div class="site-footer__grid">
       <div class="site-footer__brand">
         <Logo variant="lockup" tone="white" height={20} />
-        <p class="site-footer__tagline">AI workflow implementation.</p>
+        <p class="site-footer__tagline">Turning AI from experimentation into practical operating capability.</p>
       </div>
 
       <div class="site-footer__col">

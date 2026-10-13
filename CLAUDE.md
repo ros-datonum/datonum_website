@@ -1,7 +1,7 @@
 # Datonum website
 
-Astro static site for datonum.com. Marketing site for an AI workflow
-consultancy serving service businesses
+Astro static site for datonum.com. Marketing site for an AI
+solutions company (AI audit and AI workflow implementation)
 
 ## Design system — non-negotiable
 
@@ -43,7 +43,19 @@ top-right of a section; sparse inline line-icons (checkmarks, small UI marks).
 No prices anywhere on the site. Pricing lives only in the PDF one-pagers.
 
 ## Stack
-Astro 7, static output, no adapter. Deployed to Cloudflare Pages.
+Astro 7, static output, no adapter. Built into an nginx container (`Dockerfile`,
+`nginx.conf`) on a VPS, behind host Caddy (TLS) and Cloudflare. Deploy:
+`docker compose up -d --build`.
+
+URLs have no trailing slash. Pages build to `/about.html` (`build.format: 'file'`) and
+nginx serves them at `/about`, 301-ing every other spelling. Use `toRoutePath()` from
+`src/data/navigation.ts` rather than raw `Astro.url.pathname`.
+
+SEO plumbing: head metadata and JSON-LD render in `src/layouts/BaseLayout.astro`; site
+identity lives in `src/data/site.ts`, schema builders in `src/data/structuredData.ts`.
+`/robots.txt` and `/llms.txt` are endpoints in `src/pages/`; the sitemap comes from
+`@astrojs/sitemap`.
+
 Astro content layer API: use `render(entry)` and `entry.id`,
 NOT the older `entry.render()` / `entry.slug`.
 

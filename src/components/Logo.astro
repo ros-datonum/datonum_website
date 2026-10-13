@@ -20,6 +20,17 @@ function resolveFile(): string {
   return `datonum-${variant}${inverse ? '-white' : ''}`;
 }
 const src = `/brand/logo/${resolveFile()}.svg`;
+
+// Artwork dimensions (each variant's SVG viewBox). The width/height attributes let the
+// browser reserve the logo's box before the file loads, so nothing shifts when it arrives.
+const artworkSize = {
+  lockup: { width: 238.94, height: 44 },
+  mark: { width: 46, height: 44 },
+  wordmark: { width: 181.94, height: 31.4286 },
+  stacked: { width: 181.94, height: 91.1429 },
+  tile: { width: 64, height: 64 },
+} as const;
+const width = Math.round((height * artworkSize[variant].width) / artworkSize[variant].height);
 ---
 
-<img src={src} alt="Datonum" class={className} style={`display:block;height:${height}px;width:auto;max-width:100%;align-self:flex-start`} />
+<img src={src} alt="Datonum" width={width} height={height} class={className} style={`display:block;height:${height}px;width:auto;max-width:100%;align-self:flex-start`} />

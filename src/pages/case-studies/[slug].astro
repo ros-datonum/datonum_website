@@ -4,6 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import CTABanner from '../../components/CTABanner.astro';
 import { routes } from '../../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../../data/caseStudies.ts';
+import { articleSchema, breadcrumbSchema } from '../../data/structuredData.ts';
 
 export function getStaticPaths() {
   return caseStudies.map((cs, index) => ({
@@ -21,9 +22,18 @@ const bodyBg = `background-image:var(${cs.bodyWm.img});background-repeat:no-repe
 
 const shieldIcon = '<path d="M12 3 5 6v5.5c0 4.2 2.9 7.6 7 9.5 4.1-1.9 7-5.3 7-9.5V6l-7-3Z"></path><path d="m9 12 2 2 4-4"></path>';
 const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7l-4-4Z"></path><path d="M14 3v4h4"></path><path d="M9 12.5h6"></path><path d="M9 16h6"></path>';
+
+const casePath = caseStudyPath(cs.slug);
+const structuredData = [
+  articleSchema(Astro.site, { name: cs.title, description: cs.lead, path: casePath }),
+  breadcrumbSchema(Astro.site, [
+    { label: 'Case studies', href: routes.cases },
+    { label: cs.navName, href: casePath },
+  ]),
+];
 ---
 
-<PageLayout title={`${cs.title} — Datonum`} description={cs.lead}>
+<PageLayout title={`${cs.title} — Datonum`} description={cs.lead} ogType="article" structuredData={structuredData}>
   <section class="ihero cs-hero" style={heroBg}>
     <div class="container">
       <a href={routes.cases} class="cs-back">← Case studies</a>
@@ -37,7 +47,7 @@ const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21
     <div class="container split split--7-5" style="gap:72px">
       <div class="stack-lg" style="gap:44px">
         <div class="stack-block" style="gap:14px">
-          <span class="eyebrow eyebrow--teal">The situation it addresses</span>
+          <h2 class="eyebrow eyebrow--teal">The situation it addresses</h2>
           {cs.situation.map((p, i) => (
             <p class={i === 0 ? 'lead-muted' : 'muted'} style="max-width:66ch">{p}</p>
           ))}
@@ -45,13 +55,13 @@ const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21
 
         {cs.whereAI && (
           <div class="stack-block" style="gap:14px">
-            <span class="eyebrow eyebrow--teal">Where AI is required</span>
+            <h2 class="eyebrow eyebrow--teal">Where AI is required</h2>
             <p class="muted" style="max-width:66ch">{cs.whereAI}</p>
           </div>
         )}
 
         <div class="stack-block" style="gap:18px">
-          <span class="eyebrow eyebrow--teal">How it runs</span>
+          <h2 class="eyebrow eyebrow--teal">How it runs</h2>
           <ol class="flow flow--cs">
             {cs.howItRuns.map((f) => (
               <li class:list={['flow__row', f.review && 'flow__row--review']}>
@@ -65,7 +75,7 @@ const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21
         </div>
 
         <div class="stack-block" style="gap:14px">
-          <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={shieldIcon} />What makes it trustworthy</span>
+          <h2 class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={shieldIcon} />What makes it trustworthy</h2>
           <p class="muted" style="max-width:66ch">{cs.trustworthy}</p>
         </div>
 

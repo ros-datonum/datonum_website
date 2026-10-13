@@ -3,9 +3,9 @@
 // menu. Ported from the prototype header; active state resolved from the URL.
 import Logo from './Logo.astro';
 import Button from './Button.astro';
-import { routes, serviceLinks, isActive } from '../data/navigation.ts';
+import { routes, serviceLinks, isActive, toRoutePath } from '../data/navigation.ts';
 
-const path = Astro.url.pathname;
+const path = toRoutePath(Astro.url.pathname);
 const servicesActive = isActive(path, routes.services) || serviceLinks.some((l) => isActive(path, l.href));
 const casesActive = isActive(path, routes.cases);
 const automateActive = isActive(path, routes.automate);

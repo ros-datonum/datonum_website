@@ -8,6 +8,7 @@ import CTABanner from '../../components/CTABanner.astro';
 import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { rankCols, rankRows, stageCols, auditStages, auditFaqs } from '../../data/serviceContent.ts';
+import { serviceSchema, breadcrumbSchema, faqSchema } from '../../data/structuredData.ts';
 
 const arrives = [
   'Tool and system review.',
@@ -42,11 +43,24 @@ const runSteps = [
 const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7l-4-4Z"></path><path d="M14 3v4h4"></path><path d="M9 12.5h6"></path><path d="M9 16h6"></path>';
 const clockIcon = '<circle cx="12" cy="12" r="8.5"></circle><path d="M12 7v5.2l3.2 1.9"></path>';
 const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+
+const pageDescription =
+  'A structured assessment of your processes and systems. In two to three weeks you get a ranked, costed view of where AI creates value and what to do first.';
+const service = { name: 'AI Readiness Audit', description: pageDescription, path: routes.audit };
+const structuredData = [
+  serviceSchema(Astro.site, service),
+  breadcrumbSchema(Astro.site, [
+    { label: 'Services', href: routes.services },
+    { label: service.name, href: service.path },
+  ]),
+  faqSchema(auditFaqs),
+];
 ---
 
 <PageLayout
-  title="AI Readiness Audit — Datonum"
-  description="A ranked, costed view of where AI fits. Two to three weeks: we map how work moves through your business, then hand you a written plan of what to automate, in what order."
+  title="AI Readiness Audit: where AI fits in your business — Datonum"
+  description={pageDescription}
+  structuredData={structuredData}
 >
   <section class="ai-hero">
     <div class="container">

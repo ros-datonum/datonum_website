@@ -8,6 +8,7 @@ import CTABanner from '../../components/CTABanner.astro';
 import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { stageCols, deepStages, deepFaqs } from '../../data/serviceContent.ts';
+import { serviceSchema, breadcrumbSchema, faqSchema } from '../../data/structuredData.ts';
 
 const runs = [
   { n: '01', t: 'We start with the data, then interview.', d: 'System exports are analyzed before interviews begin, so conversations start from what the numbers already show. It changes the quality of the interviews considerably — people respond differently to “this runs four hundred times a month, walk me through it” than to “tell me about your process”.' },
@@ -50,11 +51,24 @@ const glance = [
 const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5V7l-4-4Z"></path><path d="M14 3v4h4"></path><path d="M9 12.5h6"></path><path d="M9 16h6"></path>';
 const clockIcon = '<circle cx="12" cy="12" r="8.5"></circle><path d="M12 7v5.2l3.2 1.9"></path>';
 const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+
+const pageDescription =
+  'A structured AI assessment across the whole operation: six to eight processes, measured volumes and a build-ready specification for the best opportunity.';
+const service = { name: 'Deep Audit', description: pageDescription, path: routes.deep };
+const structuredData = [
+  serviceSchema(Astro.site, service),
+  breadcrumbSchema(Astro.site, [
+    { label: 'Services', href: routes.services },
+    { label: service.name, href: service.path },
+  ]),
+  faqSchema(deepFaqs),
+];
 ---
 
 <PageLayout
-  title="Deep Audit — Datonum"
-  description="An AI automation assessment across the whole operation. Four to five weeks: six to eight processes across teams, volumes measured rather than estimated, and a build-ready specification for the highest-value opportunity."
+  title="Deep Audit: AI assessment across the operation — Datonum"
+  description={pageDescription}
+  structuredData={structuredData}
 >
   <section class="ihero wm-hero">
     <div class="container">

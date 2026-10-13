@@ -3,15 +3,18 @@
 import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import type { StructuredDataNode } from '../data/structuredData.ts';
 
 interface Props {
   title: string;
   description?: string;
+  ogType?: 'website' | 'article';
+  structuredData?: StructuredDataNode[];
 }
-const { title, description } = Astro.props;
+const { title, description, ogType, structuredData } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogType={ogType} structuredData={structuredData}>
   <slot name="head" slot="head" />
   <Header />
   <main>

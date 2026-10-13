@@ -6,6 +6,7 @@ import Accordion from '../components/Accordion.astro';
 import ChecklistItem from '../components/ChecklistItem.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { aivsFaqs } from '../data/serviceContent.ts';
+import { faqSchema } from '../data/structuredData.ts';
 
 const ruleItems = [
   'Moving a field from one system to another.',
@@ -35,11 +36,14 @@ const ruleIcon = '<path d="M11 5.5h10"></path><path d="M11 12h10"></path><path d
 const workflowIcon = '<rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><path d="M10 6.5h4.5a2 2 0 0 1 2 2V14"></path>';
 const scaleIcon = '<path d="M12 3.5v17"></path><path d="M5 7.5h14"></path><path d="m5 7.5-2.5 6h5l-2.5-6Z"></path><path d="m19 7.5-2.5 6h5l-2.5-6Z"></path>';
 const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
+
+const structuredData = [faqSchema(aivsFaqs)];
 ---
 
 <PageLayout
-  title="AI vs automation — Datonum"
-  description="AI automation vs traditional automation — where each one belongs. Most of what a business wants to automate does not need AI at all; knowing which steps do is the difference between a workflow that holds up and one that quietly stops being trusted."
+  title="AI automation vs traditional automation — Datonum"
+  description="AI automation vs traditional automation: where each belongs. Most of what a business wants to automate does not need AI — here is how to tell."
+  structuredData={structuredData}
 >
   <section class="ihero wm-hero">
     <div class="container">

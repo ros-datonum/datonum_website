@@ -9,6 +9,7 @@ import CTABanner from '../../components/CTABanner.astro';
 import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { tierCols, implRows } from '../../data/serviceContent.ts';
+import { serviceSchema, breadcrumbSchema } from '../../data/structuredData.ts';
 
 const truths = [
   { t: 'We start from your real examples.', d: 'Tested against work your business has actually done, not sample data.' },
@@ -136,11 +137,23 @@ const outside = [
 ];
 const triIcon = '<path d="M10.3 4.3 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"></path><path d="M12 9.5v4"></path><path d="M12 17h.01"></path>';
 const compassIcon = '<circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>';
+
+const pageDescription =
+  'Design and implementation of a defined AI-enabled workflow, integrated into your existing systems, with clear success criteria, testing and human oversight.';
+const service = { name: 'AI Workflow Implementation', description: pageDescription, path: routes.impl };
+const structuredData = [
+  serviceSchema(Astro.site, service),
+  breadcrumbSchema(Astro.site, [
+    { label: 'Services', href: routes.services },
+    { label: service.name, href: service.path },
+  ]),
+];
 ---
 
 <PageLayout
-  title="AI Workflow Implementation — Datonum"
-  description="AI process automation, built, tested, and handed over running. One workflow, connected to the systems you already use, tested against your own historical work, with a person reviewing the output before it is used."
+  title="AI Workflow Implementation: built, tested, handed over — Datonum"
+  description={pageDescription}
+  structuredData={structuredData}
 >
   <section class="ihero wm-hero">
     <div class="container">
