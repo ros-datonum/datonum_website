@@ -78,5 +78,9 @@ const umamiDomains = import.meta.env.PUBLIC_UMAMI_DOMAINS;
   </head>
   <body>
     <slot />
+    <script>
+      import { startConsentBanner } from '../scripts/consent.ts';
+      startConsentBanner();
+    </script>
   </body>
 </html>

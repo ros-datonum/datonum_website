@@ -1,0 +1,75 @@
+@import 'vanilla-cookieconsent/dist/cookieconsent.css';
+
+/* Cookie consent banner (vanilla-cookieconsent). The library styles itself through
+   --cc-* custom properties; this maps every colour, font and radius onto the design
+   tokens so the banner reads as part of the site. Navy carries the buttons, teal the
+   links, toggles and focus; brass never appears. The banner is a fixed overlay, so it
+   causes no layout shift. Loaded by scripts/consent.ts, off the render-blocking path. */
+#cc-main {
+  --cc-font-family: var(--font-sans);
+  --cc-modal-border-radius: var(--radius-panel);
+  --cc-btn-border-radius: var(--radius-control);
+  --cc-pm-toggle-border-radius: var(--radius-pill);
+  --cc-z-index: var(--z-overlay);
+  --cc-modal-transition-duration: var(--duration-base);
+
+  --cc-bg: var(--surface-card);
+  --cc-primary-color: var(--text-strong);
+  --cc-secondary-color: var(--text-body);
+  --cc-link-color: var(--text-link);
+  --cc-overlay-bg: var(--alpha-scrim);
+  --cc-separator-border-color: var(--border-subtle);
+
+  /* Accept all and Reject all render as primary buttons with equal weight. */
+  --cc-btn-primary-bg: var(--action-primary);
+  --cc-btn-primary-color: var(--action-primary-text);
+  --cc-btn-primary-border-color: var(--action-primary);
+  --cc-btn-primary-hover-bg: var(--action-primary-hover);
+  --cc-btn-primary-hover-color: var(--action-primary-text);
+  --cc-btn-primary-hover-border-color: var(--action-primary-hover);
+
+  --cc-btn-secondary-bg: var(--surface-card);
+  --cc-btn-secondary-color: var(--text-strong);
+  --cc-btn-secondary-border-color: var(--action-secondary-border);
+  --cc-btn-secondary-hover-bg: var(--action-secondary-hover);
+  --cc-btn-secondary-hover-color: var(--text-strong);
+  --cc-btn-secondary-hover-border-color: var(--border-strong);
+
+  --cc-toggle-on-bg: var(--action-accent);
+  --cc-toggle-off-bg: var(--grey-400);
+  --cc-toggle-on-knob-bg: var(--white);
+  --cc-toggle-off-knob-bg: var(--white);
+  --cc-toggle-enabled-icon-color: var(--action-accent);
+  --cc-toggle-disabled-icon-color: var(--grey-400);
+  --cc-toggle-readonly-bg: var(--grey-300);
+  --cc-toggle-readonly-knob-bg: var(--white);
+  --cc-toggle-readonly-knob-icon-color: var(--grey-300);
+
+  --cc-section-category-border: var(--border-subtle);
+  --cc-cookie-category-block-bg: var(--surface-sunken);
+  --cc-cookie-category-block-border: var(--border-subtle);
+  --cc-cookie-category-block-hover-bg: var(--surface-sunken);
+  --cc-cookie-category-block-hover-border: var(--border-strong);
+  --cc-cookie-category-expanded-block-bg: var(--surface-card);
+  --cc-cookie-category-expanded-block-hover-bg: var(--surface-sunken);
+
+  --cc-footer-bg: var(--surface-sunken);
+  --cc-footer-color: var(--text-body);
+  --cc-footer-border-color: var(--border-subtle);
+
+  --cc-webkit-scrollbar-bg: var(--grey-300);
+  --cc-webkit-scrollbar-hover-bg: var(--grey-400);
+}
+
+#cc-main .cm,
+#cc-main .pm {
+  box-shadow: var(--shadow-overlay);
+}
+
+#cc-main .cm__btn:focus-visible,
+#cc-main .pm__btn:focus-visible,
+#cc-main .pm__close-btn:focus-visible,
+#cc-main a:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
