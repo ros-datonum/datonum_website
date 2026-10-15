@@ -1,9 +1,11 @@
 ---
 // Text input. Ported from DS Input.jsx; JS focus state reworked as CSS :focus.
+import type { HTMLAttributes } from 'astro/types';
+
 interface Props {
   name?: string;
   id?: string;
-  type?: string;
+  type?: HTMLAttributes<'input'>['type'];
   placeholder?: string;
   required?: boolean;
   size?: 'sm' | 'md';
