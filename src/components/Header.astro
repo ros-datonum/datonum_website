@@ -37,7 +37,7 @@ const aboutActive = isActive(path, routes.about);
       <a href={routes.automate} class:list={['navlink', automateActive && 'is-active']}>What we automate</a>
       <a href={routes.approach} class:list={['navlink', approachActive && 'is-active']}>Approach</a>
       <a href={routes.about} class:list={['navlink', aboutActive && 'is-active']}>About</a>
-      <Button size="sm" href={routes.contact}>Book a call</Button>
+      <Button size="sm" href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="nav">Book a call</Button>
     </nav>
 
     <button type="button" class="site-header__burger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -54,7 +54,7 @@ const aboutActive = isActive(path, routes.about);
     <a href={routes.automate} class="mobile-menu__link">What we automate</a>
     <a href={routes.approach} class="mobile-menu__link">Approach</a>
     <a href={routes.about} class="mobile-menu__link">About</a>
-    <a href={routes.contact} class="mobile-menu__link mobile-menu__link--cta">Book a call</a>
+    <a href={routes.contact} class="mobile-menu__link mobile-menu__link--cta" data-umami-event="cta_book_call" data-umami-event-location="nav">Book a call</a>
   </div>
 </header>
 

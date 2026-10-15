@@ -9,6 +9,9 @@ interface Props {
   disabled?: boolean;
   fullWidth?: boolean;
   class?: string;
+  /** Umami click tracking, rendered as-is on the element. */
+  'data-umami-event'?: string;
+  'data-umami-event-location'?: string;
 }
 const {
   variant = 'primary',
@@ -18,6 +21,7 @@ const {
   disabled = false,
   fullWidth = false,
   class: className,
+  ...trackingAttributes
 } = Astro.props;
 
 const classes = [
@@ -37,6 +41,7 @@ const Tag = href && !disabled ? 'a' : 'button';
   type={Tag === 'button' ? type : undefined}
   aria-disabled={disabled ? 'true' : undefined}
   {...disabled && Tag === 'button' ? { disabled: true } : {}}
+  {...trackingAttributes}
 >
   <slot />
 </Tag>

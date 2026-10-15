@@ -58,7 +58,7 @@ const description =
             <li>{legalName}, operating under the commercial name “{commercialName}”</li>
             <li>Tax identification number (NIE): {nif}</li>
             <li>Address: {address}</li>
-            <li>Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></li>
+            <li>Email: <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a></li>
           </ul>
           <p>
             We have not appointed a Data Protection Officer, as our processing does not meet the
@@ -169,7 +169,7 @@ const description =
             beforehand.
           </p>
           <p>
-            To exercise your rights, email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. We may
+            To exercise your rights, email <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>. We may
             need to confirm your identity. We will respond within one month (extendable by two further
             months for complex requests), and doing so is free of charge.
           </p>
@@ -226,7 +226,7 @@ const description =
             <li>{legalName}, commercial name “{commercialName}”</li>
             <li>Tax identification number (NIE): {nif}</li>
             <li>Address: {address}</li>
-            <li>Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></li>
+            <li>Email: <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a></li>
           </ul>
 
           <h2>2. Purpose of the site</h2>
@@ -312,7 +312,7 @@ const description =
             updated Terms.
           </p>
 
-          <p>Questions about these Terms? Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
+          <p>Questions about these Terms? Email <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>.</p>
         </div>
       )}
 

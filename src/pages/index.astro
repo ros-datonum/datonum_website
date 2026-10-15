@@ -85,7 +85,7 @@ const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site
         decisions your team approves rather than produces. Built on n8n, Make, or Zapier.
       </p>
       <div class="hero__actions">
-        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+        <Button size="lg" variant="inverse" href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="hero">Book a 30-minute call</Button>
         <Button size="lg" variant="inverse-outline" href={routes.cases}>See what we have built</Button>
       </div>
     </div>
@@ -131,7 +131,7 @@ const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site
       </div>
       <div class="row-cta">
         <p class="lead-strong" style="max-width:70ch">Each of these has a step in it that needs judgment about language — which is exactly where AI does work that rule-based automation cannot.</p>
-        <Button href={routes.contact}>Book a 30-minute call</Button>
+        <Button href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="page-home">Book a 30-minute call</Button>
       </div>
     </div>
   </section>
@@ -249,6 +249,7 @@ const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site
   <section class="band band--card band--bordered band--cta">
     <div class="container">
       <CTABanner
+        location="page-home"
         title="Tell us what your team keeps redoing."
         lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
       />

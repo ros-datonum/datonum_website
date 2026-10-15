@@ -161,7 +161,7 @@ const structuredData = [
       <h1 class="ihero__title" style="max-width:20ch">AI process automation — built, tested, and handed over running</h1>
       <p class="ihero__lead">One workflow, connected to the systems you already use, tested against your own historical work, with a person reviewing the output before it is used.</p>
       <div class="actions" style="margin-top:36px">
-        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+        <Button size="lg" variant="inverse" href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="hero">Book a 30-minute call</Button>
       </div>
     </div>
   </section>
@@ -257,6 +257,7 @@ const structuredData = [
         <p class="muted" style="max-width:66ch">If the task is already identified and agreed internally, we can scope an implementation directly. If it has not been settled, an <a href={routes.audit}>AI readiness audit</a> identifies and ranks the candidates — and usually finds more than one. Where several teams are involved, the <a href={routes.deep}>Deep Audit</a> includes a build-ready specification for the top recommendation.</p>
       </div>
       <CTABanner
+        location="service-implementation"
         title="Tell us what your team keeps redoing."
         lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
       />

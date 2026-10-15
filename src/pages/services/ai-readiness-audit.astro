@@ -68,7 +68,7 @@ const structuredData = [
       <h1 class="ai-hero__title">AI readiness audit — a ranked, costed view of where AI fits</h1>
       <p class="ai-hero__lead">Two to three weeks. We map how work moves through your business, then hand you a written plan of what to automate, in what order.</p>
       <div class="actions" style="margin-top:36px">
-        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+        <Button size="lg" variant="inverse" href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="hero">Book a 30-minute call</Button>
       </div>
     </div>
   </section>
@@ -126,7 +126,7 @@ const structuredData = [
           <div class="side-card__row"><span class="side-card__label">Interviews</span><span class="side-card__value">3–5</span></div>
           <div class="side-card__row"><span class="side-card__label">Roadmap</span><span class="side-card__value">90 days</span></div>
           <div class="side-card__row side-card__row--last"><span class="side-card__label">Timeline</span><span class="side-card__value">2–3 weeks</span></div>
-          <Button fullWidth href={routes.contact}>Book a 30-minute call</Button>
+          <Button fullWidth href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="service-ai-readiness-audit">Book a 30-minute call</Button>
         </div>
         <div class="side-links">
           <span class="eyebrow eyebrow--teal">Other services</span>
@@ -171,6 +171,7 @@ const structuredData = [
   <section class="band--card band--tail">
     <div class="container">
       <CTABanner
+        location="service-ai-readiness-audit"
         title="Tell us what your team keeps redoing."
         lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
       />

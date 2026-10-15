@@ -36,8 +36,8 @@ const companyLinks = hasInsights
 
       <div class="site-footer__col">
         <span class="site-footer__heading">Contact</span>
-        <a href={`mailto:${contactEmail}`} class="site-footer__link">{contactEmail}</a>
-        <a href={linkedInUrl} class="site-footer__link">LinkedIn</a>
+        <a href={`mailto:${contactEmail}`} class="site-footer__link" data-umami-event="email_click">{contactEmail}</a>
+        <a href={linkedInUrl} class="site-footer__link" data-umami-event="outbound_linkedin">LinkedIn</a>
       </div>
     </div>
 
