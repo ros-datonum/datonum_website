@@ -1,0 +1,11 @@
+# Short links for datonum.com: /go/<code> -> a page with UTM parameters.
+# Imported inside the datonum.com site block of the VPS Caddyfile (see README.md).
+# 302 so a destination can change without browser or CDN cache problems; Cloudflare does
+# not cache 302s by default, so add no cache rule for /go/*.
+# Codes are registered in Notion: "UTM-правила" -> Реєстр посилань.
+redir /go/li        /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=contact-info 302
+redir /go/li-about  /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=about        302
+redir /go/co        /?utm_source=linkedin&utm_medium=company-page&utm_campaign=always-on                     302
+redir /go/x         /?utm_source=x&utm_medium=profile&utm_campaign=always-on&utm_content=bio                  302
+redir /go/th        /?utm_source=threads&utm_medium=profile&utm_campaign=always-on&utm_content=bio            302
+redir /go/sig       /?utm_source=email&utm_medium=signature&utm_campaign=always-on                            302
