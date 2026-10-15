@@ -5,6 +5,7 @@
 // IDENTITY placeholders (nif, address) are required by law — fill before publishing.
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
+import DataTable from '../components/DataTable.astro';
 import { routes } from '../data/navigation.ts';
 
 export function getStaticPaths() {
@@ -16,13 +17,37 @@ export function getStaticPaths() {
 
 const { variant, title } = Astro.props;
 
-const lastUpdated = '10 August 2026';
+// TODO(merge): set PRIVACY_LAST_UPDATED to the deploy date once the consent and cookie
+// changes have passed legal review. Until then the page shows this placeholder on purpose.
+const PRIVACY_LAST_UPDATED = 'TODO: set to the deploy date before merging';
+const TERMS_LAST_UPDATED = '10 August 2026';
+const lastUpdated = variant === 'privacy' ? PRIVACY_LAST_UPDATED : TERMS_LAST_UPDATED;
 const contactEmail = 'hello@datonum.com';
 // Legally required identification of the data controller / service provider.
 const legalName = 'Rostyslav Bachyk';
 const commercialName = 'Datonum';
 const nif = 'Z0041311P';
 const address = 'Avenida Fabraquer 3, 17J, El Campello, 03560 Alicante, Spain';
+
+// Section 10 of the Privacy Notice. Names and durations as observed in the browser after
+// accepting all cookies; re-check them when a provider changes its tags.
+const cookieColumns = [
+  { key: 'name', label: 'Name' },
+  { key: 'provider', label: 'Provider' },
+  { key: 'purpose', label: 'Purpose' },
+  { key: 'category', label: 'Category' },
+  { key: 'duration', label: 'Duration' },
+];
+const cookieRows = [
+  { name: 'cc_cookie', provider: 'Datonum', purpose: 'Remembers your cookie choice', category: 'Necessary', duration: '12 months' },
+  { name: 'dtn_first_touch, dtn_last_touch (local storage)', provider: 'Datonum', purpose: 'Which link or website brought you to us', category: 'Analytics', duration: '90 days' },
+  { name: '__hstc', provider: 'HubSpot', purpose: 'Tracks visits', category: 'Analytics', duration: '6 months' },
+  { name: 'hubspotutk', provider: 'HubSpot', purpose: 'Links your visits to an inquiry you submit', category: 'Analytics', duration: '6 months' },
+  { name: '__hssc', provider: 'HubSpot', purpose: 'Counts pages in a session', category: 'Analytics', duration: '30 minutes' },
+  { name: '__hssrc', provider: 'HubSpot', purpose: 'Detects a new session', category: 'Analytics', duration: 'Session' },
+  { name: 'bcookie, lidc, li_gc; in some cases also li_fat_id, li_sugr, UserMatchHistory, AnalyticsSyncHistory', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: 'from 1 day to 1 year' },
+  { name: '__cf_bm (on HubSpot and LinkedIn domains)', provider: 'Cloudflare, for HubSpot and LinkedIn', purpose: 'Protects HubSpot’s and LinkedIn’s services from automated traffic', category: 'Analytics, Marketing', duration: '30 minutes' },
+];
 
 const description =
   variant === 'privacy'
@@ -92,6 +117,25 @@ const description =
             same cookieless basis: it uses no cookies or other browser storage, does not store your IP
             address, and is not used to identify you or track you across other websites. The content you
             type into form fields is automatically masked and is not captured in the recording.</p>
+          <p><strong>Cookies and similar technologies, with your consent.</strong> If you accept them in
+            our cookie banner, we also use:</p>
+          <ul>
+            <li><strong>Attribution data</strong> — we store in your browser (local storage) the campaign
+              parameters of the link that brought you to our site (for example “LinkedIn post”), the
+              first page you visited and the referring website, so that if you later contact us we know
+              which channel reached you. Kept for up to 90 days.</li>
+            <li><strong>HubSpot tracking</strong> — HubSpot cookies record the pages you view on our
+              site; if you later submit our inquiry form, this browsing history is linked to your
+              contact record in our CRM.</li>
+            <li><strong>LinkedIn Insight Tag</strong> — LinkedIn cookies let LinkedIn report to us, in
+              aggregated form, the professional characteristics of our visitors (such as industry, job
+              function and company size) and, in future, let us show our content on LinkedIn to people
+              who have visited our site.</li>
+          </ul>
+          <p>
+            None of these run unless you opt in, and you can withdraw your choice at any time through
+            “Cookie settings” at the bottom of every page.
+          </p>
           <p>
             We do not intentionally collect special categories of data (such as health, political or
             religious information). Please do not include sensitive personal data in your message.
@@ -111,6 +155,10 @@ const description =
             <li><strong>To measure and improve how the site is used</strong> through privacy-friendly,
               cookieless analytics and anonymised session recording — Article 6(1)(f), our legitimate
               interest in understanding and improving our website.</li>
+            <li><strong>To understand which channels bring visitors and inquiries</strong>, to link an
+              inquiry to the pages viewed before it, and to measure and target our LinkedIn activity,
+              using the cookies and similar technologies described above — Article 6(1)(a) GDPR, your
+              consent (and Article 22.2 LSSI-CE), which you can withdraw at any time.</li>
             <li><strong>To meet legal, accounting and tax obligations</strong> — Article 6(1)(c).</li>
             <li><strong>To send marketing communications</strong>, only where you have expressly asked
               us to — Article 6(1)(a) consent, which you may withdraw at any time.</li>
@@ -124,8 +172,16 @@ const description =
           <p>We do not sell your personal data. We share it only with:</p>
           <ul>
             <li><strong>HubSpot</strong> — our customer relationship management platform; inquiry-form
-              submissions are stored there, on servers in the European Union (acting as our processor).</li>
-            <li><strong>Cloudflare</strong> — website hosting, content delivery and security (processor).</li>
+              submissions, and, if you accept analytics cookies, your browsing on our site, are stored
+              there on servers in the European Union (acting as our processor).</li>
+            <li><strong>LinkedIn Ireland Unlimited Company</strong> — only if you accept marketing
+              cookies, for the LinkedIn Insight Tag. For this processing LinkedIn acts as joint
+              controller with us under its Joint Controller Addendum; LinkedIn’s own privacy policy and
+              cookie policy apply to the data it collects.</li>
+            <li><strong>Hetzner Online GmbH</strong> (Germany) — hosting of this website and of our
+              self-hosted analytics (processor).</li>
+            <li><strong>Cloudflare</strong> — content delivery and security in front of our website
+              (processor).</li>
             <li><strong>Professional advisers</strong> (such as accountants or legal advisers), where
               necessary and under a duty of confidentiality.</li>
             <li><strong>Public authorities</strong>, where we are legally required to disclose.</li>
@@ -146,6 +202,10 @@ const description =
             Contractual Clauses. You may request a copy of the relevant safeguards using the contact
             details above.
           </p>
+          <p>
+            LinkedIn is part of a US group; transfers are covered by the EU–US Data Privacy Framework
+            and/or Standard Contractual Clauses.
+          </p>
 
           <h2>7. How long we keep it</h2>
           <ul>
@@ -156,6 +216,9 @@ const description =
               accounting records are kept for up to 6 years under Spanish commercial and tax law.</li>
             <li><strong>Server logs:</strong> retained only for a limited period for security and
               diagnostic purposes.</li>
+            <li><strong>Attribution data in your browser:</strong> up to 90 days.</li>
+            <li><strong>Your cookie choice:</strong> 12 months.</li>
+            <li><strong>HubSpot and LinkedIn cookies:</strong> see the table in section 10.</li>
           </ul>
           <p>We keep personal data no longer than necessary for the purposes described above.</p>
 
@@ -188,14 +251,18 @@ const description =
             guaranteed to be completely secure.
           </p>
 
-          <h2>10. Cookies</h2>
+          <h2>10. Cookies and similar technologies</h2>
           <p>
-            This website does not use cookies for profiling or advertising, and our usage analytics and
-            session recording are cookieless (see “What personal data we collect”). Our hosting and security provider may set
-            strictly necessary technical cookies solely to deliver and protect the site; these are
-            exempt from consent under Article 22.2 LSSI-CE. If we introduce any
-            non-essential cookies in future, we will ask for your consent through a cookie banner
-            beforehand.
+            Our usage analytics (Umami) and session recording are cookieless and run without any storage
+            on your device. Everything else listed below is used only after you agree to it in our
+            cookie banner. You can change your choice at any time through “Cookie settings” at the
+            bottom of every page, or delete cookies in your browser settings.
+          </p>
+          <DataTable columns={cookieColumns} rows={cookieRows} dense />
+          <p>
+            Our content delivery and security provider (Cloudflare) may set strictly necessary
+            technical cookies to deliver and protect the site; these are exempt from consent under
+            Article 22.2 LSSI-CE.
           </p>
 
           <h2>11. Children</h2>
