@@ -45,8 +45,10 @@ const cookieRows = [
   { name: 'hubspotutk', provider: 'HubSpot', purpose: 'Links your visits to an inquiry you submit', category: 'Analytics', duration: '6 months' },
   { name: '__hssc', provider: 'HubSpot', purpose: 'Counts pages in a session', category: 'Analytics', duration: '30 minutes' },
   { name: '__hssrc', provider: 'HubSpot', purpose: 'Detects a new session', category: 'Analytics', duration: 'Session' },
-  { name: 'bcookie, lidc, li_gc; in some cases also li_fat_id, li_sugr, UserMatchHistory, AnalyticsSyncHistory', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: 'from 1 day to 1 year' },
-  { name: '__cf_bm (on HubSpot and LinkedIn domains)', provider: 'Cloudflare, for HubSpot and LinkedIn', purpose: 'Protects HubSpot’s and LinkedIn’s services from automated traffic', category: 'Analytics, Marketing', duration: '30 minutes' },
+  { name: 'bcookie', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 year' },
+  { name: 'li_gc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '6 months' },
+  { name: 'lidc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 day' },
+  { name: '__cf_bm', provider: 'HubSpot / LinkedIn (via Cloudflare bot management on their domains)', purpose: 'Bot detection on the provider’s servers', category: 'Set only after you accept analytics or marketing', duration: '30 minutes' },
 ];
 
 const description =
@@ -259,6 +261,10 @@ const description =
             bottom of every page, or delete cookies in your browser settings.
           </p>
           <DataTable columns={cookieColumns} rows={cookieRows} dense />
+          <p>
+            LinkedIn may set additional cookies, particularly for visitors signed in to LinkedIn; see
+            <a href="https://www.linkedin.com/legal/cookie-policy" target="_blank" rel="noopener">LinkedIn’s Cookie Policy</a>.
+          </p>
           <p>
             Our content delivery and security provider (Cloudflare) may set strictly necessary
             technical cookies to deliver and protect the site; these are exempt from consent under
