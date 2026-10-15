@@ -35,10 +35,11 @@ so adding a link needs no rebuild.
    caddy reload --config /etc/caddy/Caddyfile
    ```
 
-4. Check: `curl -sI https://datonum.com/go/li` returns `302` with the UTM `location`.
+4. Check: `curl -sI https://datonum.com/go/li` and `curl -sI https://datonum.com/go/li/`
+   both return `302` with the UTM `location`.
 
-To add a link, add one `redir` line to `go-links.caddy` on the VPS (and here), then
-reload.
+To add a link, add a matcher and `redir` pair to `go-links.caddy` on the VPS (and
+here), then reload.
 
 ## Content Security Policy
 

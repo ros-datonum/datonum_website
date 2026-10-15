@@ -2,10 +2,22 @@
 # Imported inside the datonum.com site block of the VPS Caddyfile (see README.md).
 # 302 so a destination can change without browser or CDN cache problems; Cloudflare does
 # not cache 302s by default, so add no cache rule for /go/*.
+# Each code matches with and without a trailing slash (/go/li and /go/li/).
 # Codes are registered in Notion: "UTM-правила" -> Реєстр посилань.
-redir /go/li        /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=contact-info 302
-redir /go/li-about  /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=about        302
-redir /go/co        /?utm_source=linkedin&utm_medium=company-page&utm_campaign=always-on                     302
-redir /go/x         /?utm_source=x&utm_medium=profile&utm_campaign=always-on&utm_content=bio                  302
-redir /go/th        /?utm_source=threads&utm_medium=profile&utm_campaign=always-on&utm_content=bio            302
-redir /go/sig       /?utm_source=email&utm_medium=signature&utm_campaign=always-on                            302
+@go-li        path /go/li /go/li/
+redir @go-li        /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=contact-info 302
+
+@go-li-about  path /go/li-about /go/li-about/
+redir @go-li-about  /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=about 302
+
+@go-co        path /go/co /go/co/
+redir @go-co        /?utm_source=linkedin&utm_medium=company-page&utm_campaign=always-on 302
+
+@go-x         path /go/x /go/x/
+redir @go-x         /?utm_source=x&utm_medium=profile&utm_campaign=always-on&utm_content=bio 302
+
+@go-th        path /go/th /go/th/
+redir @go-th        /?utm_source=threads&utm_medium=profile&utm_campaign=always-on&utm_content=bio 302
+
+@go-sig       path /go/sig /go/sig/
+redir @go-sig       /?utm_source=email&utm_medium=signature&utm_campaign=always-on 302
