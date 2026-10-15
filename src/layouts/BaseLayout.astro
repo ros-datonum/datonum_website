@@ -123,7 +123,11 @@ const linkedInPartnerId = import.meta.env.PUBLIC_LINKEDIN_PARTNER_ID;
     <slot />
     <script>
       import { startConsentBanner } from '../scripts/consent.ts';
-      startConsentBanner();
+      import { syncStoredTouches, watchConsentForAttribution } from '../scripts/attribution.ts';
+
+      watchConsentForAttribution();
+      await startConsentBanner();
+      syncStoredTouches();
     </script>
   </body>
 </html>

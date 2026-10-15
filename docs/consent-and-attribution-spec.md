@@ -155,7 +155,7 @@ redir /go/sig       /?utm_source=email&utm_medium=signature&utm_campaign=always-
    - `dtn_first_touch` holds `source=test`.
 5. Go to `/contact` and submit a test inquiry (name "TEST — delete").
 6. In HubSpot, check that the contact has `first_utm_source=test` and Original Source filled, and that page views show in the timeline.
-7. In Umami, check that `contact_form_submit` has event data `source=test`, and that `consent_update` events exist.
+7. In Umami, check that `contact_form_submit` has event data `source=test` when analytics consent was given (it comes from `dtn_last_touch`, because the UTMs were on `/`, not on `/contact`). Without analytics consent the event data is empty unless the visitor landed on `/contact` with UTMs. Also check that `consent_update` events exist.
 8. Withdraw consent through Cookie settings. `dtn_*` keys and HubSpot cookies are removed.
 9. Run Lighthouse on `/` with no consent. The score must not drop compared with today.
 10. Delete the test contact in HubSpot.

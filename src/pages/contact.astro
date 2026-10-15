@@ -44,7 +44,7 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
       </div>
 
       <div class="form-card">
-        <form id="contact-form" novalidate>
+        <form id="contact-form" novalidate data-hs-do-not-collect="true">
           <div class="form-stack">
             <h2 class="h3">Book a 30-minute call</h2>
             <div class="name-row">
@@ -92,6 +92,10 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
 </style>
 
 <script>
+  import { hasAnalyticsConsent } from '../scripts/consent.ts';
+  import { readCurrentCampaign, readStoredTouches, type CampaignParameters } from '../scripts/attribution.ts';
+  import { trackEvent, type UmamiEventData } from '../scripts/umami.ts';
+
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const thanks = document.getElementById('contact-thanks');
   const errorEl = document.getElementById('cf-error');
@@ -102,11 +106,56 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
 
   // Umami custom event, fired only after HubSpot confirms the lead was created.
   const CONTACT_SUBMIT_EVENT = 'contact_form_submit';
+  // Set by the HubSpot tracking code; links the submission to the visitor's page views.
+  const HUBSPOT_VISITOR_COOKIE = 'hubspotutk';
+
+  interface HubSpotField {
+    name: string;
+    value: string;
+  }
 
   function showError(msg: string) {
     if (!errorEl) return;
     errorEl.textContent = msg;
     errorEl.hidden = false;
+  }
+
+  function readCookie(name: string): string {
+    const prefix = `${name}=`;
+    const cookie = document.cookie.split('; ').find((entry) => entry.startsWith(prefix));
+    return cookie ? decodeURIComponent(cookie.slice(prefix.length)) : '';
+  }
+
+  // Hidden fields on the HubSpot form, filled from the stored first and last touch.
+  // Empty values are left out so they never overwrite a contact's existing data.
+  function attributionFields(): HubSpotField[] {
+    const { first, last } = readStoredTouches();
+    const fields: HubSpotField[] = [
+      { name: 'first_utm_source', value: first?.source ?? '' },
+      { name: 'first_utm_medium', value: first?.medium ?? '' },
+      { name: 'first_utm_campaign', value: first?.campaign ?? '' },
+      { name: 'first_utm_content', value: first?.content ?? '' },
+      { name: 'first_landing_page', value: first?.landing ?? '' },
+      { name: 'first_referrer', value: first?.referrer ?? '' },
+      { name: 'last_utm_source', value: last?.source ?? '' },
+      { name: 'last_utm_medium', value: last?.medium ?? '' },
+      { name: 'last_utm_campaign', value: last?.campaign ?? '' },
+    ];
+    return fields.filter((field) => field.value !== '');
+  }
+
+  // Campaign for the Umami event: this page's UTMs, or with analytics consent the stored
+  // last touch. Never personal data.
+  function submissionCampaign(): UmamiEventData | undefined {
+    const current = readCurrentCampaign();
+    const hasCurrentCampaign = Object.values(current).some((value) => value !== '');
+    const last = readStoredTouches().last;
+    const campaign: CampaignParameters | undefined = hasCurrentCampaign
+      ? current
+      : last && { source: last.source, medium: last.medium, campaign: last.campaign };
+    if (!campaign) return undefined;
+    const filled = Object.entries(campaign).filter(([, value]) => value !== '');
+    return filled.length ? Object.fromEntries(filled) : undefined;
   }
 
   form?.addEventListener('submit', async (e) => {
@@ -126,10 +175,20 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
     if (submit) submit.disabled = true;
 
     const data = new FormData(form);
-    const fields = ['firstname', 'lastname', 'email', 'company', 'message'].map((name) => ({
+    const contactFields = ['firstname', 'lastname', 'email', 'company', 'message'].map((name) => ({
       name,
       value: String(data.get(name) ?? ''),
     }));
+
+    // Without analytics consent the payload is exactly the form fields and page context.
+    const hasConsent = hasAnalyticsConsent();
+    const hubspotVisitorToken = hasConsent ? readCookie(HUBSPOT_VISITOR_COOKIE) : '';
+    const fields = hasConsent ? [...contactFields, ...attributionFields()] : contactFields;
+    const context = {
+      pageUri: window.location.href,
+      pageName: document.title,
+      ...(hubspotVisitorToken && { hutk: hubspotVisitorToken }),
+    };
 
     // na1 posts to api.hsforms.com; other regions use api-<region>.hsforms.com
     const host = REGION === 'na1' ? 'api.hsforms.com' : `api-${REGION}.hsforms.com`;
@@ -139,14 +198,10 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fields,
-          context: { pageUri: window.location.href, pageName: document.title },
-        }),
+        body: JSON.stringify({ fields, context }),
       });
       if (!res.ok) throw new Error(`HubSpot responded ${res.status}`);
-      const analytics = (window as unknown as { umami?: { track: (event: string) => void } }).umami;
-      analytics?.track(CONTACT_SUBMIT_EVENT);
+      trackEvent(CONTACT_SUBMIT_EVENT, submissionCampaign());
       form.hidden = true;
       if (thanks) thanks.hidden = false;
     } catch (err) {
