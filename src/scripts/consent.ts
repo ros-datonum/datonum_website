@@ -20,6 +20,9 @@ const CONSENT_REVISION = 0;
 const CONSENT_COOKIE_NAME = 'cc_cookie';
 const CONSENT_LIFETIME_DAYS = 365;
 const CONSENT_UPDATE_EVENT = 'consent_update';
+// Empty element at the start of <body> (BaseLayout): mounting the banner there makes it the
+// first Tab stop instead of the last.
+const CONSENT_ROOT_SELECTOR = '#consent-root';
 // Section 10 of the Privacy Notice, linked from under the banner's buttons.
 const PRIVACY_COOKIES_SECTION = `${routes.privacy}#cookies`;
 
@@ -56,6 +59,7 @@ function loadConsentStylesheet(): Promise<void> {
 export async function startConsentBanner(): Promise<void> {
   await loadConsentStylesheet();
   return CookieConsent.run({
+    root: CONSENT_ROOT_SELECTOR,
     revision: CONSENT_REVISION,
     cookie: { name: CONSENT_COOKIE_NAME, expiresAfterDays: CONSENT_LIFETIME_DAYS },
     guiOptions: {

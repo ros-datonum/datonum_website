@@ -128,6 +128,8 @@ const linkedInPartnerId = import.meta.env.PUBLIC_LINKEDIN_PARTNER_ID;
     <slot name="head" />
   </head>
   <body>
+    <!-- The consent banner mounts here (scripts/consent.ts), so it is the first Tab stop. -->
+    <div id="consent-root"></div>
     <slot />
     <script>
       import { startConsentBanner } from '../scripts/consent.ts';
