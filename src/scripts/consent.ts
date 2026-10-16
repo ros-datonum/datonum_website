@@ -121,7 +121,7 @@ export async function startConsentBanner(): Promise<void> {
               {
                 title: 'Analytics',
                 description:
-                  'HubSpot cookies record the pages you view, and we keep the link or website that brought you here in your browser for up to 90 days, so that if you contact us we know which channel reached you. With the same permission we record anonymised sessions (clicks, scrolling, navigation; form input masked) to improve the site.',
+                  'HubSpot cookies record the pages you view, and we keep the link or website that brought you here in your browser for up to 90 days, so that if you contact us we know which channel reached you. With the same permission we record your session (clicks, scrolling and navigation), with form input masked, to improve the site.',
                 linkedCategory: consentCategory.analytics,
               },
               {
