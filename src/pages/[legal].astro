@@ -48,6 +48,9 @@ const cookieRows = [
   { name: 'bcookie', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 year' },
   { name: 'li_gc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '6 months' },
   { name: 'lidc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 day' },
+  // Not observed from Spain: LinkedIn documents it only for traffic from outside the EU, EEA,
+  // UK and Quebec (LinkedIn Help, "LinkedIn Insight Tag"), and does not publish a duration.
+  { name: 'li_adsid (LinkedIn Ads ID)', provider: 'LinkedIn', purpose: 'First-party identifier for conversion measurement; only for visitors outside the EU, EEA, UK and Quebec', category: 'Marketing', duration: 'Not stated by LinkedIn' },
   { name: '__cf_bm', provider: 'HubSpot / LinkedIn (via Cloudflare bot management on their domains)', purpose: 'Bot detection on the provider’s servers', category: 'Set only after you accept analytics or marketing', duration: '30 minutes' },
 ];
 
@@ -272,11 +275,6 @@ const description =
           <p>
             LinkedIn may set additional cookies, particularly for visitors signed in to LinkedIn; see
             <a href="https://www.linkedin.com/legal/cookie-policy" target="_blank" rel="noopener">LinkedIn’s Cookie Policy</a>.
-          </p>
-          <p>
-            Our content delivery and security provider (Cloudflare) may set strictly necessary
-            technical cookies to deliver and protect the site; these are exempt from consent under
-            Article 22.2 LSSI-CE.
           </p>
 
           <h2>11. Children</h2>
