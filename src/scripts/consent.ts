@@ -28,6 +28,9 @@ const CONSENT_ROOT_SELECTOR = '#consent-root';
 // (WCAG 2.1.2): a capture listener on <body> runs first and keeps Tab events from inside the
 // bar away from that listener, and the browser moves focus as usual. The preferences modal
 // is a real modal and keeps its focus trap.
+// Re-test after every vanilla-cookieconsent upgrade (pinned in package.json): the fix relies on
+// the library listening on #cc-main, so check that Tab still leaves the bar on / and /contact
+// and still stays inside the preferences modal.
 const CONSENT_BAR_SELECTOR = '#cc-main .cm';
 const TAB_KEY = 'Tab';
 // Section 10 of the Privacy Notice, linked from under the banner's buttons.
