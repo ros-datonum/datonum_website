@@ -7,7 +7,7 @@ Prepared 15 Oct 2026. Decision by Ros: ask visitors for consent and collect thre
 
 Umami stays as it is. It is cookieless and runs on legitimate interest, outside the banner.
 
-> The legal text in section 9 is a draft written for a non-lawyer. Have it checked before publishing, especially the LinkedIn joint-controller wording and the cookie list. Cookie names and durations change, so verify them in the browser after implementation.
+> The legal text in section 9 is a draft written for a non-lawyer. Have it checked before publishing, especially the LinkedIn controller-role wording and the cookie list. Cookie names and durations change, so verify them in the browser after implementation.
 
 ---
 
@@ -181,7 +181,7 @@ Change "Last updated" to the deploy date. Keep all other sections as they are.
 
 > **HubSpot** — our customer relationship management platform; inquiry-form submissions, and, if you accept analytics cookies, your browsing on our site, are stored there on servers in the European Union (acting as our processor).
 >
-> **LinkedIn Ireland Unlimited Company** — only if you accept marketing cookies, for the LinkedIn Insight Tag. For this processing LinkedIn acts as joint controller with us under its Joint Controller Addendum; LinkedIn's own privacy policy and cookie policy apply to the data it collects. *(Verify wording against LinkedIn's current terms before publishing.)*
+> **LinkedIn** — If you consent to marketing technologies, we use the LinkedIn Insight Tag to measure website visits, understand audience characteristics and support advertising activities. LinkedIn processes data collected through the Insight Tag as an independent controller under its [Independent Controller Addendum](https://www.linkedin.com/legal/l/linkedin-independent-controller-addendum). LinkedIn's [Privacy Policy](https://www.linkedin.com/legal/privacy-policy) and [Cookie Policy](https://www.linkedin.com/legal/cookie-policy) explain its processing practices and the rights available to individuals.
 
 **Section 5, also fix hosting (the current text names Cloudflare as the host, which is inaccurate):**
 
