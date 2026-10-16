@@ -23,7 +23,8 @@ const canonical = new URL(toRoutePath(Astro.url.pathname), Astro.site).href;
 const shareImageUrl = new URL(shareImage.path, Astro.site).href;
 
 // Privacy-first analytics (self-hosted Umami). Only rendered when configured,
-// so local dev and previews don't emit tracking.
+// so local dev and previews don't emit tracking. script.js is always on; the session
+// recorder is consent-gated like the trackers below.
 const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC;
 const umamiRecorderSrc = import.meta.env.PUBLIC_UMAMI_RECORDER_SRC;
 const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
@@ -81,7 +82,14 @@ const linkedInPartnerId = import.meta.env.PUBLIC_LINKEDIN_PARTNER_ID;
       ></script>
     )}
     {umamiRecorderSrc && umamiWebsiteId && (
-      <script is:inline defer src={umamiRecorderSrc} data-website-id={umamiWebsiteId}></script>
+      <script
+        is:inline
+        type="text/plain"
+        data-category="analytics"
+        defer
+        src={umamiRecorderSrc}
+        data-website-id={umamiWebsiteId}
+      ></script>
     )}
     {hubspotPortalId && (
       <script

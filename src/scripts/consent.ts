@@ -1,8 +1,9 @@
 // Cookie consent (vanilla-cookieconsent v3, bundled from npm). Necessary is always on;
-// analytics (HubSpot tracking, stored attribution) and marketing (LinkedIn Insight Tag)
+// analytics (HubSpot tracking, Umami session recording, stored attribution) and marketing
+// (LinkedIn Insight Tag)
 // stay off until the visitor opts in. Gated scripts are tagged in BaseLayout with
 // type="text/plain" data-category="…" and are only executed by the library after consent.
-// Umami is cookieless and runs outside this banner.
+// Umami's cookieless usage analytics (script.js) runs outside this banner.
 import * as CookieConsent from 'vanilla-cookieconsent';
 import { routes } from '../data/navigation.ts';
 import { trackEvent } from './umami.ts';
@@ -100,7 +101,7 @@ export async function startConsentBanner(): Promise<void> {
               {
                 title: 'Analytics',
                 description:
-                  'HubSpot cookies record the pages you view, and we keep the link or website that brought you here in your browser for up to 90 days, so that if you contact us we know which channel reached you.',
+                  'HubSpot cookies record the pages you view, and we keep the link or website that brought you here in your browser for up to 90 days, so that if you contact us we know which channel reached you. With the same permission we record anonymised sessions (clicks, scrolling, navigation; form input masked) to improve the site.',
                 linkedCategory: consentCategory.analytics,
               },
               {

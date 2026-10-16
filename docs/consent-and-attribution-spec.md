@@ -5,7 +5,7 @@ Prepared 15 Oct 2026. Decision by Ros: ask visitors for consent and collect thre
 2. the HubSpot tracking code;
 3. the LinkedIn Insight Tag.
 
-Umami stays as it is. It is cookieless and runs on legitimate interest, outside the banner.
+Umami usage analytics (`script.js`) stays as it is. It is cookieless and runs on legitimate interest, outside the banner. Session recording (`recorder.js`) runs only with analytics consent (decision by Ros after legal review, 16 Oct 2026).
 
 > The legal text in section 9 is a draft written for a non-lawyer. Have it checked before publishing, especially the LinkedIn controller-role wording and the cookie list. Cookie names and durations change, so verify them in the browser after implementation.
 
@@ -73,7 +73,7 @@ Load the scripts only after consent. Use cookieconsent's script-blocking: `type=
 
 - **Do not add LinkedIn's `<noscript><img src="https://px.ads.linkedin.com/collect/?pid=11110585&fmt=gif"></noscript>` pixel.** LinkedIn's install snippet includes it, but it fires for visitors without JavaScript. Those visitors cannot see the banner, so the pixel would track them without consent.
 - Do **not** load HubSpot's own cookie banner. In HubSpot, set Settings → Privacy & Consent → Cookies → banner off. The site's banner is the only one.
-- Remove `recorder.js` and session recording from the consent discussion: they stay cookieless under legitimate interest, as `/privacy` already describes.
+- `recorder.js` is gated under the analytics category, like the HubSpot tag (changed after legal review, 16 Oct 2026).
 - Keep the Umami `script.js` loaded as now. Decide separately whether to drop `data-do-not-track` (Umami task in TickTick).
 
 ## 3. Attribution capture (first and last touch)
