@@ -20,6 +20,8 @@ const CONSENT_REVISION = 0;
 const CONSENT_COOKIE_NAME = 'cc_cookie';
 const CONSENT_LIFETIME_DAYS = 365;
 const CONSENT_UPDATE_EVENT = 'consent_update';
+// Section 10 of the Privacy Notice, linked from under the banner's buttons.
+const PRIVACY_COOKIES_SECTION = `${routes.privacy}#cookies`;
 
 // First-party cookies set by the gated scripts, removed when their category is withdrawn.
 // Third-party LinkedIn cookies (linkedin.com) cannot be removed from this domain.
@@ -76,12 +78,13 @@ export async function startConsentBanner(): Promise<void> {
       translations: {
         en: {
           consentModal: {
-            title: 'Your choice on cookies.',
+            title: 'Your privacy choices',
             description:
-              'We use privacy-friendly, cookieless analytics on this site in any case. With your permission we’d also like to use HubSpot and LinkedIn cookies to understand which pages and channels bring people to us. You can change this any time via “Cookie settings”.',
+              'We use privacy-friendly, cookieless analytics to understand how our website is used. With your permission, we’d also like to use HubSpot analytics technologies and session recording to understand website visits and inquiries, and LinkedIn marketing technologies to measure our advertising and reach relevant audiences. You can change your preferences at any time.',
             acceptAllBtn: 'Accept all',
             acceptNecessaryBtn: 'Reject all',
             showPreferencesBtn: 'Manage preferences',
+            footer: `<a class="cc__link" href="${PRIVACY_COOKIES_SECTION}">Privacy Notice &amp; Cookies</a>`,
           },
           preferencesModal: {
             title: 'Cookie settings',

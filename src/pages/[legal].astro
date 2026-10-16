@@ -261,7 +261,7 @@ const description =
             guaranteed to be completely secure.
           </p>
 
-          <h2>10. Cookies and similar technologies</h2>
+          <h2 id="cookies">10. Cookies and similar technologies</h2>
           <p>
             Our usage analytics (Umami) is cookieless and runs without any storage on your device;
             session recording runs only if you accept analytics. Everything else listed below is used only after you agree to it in our
@@ -425,6 +425,8 @@ const description =
     margin: 36px 0 8px;
     text-wrap: pretty;
   }
+  /* Keeps the cookie section (linked from the consent banner) clear of the sticky header. */
+  .legal-prose h2[id] { scroll-margin-top: calc(var(--header-height) + var(--space-6)); }
   .legal-prose p { font: var(--type-body); color: var(--grey-600); margin: 0 0 10px; text-wrap: pretty; }
   .legal-prose ul { margin: 4px 0 10px; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
   .legal-prose li { font: var(--type-body); color: var(--grey-600); text-wrap: pretty; }
