@@ -1,5 +1,5 @@
 // Umami custom events. Umami is cookieless and loads outside the consent banner; it may
-// still be absent (not configured locally, blocked, or Do Not Track), so a missing
+// still be absent (not configured locally, or blocked), so a missing
 // tracker is a no-op. Event data never carries names or email addresses.
 
 export type UmamiEventData = Record<string, string | number | boolean>;

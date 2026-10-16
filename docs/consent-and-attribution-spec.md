@@ -18,7 +18,7 @@ Umami usage analytics (`script.js`) stays as it is. It is cookieless and runs on
   - payload is `fields` plus `context.pageUri/pageName` only;
   - fields are firstname, lastname, email, company and message.
 - On success the site calls `window.umami?.track('contact_form_submit')`.
-- Umami is loaded with these attributes: `script.js` with `data-do-not-track=true data-exclude-hash=true data-performance=true`. `recorder.js` is also loaded.
+- Umami is loaded with these attributes: `script.js` with `data-exclude-hash=true data-performance=true`. `recorder.js` is also loaded.
 - There are no `data-umami-event` attributes anywhere. CTA clicks are not tracked.
 - The footer LinkedIn link points to `https://www.linkedin.com/`, which is wrong. It should point to `https://www.linkedin.com/company/datonum-systems/`.
 - `/privacy` is dated 10 Aug 2026 and says "no non-essential cookies; a banner will be added if that changes".
@@ -74,7 +74,7 @@ Load the scripts only after consent. Use cookieconsent's script-blocking: `type=
 - **Do not add LinkedIn's `<noscript><img src="https://px.ads.linkedin.com/collect/?pid=11110585&fmt=gif"></noscript>` pixel.** LinkedIn's install snippet includes it, but it fires for visitors without JavaScript. Those visitors cannot see the banner, so the pixel would track them without consent.
 - Do **not** load HubSpot's own cookie banner. In HubSpot, set Settings → Privacy & Consent → Cookies → banner off. The site's banner is the only one.
 - `recorder.js` is gated under the analytics category, like the HubSpot tag (changed after legal review, 16 Oct 2026).
-- Keep the Umami `script.js` loaded as now. Decide separately whether to drop `data-do-not-track` (Umami task in TickTick).
+- Keep the Umami `script.js` loaded as now. Decision by Ros (16 Oct 2026): drop `data-do-not-track`, so Umami also counts visitors who have Do Not Track enabled.
 
 ## 3. Attribution capture (first and last touch)
 
