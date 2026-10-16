@@ -23,6 +23,13 @@ const CONSENT_UPDATE_EVENT = 'consent_update';
 // Empty element at the start of <body> (BaseLayout): mounting the banner there makes it the
 // first Tab stop instead of the last.
 const CONSENT_ROOT_SELECTOR = '#consent-root';
+// The library wraps Tab focus inside the consent bar as if it were a modal, with a keydown
+// listener on its own container. The bar is non-modal, so Tab must be able to leave it
+// (WCAG 2.1.2): a capture listener on <body> runs first and keeps Tab events from inside the
+// bar away from that listener, and the browser moves focus as usual. The preferences modal
+// is a real modal and keeps its focus trap.
+const CONSENT_BAR_SELECTOR = '#cc-main .cm';
+const TAB_KEY = 'Tab';
 // Section 10 of the Privacy Notice, linked from under the banner's buttons.
 const PRIVACY_COOKIES_SECTION = `${routes.privacy}#cookies`;
 
@@ -56,7 +63,13 @@ function loadConsentStylesheet(): Promise<void> {
   return settled;
 }
 
+function releaseFocusFromConsentBar(event: KeyboardEvent): void {
+  const isInsideConsentBar = event.target instanceof Element && event.target.closest(CONSENT_BAR_SELECTOR) !== null;
+  if (event.key === TAB_KEY && isInsideConsentBar) event.stopPropagation();
+}
+
 export async function startConsentBanner(): Promise<void> {
+  document.body.addEventListener('keydown', releaseFocusFromConsentBar, { capture: true });
   await loadConsentStylesheet();
   return CookieConsent.run({
     root: CONSENT_ROOT_SELECTOR,
