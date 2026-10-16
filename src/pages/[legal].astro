@@ -227,8 +227,12 @@ const description =
             <li><strong>Data relating to a client relationship:</strong> for the duration of the
               relationship and thereafter for the periods required by law — for example, tax and
               accounting records are kept for up to 6 years under Spanish commercial and tax law.</li>
-            <li><strong>Server logs:</strong> retained only for a limited period for security and
-              diagnostic purposes.</li>
+            {/* TODO(ros): confirm these three periods and configure them before merge: server-log
+                rotation on the VPS, data retention and recording retention in Umami. */}
+            <li><strong>Server logs:</strong> kept for up to 14 days for security and diagnostic
+              purposes.</li>
+            <li><strong>Usage analytics:</strong> kept for up to 24 months.</li>
+            <li><strong>Session recordings:</strong> kept for up to 30 days.</li>
             <li><strong>Attribution data in your browser:</strong> up to 90 days.</li>
             <li><strong>Your cookie choice:</strong> 12 months.</li>
             <li><strong>HubSpot and LinkedIn cookies:</strong> see the table in section 10.</li>
