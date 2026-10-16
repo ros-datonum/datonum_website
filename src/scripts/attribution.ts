@@ -86,7 +86,9 @@ function readStoredTouch(key: string): Touch | undefined {
   const stored = localStorage.getItem(key);
   if (!stored) return undefined;
   const touch: Touch = JSON.parse(stored);
-  if (Date.now() - touch.ts > TOUCH_LIFETIME_MS) {
+  // An entry without a numeric timestamp cannot prove its age, so it counts as expired.
+  const isExpired = typeof touch.ts !== 'number' || Date.now() - touch.ts > TOUCH_LIFETIME_MS;
+  if (isExpired) {
     localStorage.removeItem(key);
     return undefined;
   }
@@ -101,7 +103,9 @@ export function readStoredTouches(): { first?: Touch; last?: Touch } {
 
 function storeTouches(): void {
   const { touch, isAttributable } = readCurrentTouch();
-  if (!readStoredTouch(FIRST_TOUCH_KEY)) localStorage.setItem(FIRST_TOUCH_KEY, JSON.stringify(touch));
+  // Reading an entry removes it once expired, so every page view prunes both.
+  const { first } = readStoredTouches();
+  if (!first) localStorage.setItem(FIRST_TOUCH_KEY, JSON.stringify(touch));
   if (isAttributable) localStorage.setItem(LAST_TOUCH_KEY, JSON.stringify(touch));
 }
 
