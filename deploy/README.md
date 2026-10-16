@@ -1,8 +1,9 @@
 # Deploy notes
 
 The site is a static Astro build served by nginx in a container (`Dockerfile`,
-`nginx.conf`), behind the host's Caddy (TLS) and Cloudflare. Deploy on the VPS with
-`docker compose up -d --build`.
+`nginx.conf`). In front of it sit the shared Caddy container (TLS), reached over the
+`ai_stack_public_proxy` Docker network with no host port published, and Cloudflare. Deploy on
+the VPS with `docker compose up -d --build`.
 
 ## Environment variables
 
@@ -21,7 +22,12 @@ list. Required in production:
 `go-links.caddy` holds the `/go/<code>` redirects. They live in Caddy, not in the site,
 so adding a link needs no rebuild.
 
-1. Copy `go-links.caddy` next to the Caddyfile on the VPS.
+Caddy runs as a shared container whose compose file is not in this repo. Below,
+`<caddy-container>` is its container name (`docker ps --filter ancestor=caddy`), and
+`<caddy-config-dir>` is the host directory it mounts at `/etc/caddy`
+(`docker inspect -f '{{json .Mounts}}' <caddy-container>`).
+
+1. Copy `go-links.caddy` into `<caddy-config-dir>`, next to the Caddyfile.
 2. Inside the `datonum.com` site block of the Caddyfile, add:
 
    ```caddy
@@ -31,8 +37,8 @@ so adding a link needs no rebuild.
 3. Validate and reload:
 
    ```sh
-   caddy validate --config /etc/caddy/Caddyfile
-   caddy reload --config /etc/caddy/Caddyfile
+   docker exec <caddy-container> caddy validate --config /etc/caddy/Caddyfile
+   docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
    ```
 
 4. Check: `curl -sI https://datonum.com/go/li` and `curl -sI https://datonum.com/go/li/`
