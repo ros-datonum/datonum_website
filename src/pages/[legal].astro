@@ -114,10 +114,14 @@ const description =
             and to keep a record of our conversation in our CRM (HubSpot). If you tell us you are not
             interested, we stop contacting you and keep only a minimal record (your name and company)
             so that we do not contact you again.</p>
-          <p><strong>Information collected automatically.</strong> When you visit the site, our hosting
-            and security provider processes limited technical data — such as IP address, browser and
-            device type, and the date, time and pages of your request — in server logs, in order to
-            deliver and protect the site.</p>
+          {/* TODO(ros): true only once the datonum.com block in the shared Caddyfile has no `log`
+              directive, or masks client IPs (deploy/README.md, "Server logs"). */}
+          <p><strong>Information collected automatically.</strong> When you visit the site, your
+            request passes through Cloudflare, which delivers and protects the site on our behalf (as
+            our processor) and in doing so processes technical data such as your IP address, browser
+            and device type, and the pages you request. Our own web server keeps no access log of
+            your visits; it keeps only a small technical error log, which does not contain your IP
+            address.</p>
           <p><strong>Usage analytics.</strong> We use Umami, a privacy-focused, cookieless analytics
             tool that we host on our own infrastructure, to understand how the site is used. It records
             aggregated information such as the pages viewed, the referring website, and your approximate
@@ -165,7 +169,8 @@ const description =
               keep a record of those conversations — Article 6(1)(f), our legitimate interest in
               business-to-business marketing. You can object at any time by replying to our message or
               emailing <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>.</li>
-            <li><strong>To operate and secure the website</strong> (server logs, abuse prevention) —
+            <li><strong>To operate and secure the website</strong> (content delivery and protection by
+              Cloudflare, technical error logs) —
               Article 6(1)(f), our legitimate interest in the security and proper functioning of the
               site.</li>
             <li><strong>To measure and improve how the site is used</strong> through privacy-friendly,
@@ -242,10 +247,11 @@ const description =
             <li><strong>Business contacts we reached out to:</strong> up to 12 months after our last
               contact, unless a business relationship starts; a minimal do-not-contact record is kept for
               as long as needed to respect your objection.</li>
-            {/* TODO(ros): confirm these three periods and configure them before merge: server-log
-                rotation on the VPS, data retention and recording retention in Umami. */}
-            <li><strong>Server logs:</strong> kept for up to 14 days for security and diagnostic
-              purposes.</li>
+            <li><strong>Server logs:</strong> we keep no access logs of visits. Technical error logs,
+              which contain no visitor IP addresses, are limited to 2 MB and overwritten
+              automatically.</li>
+            {/* TODO(ros): confirm these two periods and install deploy/umami-retention.sh on the VPS
+                before merge (deploy/README.md, "Umami data"). */}
             <li><strong>Usage analytics:</strong> kept for up to 24 months.</li>
             <li><strong>Session recordings:</strong> kept for up to 30 days.</li>
             <li><strong>Attribution data in your browser:</strong> up to 90 days.</li>

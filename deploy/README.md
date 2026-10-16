@@ -48,50 +48,44 @@ js-eu1.hs-analytics.net, js-eu1.hs-banner.com, snap.licdn.com, px.ads.linkedin.c
 
 ## Retention
 
-The Privacy Notice (§7) promises server logs for up to 14 days, usage analytics for up
-to 24 months and session recordings for up to 30 days. Neither Umami nor Docker enforces
-this by default. Install the pieces below. The `TODO(ros)` markers in
-`src/pages/[legal].astro` stay until they are installed and verified.
+The Privacy Notice (§3, §7) says the web server keeps no access logs, and that usage
+analytics are kept for up to 24 months and session recordings for up to 30 days. Umami does
+not enforce this by itself. Install and check the pieces below. The `TODO(ros)` markers in
+`src/pages/[legal].astro` stay until they are in place.
 
-### Server logs (14 days)
+### Server logs
 
-- **nginx (this container):** logs to stdout/stderr. `docker-compose.yml` sends them to
-  the journal (`logging: driver: journald`), so the change applies on the next
-  `docker compose up -d --build`. Before that, install the journal retention:
+Nothing here changes VPS-wide settings; everything is scoped to this site.
 
-  ```sh
-  sudo install -D -m 644 deploy/journald-retention.conf /etc/systemd/journald.conf.d/retention.conf
-  sudo systemctl restart systemd-journald
-  ```
-
-- **Caddy:** its Caddyfile is not in this repo. Caddy writes access logs only for sites
-  with a `log` directive.
-  - If it logs to stderr (the default), its logs land wherever Caddy runs:
-    - as a systemd service, they go to the journal and are already covered;
-    - as a container, add the same `logging: driver: journald` block to its compose
-      service.
-  - If it logs to a file, set the roll options in that `log` block:
+- **nginx (this container):** requests arrive through Caddy with the visitor's IP in
+  `X-Forwarded-For` and `CF-Connecting-IP`, and the image's default access-log format
+  records `X-Forwarded-For`. `nginx.conf` therefore sets `access_log off` and logs errors
+  at `warn` only. Those error lines show the Caddy container's address as `client`,
+  never a visitor's. `docker-compose.yml` caps this container's log at 2 × 1 MB
+  (`json-file`, per service).
+- **Caddy (shared container):** Caddy writes access logs only for site blocks that
+  contain a `log` directive. Check the `datonum.com` block in the shared Caddyfile:
+  - no `log`: nothing to do;
+  - has `log`: remove it, or keep it and mask client IPs:
 
     ```caddy
     log {
-    	output file /var/log/caddy/access.log {
-    		roll_interval 24h
-    		roll_keep_for 336h
+    	format filter {
+    		request>remote_ip ip_mask 16 32
+    		request>client_ip ip_mask 16 32
+    		request>headers>X-Forwarded-For delete
+    		request>headers>Cf-Connecting-Ip delete
     	}
     }
     ```
 
-    `roll_interval` makes the file roll daily even when it is small; without it Caddy
-    rolls only by size (100 MiB) and the live file can hold older entries. Run
-    `caddy validate` first: if it rejects `roll_interval`, this Caddy version predates
-    it, so upgrade it or log to stderr instead.
+    Then validate and reload as in "Short links" above.
 
-Verify:
+Verify after the next deploy:
 
 ```sh
-docker inspect -f '{{.HostConfig.LogConfig.Type}}' datonum-website   # journald
-systemd-analyze cat-config systemd/journald.conf | grep -E 'MaxFileSec|MaxRetentionSec'
-journalctl -o short-iso | head -1                                     # after two weeks: ≤ 14 days old
+docker inspect -f '{{.HostConfig.LogConfig}}' datonum-website   # {json-file map[max-file:2 max-size:1m]}
+docker logs datonum-website 2>&1 | grep -c 'GET /'              # 0: no access lines
 ```
 
 ### Umami data (24 months; recordings 30 days)
