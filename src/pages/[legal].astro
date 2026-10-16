@@ -98,7 +98,8 @@ const description =
           <h2>2. Scope</h2>
           <p>
             This Notice covers personal data collected through this website, our inquiry form and email
-            correspondence with us. It does not cover third-party websites we link to, which have their
+            correspondence with us, and our contact with business professionals we reach out to on
+            LinkedIn. It does not cover third-party websites we link to, which have their
             own privacy policies.
           </p>
 
@@ -106,6 +107,13 @@ const description =
           <p><strong>Information you give us.</strong> When you complete the inquiry form or email us,
             we collect your first name, last name, email address, company name and the content of your
             message, together with anything else you choose to include.</p>
+          <p><strong>Information about business contacts we reach out to.</strong> If we contact you on
+            LinkedIn about our services, we obtained your name, job title, company and LinkedIn profile
+            URL from your LinkedIn profile or LinkedIn Sales Navigator, together with publicly available
+            information about your company. We use it to contact you about a specific business process
+            and to keep a record of our conversation in our CRM (HubSpot). If you tell us you are not
+            interested, we stop contacting you and keep only a minimal record (your name and company)
+            so that we do not contact you again.</p>
           <p><strong>Information collected automatically.</strong> When you visit the site, our hosting
             and security provider processes limited technical data — such as IP address, browser and
             device type, and the date, time and pages of your request — in server logs, in order to
@@ -153,6 +161,10 @@ const description =
             <li><strong>To manage and follow up on business inquiries</strong> and keep records in our
               CRM — Article 6(1)(f), our legitimate interest in developing and managing business
               relationships.</li>
+            <li><strong>To contact business professionals on LinkedIn about our services</strong> and
+              keep a record of those conversations — Article 6(1)(f), our legitimate interest in
+              business-to-business marketing. You can object at any time by replying to our message or
+              emailing <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>.</li>
             <li><strong>To operate and secure the website</strong> (server logs, abuse prevention) —
               Article 6(1)(f), our legitimate interest in the security and proper functioning of the
               site.</li>
@@ -227,6 +239,9 @@ const description =
             <li><strong>Data relating to a client relationship:</strong> for the duration of the
               relationship and thereafter for the periods required by law — for example, tax and
               accounting records are kept for up to 6 years under Spanish commercial and tax law.</li>
+            <li><strong>Business contacts we reached out to:</strong> up to 12 months after our last
+              contact, unless a business relationship starts; a minimal do-not-contact record is kept for
+              as long as needed to respect your objection.</li>
             {/* TODO(ros): confirm these three periods and configure them before merge: server-log
                 rotation on the VPS, data retention and recording retention in Umami. */}
             <li><strong>Server logs:</strong> kept for up to 14 days for security and diagnostic
