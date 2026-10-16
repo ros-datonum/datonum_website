@@ -11,6 +11,13 @@ services:
       - ai_stack_public_proxy
     expose:
       - "80"
+    # nginx writes access and error logs to stdout/stderr. Send them to the journal, whose
+    # age-based retention (deploy/journald-retention.conf) keeps them for up to 14 days;
+    # Docker's json-file driver can only rotate by size.
+    logging:
+      driver: journald
+      options:
+        tag: datonum-website
 
 networks:
   ai_stack_public_proxy:
