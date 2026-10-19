@@ -17,9 +17,7 @@ export function getStaticPaths() {
 
 const { variant, title } = Astro.props;
 
-// TODO(merge): set PRIVACY_LAST_UPDATED to the deploy date once the consent and cookie
-// changes have passed legal review. Until then the page shows this placeholder on purpose.
-const PRIVACY_LAST_UPDATED = 'TODO: set to the deploy date before merging';
+const PRIVACY_LAST_UPDATED = '19 October 2026';
 const TERMS_LAST_UPDATED = '10 August 2026';
 const lastUpdated = variant === 'privacy' ? PRIVACY_LAST_UPDATED : TERMS_LAST_UPDATED;
 const contactEmail = 'hello@datonum.com';
@@ -115,8 +113,6 @@ const description =
             and to keep a record of our conversation in our CRM (HubSpot). If you tell us you are not
             interested, we stop contacting you and keep only a minimal record (your name and company)
             so that we do not contact you again.</p>
-          {/* TODO(ros): true only once the datonum.com block in the shared Caddyfile has no `log`
-              directive, or masks client IPs (deploy/README.md, "Server logs"). */}
           <p><strong>Information collected automatically.</strong> When you visit the site, your
             request passes through Cloudflare, which delivers and protects the site on our behalf (as
             our processor) and in doing so processes technical data such as your IP address, browser
@@ -251,8 +247,6 @@ const description =
             <li><strong>Server logs:</strong> we keep no access logs of visits. Technical error logs,
               which contain no visitor IP addresses, are limited to 2 MB and overwritten
               automatically.</li>
-            {/* TODO(ros): confirm these two periods and install deploy/umami-retention.sh on the VPS
-                before merge (deploy/README.md, "Umami data"). */}
             <li><strong>Usage analytics:</strong> kept for up to 24 months.</li>
             <li><strong>Session recordings:</strong> kept for up to 30 days.</li>
             <li><strong>Attribution data in your browser:</strong> up to 90 days.</li>

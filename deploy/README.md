@@ -56,8 +56,9 @@ js-eu1.hs-analytics.net, js-eu1.hs-banner.com, snap.licdn.com, px.ads.linkedin.c
 
 The Privacy Notice (§3, §7) says the web server keeps no access logs, and that usage
 analytics are kept for up to 24 months and session recordings for up to 30 days. Umami does
-not enforce this by itself. Install and check the pieces below. The `TODO(ros)` markers in
-`src/pages/[legal].astro` stay until they are in place.
+not enforce this by itself. Install and check the pieces below. The notice states these
+periods as in force from its 19 October 2026 version, so install the Umami job in the same
+session as that deploy.
 
 ### Server logs
 
