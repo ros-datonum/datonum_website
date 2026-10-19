@@ -36,8 +36,8 @@ const companyLinks = hasInsights
 
       <div class="site-footer__col">
         <span class="site-footer__heading">Contact</span>
-        <a href={`mailto:${contactEmail}`} class="site-footer__link">{contactEmail}</a>
-        <a href={linkedInUrl} class="site-footer__link">LinkedIn</a>
+        <a href={`mailto:${contactEmail}`} class="site-footer__link" data-umami-event="email_click">{contactEmail}</a>
+        <a href={linkedInUrl} class="site-footer__link" data-umami-event="outbound_linkedin">LinkedIn</a>
       </div>
     </div>
 
@@ -45,7 +45,8 @@ const companyLinks = hasInsights
       <span class="site-footer__copy">© 2026 Datonum</span>
       <div class="site-footer__legal">
         <a href={routes.privacy} class="site-footer__legal-link">Privacy</a>
-        <a href={routes.terms} class="site-footer__legal-link">Terms</a>
+        <a href={routes.terms} class="site-footer__legal-link">Terms &amp; legal notice</a>
+        <button type="button" class="site-footer__legal-link site-footer__legal-button" data-cc="show-preferencesModal">Cookie settings</button>
       </div>
     </div>
   </div>
@@ -94,6 +95,7 @@ const companyLinks = hasInsights
   .site-footer__legal { display: flex; gap: 20px; }
   .site-footer__legal-link { font: var(--type-small); color: var(--navy-300); border-bottom: none; }
   .site-footer__legal-link:hover { color: var(--white); }
+  .site-footer__legal-button { background: none; border: none; padding: 0; cursor: pointer; }
 
   /* Tablet: 2 columns so link labels aren't cramped. */
   @media (max-width: 900px) {

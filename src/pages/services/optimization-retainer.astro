@@ -51,7 +51,7 @@ const structuredData = [
       <h1 class="ihero__title" style="max-width:18ch">AI workflow maintenance and optimization</h1>
       <p class="ihero__lead" style="max-width:62ch">Maintenance, quality tuning, and improvement work, with someone accountable when the output looks off.</p>
       <div class="actions" style="margin-top:36px">
-        <Button size="lg" variant="inverse" href={routes.contact}>Book a 30-minute call</Button>
+        <Button size="lg" variant="inverse" href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="hero">Book a 30-minute call</Button>
       </div>
     </div>
   </section>
@@ -118,6 +118,7 @@ const structuredData = [
         <Accordion items={retainerFaqs} />
       </div>
       <CTABanner
+        location="service-optimization-retainer"
         title="Tell us what your team keeps redoing."
         lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
       />

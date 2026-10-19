@@ -153,7 +153,7 @@ const processes = [
       <div style="display:flex;flex-direction:column;gap:20px;align-items:flex-start">
         <p class="lead-muted">If one of the above took a name and a face as you read it — the person who does it, the morning it takes — that is the place to start. Tell us which one, and we will give you an honest view on whether AI is the right answer or whether something simpler would do.</p>
         <p class="muted">Half an hour, no preparation, no obligation.</p>
-        <Button href={routes.contact}>Book a 30-minute call</Button>
+        <Button href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="page-what-we-automate">Book a 30-minute call</Button>
       </div>
     </div>
   </section>
@@ -161,6 +161,7 @@ const processes = [
   <section class="band band--card band--cta">
     <div class="container">
       <CTABanner
+        location="page-what-we-automate"
         title="Tell us what your team keeps redoing."
         lead="Thirty minutes, no preparation needed. We will tell you honestly whether AI would help or whether simpler automation would do the job."
       />

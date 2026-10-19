@@ -5,6 +5,7 @@
 // IDENTITY placeholders (nif, address) are required by law — fill before publishing.
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
+import DataTable from '../components/DataTable.astro';
 import { routes } from '../data/navigation.ts';
 
 export function getStaticPaths() {
@@ -16,13 +17,40 @@ export function getStaticPaths() {
 
 const { variant, title } = Astro.props;
 
-const lastUpdated = '10 August 2026';
+const PRIVACY_LAST_UPDATED = '19 October 2026';
+const TERMS_LAST_UPDATED = '10 August 2026';
+const lastUpdated = variant === 'privacy' ? PRIVACY_LAST_UPDATED : TERMS_LAST_UPDATED;
 const contactEmail = 'hello@datonum.com';
 // Legally required identification of the data controller / service provider.
 const legalName = 'Rostyslav Bachyk';
 const commercialName = 'Datonum';
 const nif = 'Z0041311P';
 const address = 'Avenida Fabraquer 3, 17J, El Campello, 03560 Alicante, Spain';
+
+// Section 10 of the Privacy Notice. Names and durations as observed in the browser after
+// accepting all cookies; re-check them when a provider changes its tags.
+const cookieColumns = [
+  { key: 'name', label: 'Name' },
+  { key: 'provider', label: 'Provider' },
+  { key: 'purpose', label: 'Purpose' },
+  { key: 'category', label: 'Category' },
+  { key: 'duration', label: 'Duration' },
+];
+const cookieRows = [
+  { name: 'cc_cookie', provider: 'Datonum', purpose: 'Remembers your cookie choice', category: 'Necessary', duration: '12 months' },
+  { name: 'dtn_first_touch, dtn_last_touch (local storage)', provider: 'Datonum', purpose: 'Which link or website brought you to us', category: 'Analytics', duration: '90 days' },
+  { name: '__hstc', provider: 'HubSpot', purpose: 'Tracks visits', category: 'Analytics', duration: '6 months' },
+  { name: 'hubspotutk', provider: 'HubSpot', purpose: 'Links your visits to an inquiry you submit', category: 'Analytics', duration: '6 months' },
+  { name: '__hssc', provider: 'HubSpot', purpose: 'Counts pages in a session', category: 'Analytics', duration: '30 minutes' },
+  { name: '__hssrc', provider: 'HubSpot', purpose: 'Detects a new session', category: 'Analytics', duration: 'Session' },
+  { name: 'bcookie', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 year' },
+  { name: 'li_gc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '6 months' },
+  { name: 'lidc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 day' },
+  // Not observed from Spain: LinkedIn documents it only for traffic from outside the EU, EEA,
+  // UK and Quebec (LinkedIn Help, "LinkedIn Insight Tag"), and does not publish a duration.
+  { name: 'li_adsid (LinkedIn Ads ID)', provider: 'LinkedIn', purpose: 'First-party identifier for conversion measurement; only for visitors outside the EU, EEA, UK and Quebec', category: 'Marketing', duration: 'Not stated by LinkedIn' },
+  { name: '__cf_bm', provider: 'HubSpot / LinkedIn (via Cloudflare bot management on their domains)', purpose: 'Bot detection on the provider’s servers', category: 'Set only after you accept analytics or marketing', duration: '30 minutes' },
+];
 
 const description =
   variant === 'privacy'
@@ -58,7 +86,7 @@ const description =
             <li>{legalName}, operating under the commercial name “{commercialName}”</li>
             <li>Tax identification number (NIE): {nif}</li>
             <li>Address: {address}</li>
-            <li>Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></li>
+            <li>Email: <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a></li>
           </ul>
           <p>
             We have not appointed a Data Protection Officer, as our processing does not meet the
@@ -68,30 +96,59 @@ const description =
           <h2>2. Scope</h2>
           <p>
             This Notice covers personal data collected through this website, our inquiry form and email
-            correspondence with us. It does not cover third-party websites we link to, which have their
+            correspondence with us, and our contact with business professionals we reach out to on
+            LinkedIn. It does not cover third-party websites we link to, which have their
             own privacy policies.
           </p>
 
           <h2>3. What personal data we collect</h2>
           <p><strong>Information you give us.</strong> When you complete the inquiry form or email us,
             we collect your first name, last name, email address, company name and the content of your
-            message, together with anything else you choose to include.</p>
-          <p><strong>Information collected automatically.</strong> When you visit the site, our hosting
-            and security provider processes limited technical data — such as IP address, browser and
-            device type, and the date, time and pages of your request — in server logs, in order to
-            deliver and protect the site.</p>
+            message, together with anything else you choose to include. All fields are required;
+            without them we can’t reply to your inquiry.</p>
+          <p><strong>Information about business contacts we reach out to.</strong> If we contact you on
+            LinkedIn about our services, we obtained your name, job title, company and LinkedIn profile
+            URL from your LinkedIn profile or LinkedIn Sales Navigator, together with publicly available
+            information about your company. We use it to contact you about a specific business process
+            and to keep a record of our conversation in our CRM (HubSpot). If you tell us you are not
+            interested, we stop contacting you and keep only a minimal record (your name and company)
+            so that we do not contact you again.</p>
+          <p><strong>Information collected automatically.</strong> When you visit the site, your
+            request passes through Cloudflare, which delivers and protects the site on our behalf (as
+            our processor) and in doing so processes technical data such as your IP address, browser
+            and device type, and the pages you request. Our own web server keeps no access log of
+            your visits; it keeps only a small technical error log, which does not contain your IP
+            address.</p>
           <p><strong>Usage analytics.</strong> We use Umami, a privacy-focused, cookieless analytics
             tool that we host on our own infrastructure, to understand how the site is used. It records
             aggregated information such as the pages viewed, the referring website, and your approximate
             location, browser and device type. It does not use cookies, does not store your IP address,
             and does not create a persistent identifier or track you across other websites.</p>
-          <p><strong>Session recording.</strong> Within the same self-hosted Umami tool, we use a
-            session-recording feature that captures how visitors interact with our pages — such as mouse
-            movement, clicks, scrolling and navigation between pages — so we can review anonymised
-            playbacks of site usage and improve the site’s layout and usability. Recording runs on the
-            same cookieless basis: it uses no cookies or other browser storage, does not store your IP
-            address, and is not used to identify you or track you across other websites. The content you
-            type into form fields is automatically masked and is not captured in the recording.</p>
+          <p><strong>Cookies and similar technologies, with your consent.</strong> If you accept them in
+            our cookie banner, we also use:</p>
+          <ul>
+            <li><strong>Attribution data</strong> — we store in your browser (local storage) the campaign
+              parameters of the link that brought you to our site (for example “LinkedIn post”), the
+              first page you visited and the referring website, so that if you later contact us we know
+              which channel reached you. Kept for up to 90 days.</li>
+            <li><strong>Session recording</strong> — our self-hosted Umami tool records how you
+              interact with our pages (mouse movement, clicks, scrolling, navigation) so we can review
+              playbacks and improve the site. It uses no cookies, does not store your IP address, and
+              masks everything you type into form fields.</li>
+            <li><strong>HubSpot tracking</strong> — With your consent, we use HubSpot tracking
+              technologies to record the pages you visit on our website. If you subsequently submit an
+              inquiry, this browsing history may be associated with your contact record in our CRM. We
+              use this information to understand interest in our services and provide relevant context
+              when responding to inquiries and managing business relationships.</li>
+            <li><strong>LinkedIn Insight Tag</strong> — LinkedIn cookies let LinkedIn report to us, in
+              aggregated form, the professional characteristics of our visitors (such as industry, job
+              function and company size) and, in future, let us show our content on LinkedIn to people
+              who have visited our site.</li>
+          </ul>
+          <p>
+            None of these run unless you opt in, and you can withdraw your choice at any time through
+            “Cookie settings” at the bottom of every page.
+          </p>
           <p>
             We do not intentionally collect special categories of data (such as health, political or
             religious information). Please do not include sensitive personal data in your message.
@@ -105,12 +162,21 @@ const description =
             <li><strong>To manage and follow up on business inquiries</strong> and keep records in our
               CRM — Article 6(1)(f), our legitimate interest in developing and managing business
               relationships.</li>
-            <li><strong>To operate and secure the website</strong> (server logs, abuse prevention) —
+            <li><strong>To contact business professionals on LinkedIn about our services</strong> and
+              keep a record of those conversations — Article 6(1)(f), our legitimate interest in
+              business-to-business marketing. You can object at any time by replying to our message or
+              emailing <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>.</li>
+            <li><strong>To operate and secure the website</strong> (content delivery and protection by
+              Cloudflare, technical error logs) —
               Article 6(1)(f), our legitimate interest in the security and proper functioning of the
               site.</li>
             <li><strong>To measure and improve how the site is used</strong> through privacy-friendly,
-              cookieless analytics and anonymised session recording — Article 6(1)(f), our legitimate
-              interest in understanding and improving our website.</li>
+              cookieless analytics — Article 6(1)(f), our legitimate interest in understanding and
+              improving our website.</li>
+            <li><strong>To understand which channels bring visitors and inquiries</strong>, to link an
+              inquiry to the pages viewed before it, to record sessions, and to measure and target our
+              LinkedIn activity, using the cookies and similar technologies described above — Article 6(1)(a) GDPR, your
+              consent (and Article 22.2 LSSI-CE), which you can withdraw at any time.</li>
             <li><strong>To meet legal, accounting and tax obligations</strong> — Article 6(1)(c).</li>
             <li><strong>To send marketing communications</strong>, only where you have expressly asked
               us to — Article 6(1)(a) consent, which you may withdraw at any time.</li>
@@ -124,8 +190,22 @@ const description =
           <p>We do not sell your personal data. We share it only with:</p>
           <ul>
             <li><strong>HubSpot</strong> — our customer relationship management platform; inquiry-form
-              submissions are stored there, on servers in the European Union (acting as our processor).</li>
-            <li><strong>Cloudflare</strong> — website hosting, content delivery and security (processor).</li>
+              submissions, and, if you accept analytics cookies, your browsing on our site, are stored
+              there on servers in the European Union (acting as our processor).</li>
+            <li><strong>LinkedIn</strong> — If you consent to marketing technologies, we use the
+              LinkedIn Insight Tag to measure website visits, understand audience characteristics and
+              support advertising activities. LinkedIn processes data collected through the Insight Tag
+              as an independent controller under its <a
+                href="https://www.linkedin.com/legal/l/linkedin-independent-controller-addendum"
+                target="_blank" rel="noopener">Independent Controller Addendum</a>. LinkedIn’s <a
+                href="https://www.linkedin.com/legal/privacy-policy" target="_blank" rel="noopener">Privacy
+                Policy</a> and <a href="https://www.linkedin.com/legal/cookie-policy" target="_blank"
+                rel="noopener">Cookie Policy</a> explain its processing practices and the rights available
+              to individuals.</li>
+            <li><strong>Hetzner Online GmbH</strong> (Germany) — hosting of this website and of our
+              self-hosted analytics (processor).</li>
+            <li><strong>Cloudflare</strong> — content delivery and security in front of our website
+              (processor).</li>
             <li><strong>Professional advisers</strong> (such as accountants or legal advisers), where
               necessary and under a duty of confidentiality.</li>
             <li><strong>Public authorities</strong>, where we are legally required to disclose.</li>
@@ -136,16 +216,23 @@ const description =
           </p>
 
           <h2>6. International data transfers</h2>
-          <p>
-            The personal data you submit through our inquiry form is stored by HubSpot on servers
-            located in the European Union. HubSpot and Cloudflare are, however, US-based companies, and
-            in limited circumstances — such as technical support, security or content delivery — some
-            data may be accessed from outside the European Economic Area. Where that happens, the
-            transfer is protected by appropriate safeguards: the EU–US Data Privacy Framework (European
-            Commission adequacy decision of 10 July 2023) and/or the European Commission’s Standard
-            Contractual Clauses. You may request a copy of the relevant safeguards using the contact
-            details above.
-          </p>
+          <ul>
+            <li>HubSpot stores the data we hold in it in its EU data centre. HubSpot, Inc. (US) may
+              access it remotely for support and security; these transfers are covered by the EU–US
+              Data Privacy Framework, including the UK Extension, and by the European Commission’s
+              Standard Contractual Clauses with the UK Addendum, under HubSpot’s data processing
+              agreement.</li>
+            <li>Cloudflare, Inc. (US) is certified under the EU–US Data Privacy Framework, including
+              the UK Extension; its data processing agreement also includes Standard Contractual
+              Clauses.</li>
+            <li>LinkedIn processes Insight Tag data as an independent controller, and that data may be
+              transferred to and stored by LinkedIn Corporation in the United States. LinkedIn
+              Corporation is certified under the EU–US Data Privacy Framework, including the UK
+              Extension.</li>
+            <li>Hetzner hosts our website and analytics in Germany; this data is not transferred
+              outside the EEA.</li>
+          </ul>
+          <p>You may request a copy of the relevant safeguards using the contact details above.</p>
 
           <h2>7. How long we keep it</h2>
           <ul>
@@ -154,8 +241,17 @@ const description =
             <li><strong>Data relating to a client relationship:</strong> for the duration of the
               relationship and thereafter for the periods required by law — for example, tax and
               accounting records are kept for up to 6 years under Spanish commercial and tax law.</li>
-            <li><strong>Server logs:</strong> retained only for a limited period for security and
-              diagnostic purposes.</li>
+            <li><strong>Business contacts we reached out to:</strong> up to 12 months after our last
+              contact, unless a business relationship starts; a minimal do-not-contact record is kept for
+              as long as needed to respect your objection.</li>
+            <li><strong>Server logs:</strong> we keep no access logs of visits. Technical error logs,
+              which contain no visitor IP addresses, are limited to 2 MB and overwritten
+              automatically.</li>
+            <li><strong>Usage analytics:</strong> kept for up to 24 months.</li>
+            <li><strong>Session recordings:</strong> kept for up to 30 days.</li>
+            <li><strong>Attribution data in your browser:</strong> up to 90 days.</li>
+            <li><strong>Your cookie choice:</strong> 12 months.</li>
+            <li><strong>HubSpot and LinkedIn cookies:</strong> see the table in section 10.</li>
           </ul>
           <p>We keep personal data no longer than necessary for the purposes described above.</p>
 
@@ -169,7 +265,7 @@ const description =
             beforehand.
           </p>
           <p>
-            To exercise your rights, email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. We may
+            To exercise your rights, email <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>. We may
             need to confirm your identity. We will respond within one month (extendable by two further
             months for complex requests), and doing so is free of charge.
           </p>
@@ -188,14 +284,18 @@ const description =
             guaranteed to be completely secure.
           </p>
 
-          <h2>10. Cookies</h2>
+          <h2 id="cookies">10. Cookies and similar technologies</h2>
           <p>
-            This website does not use cookies for profiling or advertising, and our usage analytics and
-            session recording are cookieless (see “What personal data we collect”). Our hosting and security provider may set
-            strictly necessary technical cookies solely to deliver and protect the site; these are
-            exempt from consent under Article 22.2 LSSI-CE. If we introduce any
-            non-essential cookies in future, we will ask for your consent through a cookie banner
-            beforehand.
+            Our usage analytics (Umami) is cookieless and runs without any storage on your device;
+            session recording runs only if you accept analytics. Everything else listed below is used only after you agree to it in our
+            cookie banner. You can change your choice at any time through “Cookie settings” at the
+            bottom of every page, or delete cookies in your browser settings.
+          </p>
+          <DataTable columns={cookieColumns} rows={cookieRows} dense />
+          <p>
+            LinkedIn may set additional cookies, particularly for visitors signed in to LinkedIn; see <a
+              href="https://www.linkedin.com/legal/cookie-policy" target="_blank" rel="noopener">LinkedIn’s
+              Cookie Policy</a>.
           </p>
 
           <h2>11. Children</h2>
@@ -226,7 +326,7 @@ const description =
             <li>{legalName}, commercial name “{commercialName}”</li>
             <li>Tax identification number (NIE): {nif}</li>
             <li>Address: {address}</li>
-            <li>Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></li>
+            <li>Email: <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a></li>
           </ul>
 
           <h2>2. Purpose of the site</h2>
@@ -312,7 +412,7 @@ const description =
             updated Terms.
           </p>
 
-          <p>Questions about these Terms? Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
+          <p>Questions about these Terms? Email <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>.</p>
         </div>
       )}
 
@@ -344,6 +444,8 @@ const description =
     margin: 36px 0 8px;
     text-wrap: pretty;
   }
+  /* Keeps the cookie section (linked from the consent banner) clear of the sticky header. */
+  .legal-prose h2[id] { scroll-margin-top: calc(var(--header-height) + var(--space-6)); }
   .legal-prose p { font: var(--type-body); color: var(--grey-600); margin: 0 0 10px; text-wrap: pretty; }
   .legal-prose ul { margin: 4px 0 10px; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
   .legal-prose li { font: var(--type-body); color: var(--grey-600); text-wrap: pretty; }

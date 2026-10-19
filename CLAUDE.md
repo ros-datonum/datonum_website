@@ -44,7 +44,8 @@ No prices anywhere on the site. Pricing lives only in the PDF one-pagers.
 
 ## Stack
 Astro 7, static output, no adapter. Built into an nginx container (`Dockerfile`,
-`nginx.conf`) on a VPS, behind host Caddy (TLS) and Cloudflare. Deploy:
+`nginx.conf`) on a VPS, behind a shared Caddy container (TLS, on the `ai_stack_public_proxy`
+Docker network) and Cloudflare. Deploy:
 `docker compose up -d --build`.
 
 URLs have no trailing slash. Pages build to `/about.html` (`build.format: 'file'`) and

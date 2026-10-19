@@ -12,6 +12,8 @@ interface Props {
   action?: string;
   href?: string;
   tone?: 'ink' | 'soft';
+  /** Umami cta_book_call location, e.g. service-<slug>, case-<slug>, article, page-<slug>. */
+  location: string;
 }
 const {
   eyebrow = 'Next step',
@@ -20,9 +22,11 @@ const {
   action = 'Book a 30-minute call',
   href = routes.contact,
   tone = 'ink',
+  location,
 } = Astro.props;
 
 const ink = tone === 'ink';
+const CTA_EVENT = 'cta_book_call';
 ---
 
 <div class:list={['cta', ink ? 'cta--ink' : 'cta--soft']}>
@@ -31,7 +35,7 @@ const ink = tone === 'ink';
     <span class="cta__title">{title}</span>
     {lead && <span class="cta__lead">{lead}</span>}
   </div>
-  <Button size="lg" variant={ink ? 'inverse' : 'primary'} href={href} class="cta__action">{action}</Button>
+  <Button size="lg" variant={ink ? 'inverse' : 'primary'} href={href} class="cta__action" data-umami-event={CTA_EVENT} data-umami-event-location={location}>{action}</Button>
 </div>
 
 <style>

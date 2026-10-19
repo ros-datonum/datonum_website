@@ -22,7 +22,7 @@ export const founder = {
 } as const;
 
 export const socialProfiles = {
-  linkedIn: 'https://www.linkedin.com/company/datonum-systems',
+  linkedIn: 'https://www.linkedin.com/company/datonum-systems/',
   threads: 'https://www.threads.com/@datonumhq',
 } as const;
 

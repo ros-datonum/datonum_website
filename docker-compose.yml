@@ -1,6 +1,7 @@
 # Deploy on the VPS: `docker compose up -d --build`
-# Standalone container — no shared network with Caddy. The host's Caddy reaches it via
-# host.docker.internal:8080 and handles TLS.
+# Caddy runs as a separate, shared container on the ai_stack_public_proxy network. It
+# terminates TLS and reverse-proxies to this container's port 80 over that network; no port
+# is published on the host.
 services:
   datonum-website:
     build: .
@@ -11,6 +12,13 @@ services:
       - ai_stack_public_proxy
     expose:
       - "80"
+    # nginx keeps no access log (nginx.conf); this caps the remaining error log at 2 × 1 MB.
+    # Set per service, so the VPS-wide Docker logging defaults are untouched.
+    logging:
+      driver: json-file
+      options:
+        max-size: "1m"
+        max-file: "2"
 
 networks:
   ai_stack_public_proxy:
