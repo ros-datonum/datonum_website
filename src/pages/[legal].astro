@@ -17,7 +17,7 @@ export function getStaticPaths() {
 
 const { variant, title } = Astro.props;
 
-const PRIVACY_LAST_UPDATED = '19 October 2026';
+const PRIVACY_LAST_UPDATED = '20 October 2026';
 const TERMS_LAST_UPDATED = '10 August 2026';
 const lastUpdated = variant === 'privacy' ? PRIVACY_LAST_UPDATED : TERMS_LAST_UPDATED;
 const contactEmail = 'hello@datonum.com';
@@ -46,6 +46,11 @@ const cookieRows = [
   { name: 'bcookie', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 year' },
   { name: 'li_gc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '6 months' },
   { name: 'lidc', provider: 'LinkedIn', purpose: 'Visitor demographics, conversion measurement, future ad targeting', category: 'Marketing', duration: '1 day' },
+  // Observed 20 Oct 2026 after accepting marketing, from a browser not signed in to LinkedIn.
+  { name: 'li_sugr', provider: 'LinkedIn', purpose: 'Probabilistic matching of the visitor for conversion measurement', category: 'Marketing', duration: '3 months' },
+  { name: 'bscookie', provider: 'LinkedIn', purpose: 'Secure browser identifier used by LinkedIn', category: 'Marketing', duration: '1 year' },
+  { name: 'UserMatchHistory', provider: 'LinkedIn', purpose: 'Syncs the LinkedIn Ads ID for conversion measurement and ad targeting', category: 'Marketing', duration: '30 days' },
+  { name: 'AnalyticsSyncHistory', provider: 'LinkedIn', purpose: 'Records when the visitor was last synced with LinkedIn', category: 'Marketing', duration: '30 days' },
   // Not observed from Spain: LinkedIn documents it only for traffic from outside the EU, EEA,
   // UK and Quebec (LinkedIn Help, "LinkedIn Insight Tag"), and does not publish a duration.
   { name: 'li_adsid (LinkedIn Ads ID)', provider: 'LinkedIn', purpose: 'First-party identifier for conversion measurement; only for visitors outside the EU, EEA, UK and Quebec', category: 'Marketing', duration: 'Not stated by LinkedIn' },
@@ -119,6 +124,11 @@ const description =
             and device type, and the pages you request. Our own web server keeps no access log of
             your visits; it keeps only a small technical error log, which does not contain your IP
             address.</p>
+          <p><strong>Performance measurement.</strong> Cloudflare also provides us with Cloudflare Web
+            Analytics: a small script on each page reports how quickly the page loaded, together with
+            the page address, referring website, and browser and device type. It does not use cookies
+            or local storage, and does not create an identifier to recognise you or track you across
+            other websites. Cloudflare processes this data on our behalf (as our processor).</p>
           <p><strong>Usage analytics.</strong> We use Umami, a privacy-focused, cookieless analytics
             tool that we host on our own infrastructure, to understand how the site is used. It records
             aggregated information such as the pages viewed, the referring website, and your approximate
@@ -170,8 +180,9 @@ const description =
               Cloudflare, technical error logs) —
               Article 6(1)(f), our legitimate interest in the security and proper functioning of the
               site.</li>
-            <li><strong>To measure and improve how the site is used</strong> through privacy-friendly,
-              cookieless analytics — Article 6(1)(f), our legitimate interest in understanding and
+            <li><strong>To measure and improve how the site is used and how fast it loads</strong>
+              through privacy-friendly, cookieless analytics (Umami and Cloudflare Web Analytics) —
+              Article 6(1)(f), our legitimate interest in understanding and
               improving our website.</li>
             <li><strong>To understand which channels bring visitors and inquiries</strong>, to link an
               inquiry to the pages viewed before it, to record sessions, and to measure and target our
@@ -204,8 +215,8 @@ const description =
               to individuals.</li>
             <li><strong>Hetzner Online GmbH</strong> (Germany) — hosting of this website and of our
               self-hosted analytics (processor).</li>
-            <li><strong>Cloudflare</strong> — content delivery and security in front of our website
-              (processor).</li>
+            <li><strong>Cloudflare</strong> — content delivery and security in front of our website,
+              and cookieless performance measurement (Cloudflare Web Analytics) (processor).</li>
             <li><strong>Professional advisers</strong> (such as accountants or legal advisers), where
               necessary and under a duty of confidentiality.</li>
             <li><strong>Public authorities</strong>, where we are legally required to disclose.</li>
@@ -248,6 +259,8 @@ const description =
               which contain no visitor IP addresses, are limited to 2 MB and overwritten
               automatically.</li>
             <li><strong>Usage analytics:</strong> kept for up to 24 months.</li>
+            <li><strong>Performance measurement (Cloudflare Web Analytics):</strong> held by Cloudflare
+              in our account for its standard Web Analytics retention period; we do not export it.</li>
             <li><strong>Session recordings:</strong> kept for up to 30 days.</li>
             <li><strong>Attribution data in your browser:</strong> up to 90 days.</li>
             <li><strong>Your cookie choice:</strong> 12 months.</li>
@@ -286,7 +299,8 @@ const description =
 
           <h2 id="cookies">10. Cookies and similar technologies</h2>
           <p>
-            Our usage analytics (Umami) is cookieless and runs without any storage on your device;
+            Our usage analytics (Umami) and performance measurement (Cloudflare Web Analytics) are
+            cookieless and run without any storage on your device;
             session recording runs only if you accept analytics. Everything else listed below is used only after you agree to it in our
             cookie banner. You can change your choice at any time through “Cookie settings” at the
             bottom of every page, or delete cookies in your browser settings.
