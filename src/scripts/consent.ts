@@ -40,9 +40,27 @@ const PRIVACY_COOKIES_SECTION = `${routes.privacy}#cookies`;
 // Third-party LinkedIn cookies (linkedin.com) cannot be removed from this domain.
 const HUBSPOT_COOKIES = ['__hstc', 'hubspotutk', '__hssrc', '__hssc'];
 const LINKEDIN_FIRST_PARTY_COOKIES = ['li_fat_id', 'li_sugr'];
+// Local storage the Insight Tag writes on this domain: the LinkedIn Ads ID, set only for
+// visitors outside the EU, EEA, UK and Quebec. autoClear removes cookies only, so these keys
+// are removed here whenever marketing consent is absent.
+const LINKEDIN_LOCAL_STORAGE_KEYS = ['li_adsId'];
 
 export function hasAnalyticsConsent(): boolean {
   return CookieConsent.acceptedCategory(consentCategory.analytics);
+}
+
+function clearLinkedInStorageWithoutConsent(): void {
+  if (CookieConsent.acceptedCategory(consentCategory.marketing)) return;
+  try {
+    for (const key of LINKEDIN_LOCAL_STORAGE_KEYS) localStorage.removeItem(key);
+  } catch {
+    // Storage is blocked in this browser, so there is nothing stored to remove.
+  }
+}
+
+function handleConsentChoice(): void {
+  clearLinkedInStorageWithoutConsent();
+  reportConsentChoice();
 }
 
 function reportConsentChoice(): void {
@@ -74,7 +92,7 @@ function releaseFocusFromConsentBar(event: KeyboardEvent): void {
 export async function startConsentBanner(): Promise<void> {
   document.body.addEventListener('keydown', releaseFocusFromConsentBar, { capture: true });
   await loadConsentStylesheet();
-  return CookieConsent.run({
+  await CookieConsent.run({
     root: CONSENT_ROOT_SELECTOR,
     revision: CONSENT_REVISION,
     cookie: { name: CONSENT_COOKIE_NAME, expiresAfterDays: CONSENT_LIFETIME_DAYS },
@@ -91,8 +109,8 @@ export async function startConsentBanner(): Promise<void> {
         autoClear: { cookies: LINKEDIN_FIRST_PARTY_COOKIES.map((name) => ({ name })), reloadPage: true },
       },
     },
-    onFirstConsent: reportConsentChoice,
-    onChange: reportConsentChoice,
+    onFirstConsent: handleConsentChoice,
+    onChange: handleConsentChoice,
     language: {
       default: 'en',
       translations: {
@@ -139,4 +157,6 @@ export async function startConsentBanner(): Promise<void> {
       },
     },
   });
+  // Also on every page load: covers a withdrawal made before the reload autoClear triggers.
+  clearLinkedInStorageWithoutConsent();
 }
