@@ -24,6 +24,8 @@ export interface CaseStudy {
   indexDesc: string; // summary in the index list + Home card
   title: string; // detail hero H1
   lead: string; // detail hero lead
+  metaTitle?: string; // <title> when the H1 is too long for search results (≤ 50 chars before the suffix)
+  metaDescription?: string; // meta description when the lead runs past 160 chars
   situation: string[]; // first paragraph is lead-sized
   whereAI?: string;
   howItRuns: FlowStep[];
@@ -45,6 +47,7 @@ export const caseStudies: CaseStudy[] = [
     indexDesc: 'Turns inconsistent inbound inquiries into a consistent qualification decision — with the reasoning recorded, and a route to a person whenever the case is unclear.',
     title: 'AI lead and opportunity scoring',
     lead: 'Turns inconsistent inbound inquiries into a consistent qualification decision — with the reasoning recorded, and a route to a person whenever the case is unclear.',
+    metaDescription: 'Turns inconsistent inbound inquiries into a consistent qualification decision, with the reasoning recorded and a person brought in when the case is unclear.',
     situation: ['Inquiries arrive with different levels of detail. What matters is buried inside descriptions, budgets, timelines, and previous correspondence. Reviewing each one by hand takes time and produces different judgments on different days. A simple points-based score misses the context that decides it.'],
     whereAI: 'Reading a discursive inquiry and assessing fit, commercial potential, and where the difficulties lie — then explaining that assessment in terms a person can check. No rule can read an email and work out what the sender actually needs.',
     howItRuns: [
@@ -71,6 +74,7 @@ export const caseStudies: CaseStudy[] = [
     indexDesc: 'Questions asked in plain language across your approved documents, answered with the specific document and section each statement came from.',
     title: 'A knowledge assistant that shows where every answer came from',
     lead: 'Lets people ask questions in plain language across your approved documents, and answers with the specific document and section each statement came from.',
+    metaTitle: 'Knowledge assistant with cited answers',
     situation: ['Policies, procedures, product information, and operating guidance sit across many files and change over time. Nobody is sure which document holds the current answer. Searching by keyword fails when the question uses different words than the document. And a general AI tool will produce a confident answer with nothing behind it.'],
     whereAI: 'Understanding a question asked in one set of words and finding the passage that answers it in another. That is meaning-matching, which keyword search cannot do.',
     howItRuns: [
@@ -98,6 +102,7 @@ export const caseStudies: CaseStudy[] = [
     indexDesc: 'Thousands of records in inconsistent formats, with the supplier assessed before the product and every rejection reason recorded.',
     title: 'Two-stage scoring across a large catalog',
     lead: 'Takes thousands of supplier and product records in inconsistent formats, assesses the supplier before the product, and prepares approved items for publishing — with every rejection reason recorded.',
+    metaDescription: 'Assesses thousands of supplier and product records in inconsistent formats, supplier before product, and prepares approved items for publishing.',
     situation: ['Supplier catalogs arrive with inconsistent titles, categories, prices, shipping terms, and stock information. Reviewing products first creates repeated work, because one unsuitable supplier invalidates every product attached to it. Rejection reasons end up scattered across spreadsheets, so the same item gets reconsidered months later.'],
     whereAI: 'Assessing commercial potential, usefulness, and how well a product is described — from text written by hundreds of different suppliers with no shared standard.',
     howItRuns: [
@@ -126,6 +131,8 @@ export const caseStudies: CaseStudy[] = [
     indexDesc: 'Records collected from several external systems on a schedule and reconciled into one consistent history, with the status of every run visible.',
     title: 'Bringing scattered records into a single reporting layer',
     lead: 'Collects records from several external systems on a schedule, reconciles them into one consistent history, and presents current state alongside how it came about.',
+    metaTitle: 'One reporting layer from scattered records',
+    metaDescription: 'Collects records from several systems on a schedule, reconciles them into one consistent history, and shows current state alongside how it came about.',
     situation: ['Records arrive from different systems with different structures and update behavior. The current position is visible, but nothing explains how it came about or provides a dependable history. Repeated synchronization risks duplicates. Failed runs pass unnoticed.'],
     howItRuns: [
       { n: '01', t: 'Scheduled collection from each connected system' },
@@ -153,6 +160,8 @@ export const caseStudies: CaseStudy[] = [
     indexDesc: 'Software delivery split into separate roles, each producing a defined document and each having to pass a check before the next stage begins.',
     title: 'Governed software delivery, where no step approves its own work',
     lead: 'Splits delivery into separate roles — requirements, architecture, planning, building, review, testing, release readiness — each producing a defined document and each having to pass a check before the next stage begins.',
+    metaTitle: 'Governed delivery where no step approves itself',
+    metaDescription: 'Delivery split into separate roles, from requirements to release readiness, each producing a defined document that must pass a check before the next stage.',
     situation: [
       'When one AI interprets the request, writes the requirements, builds the work, reviews its own decisions, and declares it finished, contradictions can survive every stage untouched. The output looks complete. What is missing is any independent check that it does what was asked, and any record connecting the original requirement to the thing that was built.',
       'For an organization paying for delivery rather than performing it, that is the whole difficulty: the work arrives, it looks finished, and there is no evidence to inspect.',

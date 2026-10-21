@@ -14,6 +14,8 @@ const insights = defineCollection({
   loader: glob({ pattern: '*.md', base: INSIGHTS_DIRECTORY }),
   schema: z.object({
     title: z.string(),
+    // Optional shorter <title> when the headline is too long for search results.
+    metaTitle: z.string().max(50).optional(),
     // Doubles as the meta description and the lead under the headline.
     description: z.string().max(DESCRIPTION_MAX_LENGTH),
     publishedDate: z.coerce.date(),

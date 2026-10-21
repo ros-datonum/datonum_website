@@ -25,7 +25,7 @@ const fileIcon = '<path d="M14 3H7.5A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21
 
 const casePath = caseStudyPath(cs.slug);
 const structuredData = [
-  articleSchema(Astro.site, { name: cs.title, description: cs.lead, path: casePath }),
+  articleSchema(Astro.site, { name: cs.title, description: cs.metaDescription ?? cs.lead, path: casePath }),
   breadcrumbSchema(Astro.site, [
     { label: 'Case studies', href: routes.cases },
     { label: cs.navName, href: casePath },
@@ -33,7 +33,7 @@ const structuredData = [
 ];
 ---
 
-<PageLayout title={`${cs.title} — Datonum`} description={cs.lead} ogType="article" structuredData={structuredData}>
+<PageLayout title={`${cs.metaTitle ?? cs.title} — Datonum`} description={cs.metaDescription ?? cs.lead} ogType="article" structuredData={structuredData}>
   <section class="ihero cs-hero" style={heroBg}>
     <div class="container">
       <a href={routes.cases} class="cs-back">← Case studies</a>

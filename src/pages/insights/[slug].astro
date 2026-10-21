@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 }
 
 const { insight, others } = Astro.props;
-const { title, description, publishedDate, updatedDate, relatedService, relatedCaseStudy } = insight.data;
+const { title, metaTitle, description, publishedDate, updatedDate, relatedService, relatedCaseStudy } = insight.data;
 const { Content } = await render(insight);
 
 const path = insightPath(insight.id);
@@ -43,7 +43,7 @@ const structuredData = [
 ];
 ---
 
-<PageLayout title={`${title} — Datonum`} description={description} ogType="article" structuredData={structuredData}>
+<PageLayout title={`${metaTitle ?? title} — Datonum`} description={description} ogType="article" structuredData={structuredData}>
   <section class="ihero article-hero">
     <div class="container">
       <a href={routes.insights} class="article-back">← Insights</a>

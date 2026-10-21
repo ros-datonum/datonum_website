@@ -1,5 +1,6 @@
 ---
 title: "What Is AI Workflow Automation? A Practical Guide for Businesses"
+metaTitle: "What Is AI Workflow Automation? A Practical Guide"
 description: "AI workflow automation explained without the hype: what it is, where AI is needed, where plain rules are enough, and what a working workflow looks like."
 publishedDate: 2026-10-21
 relatedService: impl
