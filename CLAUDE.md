@@ -74,6 +74,20 @@ relatedCaseStudy: opportunity-scoring   # optional, a case study slug
 ```
 
 Start body headings at `##` (the title is the H1). No prices in articles either.
+`metaTitle` (optional, ≤ 50 chars) replaces the headline in `<title>` when the headline is too long.
+
+Article figures are plain HTML blocks inside the Markdown, styled by
+`src/styles/article-figures.css` (tokens only, no images). Three kinds:
+- `figure.fig.fig-strip` — the process strip: `<li data-kind="rule|ai|human">` with
+  `.fig-strip__n`, `.fig-strip__t`, `.fig-kind`. Five steps by default (`--fig-cols` to change).
+- `figure.fig.fig-decide` — a decision path: rows of `.fig-decide__n`, `.fig-decide__q`
+  (with `<small>` for the branch rule) and `.fig-decide__out` holding
+  `.fig-out[data-kind="rule|ai|human|manual"]`.
+- `figure.fig.fig-bars` — a bar chart: `<li style="--v:NN%">` with `.fig-bars__l`,
+  `.fig-bars__track > .fig-bars__bar`, `.fig-bars__v`.
+Each figure has a `.fig__title` and a `figcaption`. Numbers in figures are either sourced
+(name the source and year in the caption) or a labelled worked example — never invented.
+See `src/content/insights/what-is-ai-workflow-automation.md` for all three.
 While the folder has no articles, `/insights` is noindexed, left out of the sitemap and
 not linked from the footer; all three switch on automatically with the first file.
 The insights pages have no design export: they are composed from existing tokens.

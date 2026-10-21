@@ -1,0 +1,156 @@
+/* Insights article figures. Articles are Markdown, so figures are written as plain HTML
+   blocks with these classes (see CLAUDE.md, "Insights articles"). Tokens only.
+   Selectors start with `.article-prose figure` so they outrank the prose element styles. */
+
+/* Shared frame */
+.article-prose figure.fig {
+  margin: var(--space-4) 0 var(--space-8);
+  padding: var(--space-6);
+  background: var(--surface-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+}
+.article-prose figure.fig .fig__title {
+  display: block;
+  font: var(--type-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--teal-700);
+  margin-bottom: var(--space-4);
+}
+.article-prose figure.fig figcaption {
+  font: var(--type-small);
+  color: var(--text-muted);
+  margin-top: var(--space-4);
+  text-wrap: pretty;
+}
+.article-prose figure.fig > ol,
+.article-prose figure.fig > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.article-prose figure.fig li { font: var(--type-small); color: var(--text-body); }
+
+/* Kind marks: rule / AI reads / person approves (same glyphs as the site and the social studio). */
+.article-prose figure.fig [data-kind] .fig-kind::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: var(--fig-icon) center / contain no-repeat;
+  mask: var(--fig-icon) center / contain no-repeat;
+}
+.article-prose figure.fig .fig-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: var(--type-label);
+}
+.article-prose figure.fig [data-kind="rule"] {
+  --fig-tone: var(--navy-300);
+  --fig-ink: var(--navy-700);
+  --fig-wash: var(--surface-card);
+  --fig-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 5.5h10'/%3E%3Cpath d='M11 12h10'/%3E%3Cpath d='M11 18.5h10'/%3E%3Cpath d='m3 6 1.5 1.5L7.5 4.5'/%3E%3Cpath d='m3 12.5 1.5 1.5L7.5 11'/%3E%3Cpath d='m3 19 1.5 1.5L7.5 17.5'/%3E%3C/svg%3E");
+}
+.article-prose figure.fig [data-kind="ai"] {
+  --fig-tone: var(--teal-500);
+  --fig-ink: var(--teal-800);
+  --fig-wash: var(--teal-050);
+  --fig-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='14' width='7' height='7' rx='1.5'/%3E%3Cpath d='M10 6.5h4.5a2 2 0 0 1 2 2V14'/%3E%3C/svg%3E");
+}
+.article-prose figure.fig [data-kind="human"] {
+  --fig-tone: var(--amber-500);
+  --fig-ink: var(--amber-800);
+  --fig-wash: var(--amber-050);
+  --fig-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='7.5' r='3.5'/%3E%3Cpath d='M2.5 20.5c0-3.6 2.9-6.5 6.5-6.5 1.6 0 3 .5 4.1 1.4'/%3E%3Cpath d='m15 17.5 2.2 2.2 4.3-4.4'/%3E%3C/svg%3E");
+}
+.article-prose figure.fig [data-kind="manual"] {
+  --fig-tone: var(--grey-300);
+  --fig-ink: var(--grey-700);
+  --fig-wash: var(--surface-card);
+  --fig-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+}
+
+/* 1. Process strip: one workflow, each step typed. <li data-kind> holds
+   .fig-strip__n (number), .fig-strip__t (step) and .fig-kind (kind label). */
+.article-prose figure.fig-strip > ol {
+  display: grid;
+  grid-template-columns: repeat(var(--fig-cols, 5), minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.article-prose figure.fig-strip li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  background: var(--fig-wash);
+  border: 1px solid var(--border-subtle);
+  border-top: 3px solid var(--fig-tone);
+  border-radius: var(--radius-sm);
+}
+.article-prose figure.fig-strip .fig-strip__n { font: var(--type-data); color: var(--text-muted); }
+.article-prose figure.fig-strip .fig-strip__t { font: var(--type-label); font-size: var(--text-sm); color: var(--text-strong); text-wrap: balance; }
+.article-prose figure.fig-strip .fig-kind { color: var(--fig-ink); margin-top: auto; }
+
+/* 2. Decision path: questions in order; each row ends in the outcome when the answer
+   matches. data-next="no|yes" labels the hand-off to the next row. */
+.article-prose figure.fig-decide > ol { display: flex; flex-direction: column; }
+.article-prose figure.fig-decide li {
+  display: grid;
+  grid-template-columns: var(--space-8) minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.article-prose figure.fig-decide li:first-child { border-top: 0; padding-top: 0; }
+.article-prose figure.fig-decide .fig-decide__n { font: var(--type-data); color: var(--text-muted); }
+.article-prose figure.fig-decide .fig-decide__q { font: var(--type-body); color: var(--text-strong); text-wrap: pretty; }
+.article-prose figure.fig-decide .fig-decide__q small { display: block; font: var(--type-small); color: var(--text-muted); margin-top: var(--space-1); }
+.article-prose figure.fig-decide .fig-decide__out { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-end; }
+.article-prose figure.fig-decide .fig-out {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--fig-tone);
+  border-radius: var(--radius-control);
+  background: var(--fig-wash);
+  color: var(--fig-ink);
+  font: var(--type-label);
+  white-space: nowrap;
+}
+.article-prose figure.fig-decide .fig-out b { font: var(--type-data); font-size: var(--text-xs); color: var(--text-muted); }
+
+/* 3. Bar chart for a worked example. <li style="--v:NN%"> sets the bar length. */
+.article-prose figure.fig-bars > ul { display: flex; flex-direction: column; gap: var(--space-3); }
+.article-prose figure.fig-bars li {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 4.5rem;
+  gap: var(--space-3);
+  align-items: center;
+}
+.article-prose figure.fig-bars .fig-bars__l { font: var(--type-small); color: var(--text-body); }
+.article-prose figure.fig-bars .fig-bars__track { height: var(--space-4); background: var(--chart-grid); border-radius: var(--radius-xs); overflow: hidden; }
+.article-prose figure.fig-bars .fig-bars__bar { display: block; height: 100%; width: var(--v); background: var(--chart-2); border-radius: var(--radius-xs); }
+.article-prose figure.fig-bars .fig-bars__v { font: var(--type-data); color: var(--text-strong); text-align: right; }
+
+@media (max-width: 720px) {
+  .article-prose figure.fig { padding: var(--space-4); }
+  .article-prose figure.fig-strip > ol { grid-template-columns: 1fr; }
+  .article-prose figure.fig-strip li {
+    display: grid;
+    grid-template-columns: var(--space-6) minmax(0, 1fr);
+    grid-template-areas: "n t" "n k";
+    border-top-width: 1px;
+    border-left: 3px solid var(--fig-tone);
+  }
+  .article-prose figure.fig-strip .fig-strip__n { grid-area: n; }
+  .article-prose figure.fig-strip .fig-strip__t { grid-area: t; }
+  .article-prose figure.fig-strip .fig-kind { grid-area: k; margin-top: 0; }
+  .article-prose figure.fig-decide li { grid-template-columns: var(--space-6) minmax(0, 1fr); }
+  .article-prose figure.fig-decide .fig-decide__out { grid-column: 2; align-items: flex-start; }
+  .article-prose figure.fig-bars li { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) 3.5rem; }
+}

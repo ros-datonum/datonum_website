@@ -31,7 +31,21 @@ That gives a simple test for any step: does the input arrive in the same shape e
 
 Take a process most recruitment and staffing agencies will recognize. A client emails a new brief. Someone on the desk reads it, then types the role, the rate, the location, and the start date into the CRM. If anything is missing, they email the client back. Only then can the job be posted and candidates searched.
 
-Here is the same process as an AI workflow, step by step:
+Here is the same process as an AI workflow:
+
+<figure class="fig fig-strip">
+<span class="fig__title">Client brief → CRM: one workflow, five steps</span>
+<ol>
+<li data-kind="rule"><span class="fig-strip__n">01</span><span class="fig-strip__t">Sort the inbox</span><span class="fig-kind">Rule</span></li>
+<li data-kind="ai"><span class="fig-strip__n">02</span><span class="fig-strip__t">Read the brief</span><span class="fig-kind">AI reads</span></li>
+<li data-kind="rule"><span class="fig-strip__n">03</span><span class="fig-strip__t">Match and draft the job</span><span class="fig-kind">Rule</span></li>
+<li data-kind="human"><span class="fig-strip__n">04</span><span class="fig-strip__t">Consultant checks it</span><span class="fig-kind">Person approves</span></li>
+<li data-kind="rule"><span class="fig-strip__n">05</span><span class="fig-strip__t">Publish and search</span><span class="fig-kind">Rule</span></li>
+</ol>
+<figcaption>Three rules, one AI step, one approval. Nothing reaches the job board before step 4.</figcaption>
+</figure>
+
+Step by step:
 
 1. **Sort the inbox — rule.** An email from a known client domain is routed to the account owner's queue. No reading needed.
 2. **Read the brief — AI.** An AI model pulls the role, rate, location, and start date out of the email or call notes, whatever layout the client used, and lists what the brief does not say.
@@ -55,6 +69,19 @@ A few things often get called AI automation that are something else.
 
 AI workflow automation pays off when three things are true at once: the step repeats often, the input is messy enough that a person has to read it, and the result feeds a system where it would otherwise be typed in by hand. A brief that arrives several times a week, with the same handful of fields every time, is a good candidate.
 
+A quick way to size it is to multiply how often the step happens by how long it takes. At ten minutes to read and retype each brief, the hours add up like this:
+
+<figure class="fig fig-bars">
+<span class="fig__title">Worked example: hours a week spent retyping briefs</span>
+<ul>
+<li style="--v:12%"><span class="fig-bars__l">5 briefs a week</span><span class="fig-bars__track"><span class="fig-bars__bar"></span></span><span class="fig-bars__v">0.8 h</span></li>
+<li style="--v:25%"><span class="fig-bars__l">10 briefs a week</span><span class="fig-bars__track"><span class="fig-bars__bar"></span></span><span class="fig-bars__v">1.7 h</span></li>
+<li style="--v:50%"><span class="fig-bars__l">20 briefs a week</span><span class="fig-bars__track"><span class="fig-bars__bar"></span></span><span class="fig-bars__v">3.3 h</span></li>
+<li style="--v:100%"><span class="fig-bars__l">40 briefs a week</span><span class="fig-bars__track"><span class="fig-bars__bar"></span></span><span class="fig-bars__v">6.7 h</span></li>
+</ul>
+<figcaption>An example, not a benchmark: it assumes ten minutes per brief and counts only the retyping, not the follow-up when a detail is missing. Put in your own numbers.</figcaption>
+</figure>
+
 There are four places where we will not put AI:
 
 - **Where a rule would do.** If the input is already structured, such as a form with fixed fields or a spreadsheet in a known format, plain automation is cheaper and more reliable.
@@ -70,6 +97,19 @@ Before anyone builds anything, four questions sort most processes quickly:
 2. **Could you write the decision down as instructions?** If a competent new starter could follow a one-page rule sheet and get it right every time, it is automation, not AI.
 3. **What happens when the step gets it wrong?** The higher the cost of a wrong answer, the more the design is about review and routing rather than the AI itself.
 4. **How often does it happen?** Volume is what makes the effort repay.
+
+Read in order, the same four questions work as a path. Stop at the first outcome that applies:
+
+<figure class="fig fig-decide">
+<span class="fig__title">Rule, AI, or leave it alone?</span>
+<ol>
+<li><span class="fig-decide__n">01</span><span class="fig-decide__q">Does the input arrive in the same shape every time?<small>Yes → rule. No → next question.</small></span><span class="fig-decide__out"><span class="fig-out" data-kind="rule"><b>Yes</b><span class="fig-kind">Use a rule</span></span></span></li>
+<li><span class="fig-decide__n">02</span><span class="fig-decide__q">Could you write the decision down as instructions?<small>Yes → rule. No → next question.</small></span><span class="fig-decide__out"><span class="fig-out" data-kind="rule"><b>Yes</b><span class="fig-kind">Use a rule</span></span></span></li>
+<li><span class="fig-decide__n">03</span><span class="fig-decide__q">Does it happen several times a week?<small>No → leave it alone for now. Yes → next question.</small></span><span class="fig-decide__out"><span class="fig-out" data-kind="manual"><b>No</b><span class="fig-kind">Leave it manual</span></span></span></li>
+<li><span class="fig-decide__n">04</span><span class="fig-decide__q">Would a wrong answer be expensive?<small>Either way, AI reads and rules route. The cost decides where a person signs off.</small></span><span class="fig-decide__out"><span class="fig-out" data-kind="human"><b>Yes</b><span class="fig-kind">AI + a person approves</span></span><span class="fig-out" data-kind="ai"><b>No</b><span class="fig-kind">AI step with checks</span></span></span></li>
+</ol>
+<figcaption>A step that reaches question 4 is a real candidate for AI. Most steps stop at 1 or 2.</figcaption>
+</figure>
 
 A practical way to start: for one week, count how often someone on your team reads something and then types the same details into another system. If it happens several times a week, involves the same few fields, and a mistake means a call back to the client, you have found a candidate.
 
