@@ -145,6 +145,10 @@ const structuredData = [
   .article-prose :global(table) { width: 100%; border-collapse: collapse; margin: 0 0 var(--space-6); }
   .article-prose :global(th) { font: var(--type-label); color: var(--text-strong); text-align: left; padding: var(--space-3); border-bottom: 2px solid var(--navy-800); }
   .article-prose :global(td) { font: var(--type-body); color: var(--grey-600); padding: var(--space-3); border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
+  @media (max-width: 720px) {
+    .article-prose :global(th), .article-prose :global(td) { padding: var(--space-2); }
+    .article-prose :global(td) { font: var(--type-small); }
+  }
 
   .article-side { position: sticky; top: calc(var(--space-24) + var(--space-2)); }
   .article-side :global(.side-card__row:last-child) { padding-bottom: 0; border-bottom: none; }
