@@ -5,14 +5,28 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import CTABanner from '../../components/CTABanner.astro';
 import { getInsights, insightPath, formatArticleDate } from '../../data/insights.ts';
+import { routes } from '../../data/navigation.ts';
+import { collectionPageSchema, breadcrumbSchema } from '../../data/structuredData.ts';
 
 const insights = await getInsights();
 const hasInsights = insights.length > 0;
+
+const pageDescription =
+  'Practical writing on AI workflow automation: what to automate, how to judge readiness and return, and how to keep AI reliable once it is running.';
+const structuredData = [
+  collectionPageSchema(
+    Astro.site,
+    { name: 'Insights', description: pageDescription, path: routes.insights },
+    insights.map((insight) => ({ name: insight.data.title, path: insightPath(insight.id) })),
+  ),
+  breadcrumbSchema(Astro.site, [{ label: 'Insights', href: routes.insights }]),
+];
 ---
 
 <PageLayout
   title="Insights on AI automation for business — Datonum"
-  description="Practical writing on AI workflow automation: what to automate, how to judge readiness and return, and how to keep AI reliable once it is running."
+  description={pageDescription}
+  structuredData={structuredData}
 >
   {/* An index with nothing to list is not worth a search result. */}
   {!hasInsights && <meta slot="head" name="robots" content="noindex" />}

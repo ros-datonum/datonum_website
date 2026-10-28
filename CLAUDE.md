@@ -47,6 +47,9 @@ Astro 7, static output, no adapter. Built into an nginx container (`Dockerfile`,
 `nginx.conf`) on a VPS, behind a shared Caddy container (TLS, on the `ai_stack_public_proxy`
 Docker network) and Cloudflare. Deploy:
 `docker compose up -d --build`.
+After deploying a new article or a major edit, run `npm run indexnow` (pings IndexNow with
+every sitemap URL; `npm run indexnow -- --urls=/insights/slug,...` sends only those). The key
+file is `public/087946e69631a726e776769531d9618f.txt`.
 
 URLs have no trailing slash. Pages build to `/about.html` (`build.format: 'file'`) and
 nginx serves them at `/about`, 301-ing every other spelling. Use `toRoutePath()` from

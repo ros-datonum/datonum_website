@@ -6,6 +6,7 @@ import ChecklistItem from '../../components/ChecklistItem.astro';
 import CTABanner from '../../components/CTABanner.astro';
 import { routes } from '../../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../../data/caseStudies.ts';
+import { collectionPageSchema, breadcrumbSchema } from '../../data/structuredData.ts';
 
 const principles = [
   { t: 'AI and rules are kept separate.', d: 'Criteria you set cannot be quietly overridden by an AI interpretation.' },
@@ -15,11 +16,23 @@ const principles = [
   { t: 'Decisions stay inspectable.', d: 'What went in, what the AI proposed, what was decided, and what a person changed — all recorded.' },
 ];
 const compassIcon = '<circle cx="12" cy="12" r="9"></circle><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>';
+
+const pageDescription =
+  'AI implementation case studies: systems we designed and built, showing where AI reads and judges, where rules take over, and where a person stays in control.';
+const structuredData = [
+  collectionPageSchema(
+    Astro.site,
+    { name: 'AI implementation case studies', description: pageDescription, path: routes.cases },
+    caseStudies.map((c) => ({ name: c.title, path: caseStudyPath(c.slug) })),
+  ),
+  breadcrumbSchema(Astro.site, [{ label: 'Case studies', href: routes.cases }]),
+];
 ---
 
 <PageLayout
   title="AI implementation case studies — Datonum"
-  description="AI implementation case studies: systems we designed and built, showing where AI reads and judges, where rules take over, and where a person stays in control."
+  description={pageDescription}
+  structuredData={structuredData}
 >
   <section class="ihero wm-hero">
     <div class="container">

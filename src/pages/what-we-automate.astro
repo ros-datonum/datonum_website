@@ -7,6 +7,7 @@ import CTABanner from '../components/CTABanner.astro';
 import Button from '../components/Button.astro';
 import { routes } from '../data/navigation.ts';
 import { sysCols, sysRows } from '../data/serviceContent.ts';
+import { collectionPageSchema, breadcrumbSchema } from '../data/structuredData.ts';
 
 const platforms = [
   { name: 'n8n', icon: '<rect x="3" y="4" width="18" height="7" rx="2"></rect><rect x="3" y="13" width="18" height="7" rx="2"></rect><path d="M7 7.5h.01"></path><path d="M7 16.5h.01"></path>', body: 'Self-hosted or cloud. The right choice when everything must run on infrastructure you control, when volumes make per-task pricing expensive, or when a workflow needs logic that visual builders handle awkwardly. We set it up on your own server where that matters — common in legal, healthcare, and finance.' },
@@ -36,11 +37,23 @@ const processes = [
     maps: 'Implementation — Standard.',
   },
 ];
+
+const pageDescription =
+  'AI workflow automation by business function, built on n8n, Make or Zapier as the need dictates: where AI reads and judges and where fixed rules take over.';
+const structuredData = [
+  collectionPageSchema(Astro.site, {
+    name: 'AI workflow automation with n8n, Make, and Zapier',
+    description: pageDescription,
+    path: routes.automate,
+  }),
+  breadcrumbSchema(Astro.site, [{ label: 'What we automate', href: routes.automate }]),
+];
 ---
 
 <PageLayout
   title="AI workflow automation with n8n, Make, and Zapier — Datonum"
-  description="AI workflow automation by business function, built on n8n, Make or Zapier as the need dictates: where AI reads and judges and where fixed rules take over."
+  description={pageDescription}
+  structuredData={structuredData}
 >
   <section class="ihero wm-hero">
     <div class="container">

@@ -133,3 +133,38 @@ export function breadcrumbSchema(site: SiteOrigin, trail: readonly NavLink[]): S
     })),
   };
 }
+
+interface ListedPage {
+  name: string;
+  path: string;
+}
+
+// A hub page (insights, case studies) and the pages it links to. `items` is optional: a hub
+// with no list of its own still identifies itself as part of the site.
+export function collectionPageSchema(
+  site: SiteOrigin,
+  page: PageSummary,
+  items: readonly ListedPage[] = [],
+): StructuredDataNode {
+  const itemList = items.length > 0 && {
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: absoluteUrl(site, item.path),
+        name: item.name,
+      })),
+    },
+  };
+  return {
+    '@context': SCHEMA_CONTEXT,
+    '@type': 'CollectionPage',
+    name: page.name,
+    description: page.description,
+    url: absoluteUrl(site, page.path),
+    inLanguage: siteIdentity.language,
+    isPartOf: { '@id': absoluteUrl(site, WEBSITE_FRAGMENT) },
+    ...itemList,
+  };
+}
