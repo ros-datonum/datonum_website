@@ -1,4 +1,5 @@
-// Pings IndexNow (Bing, Yandex, Seznam and others) with the site's URLs after a deploy.
+// Pings IndexNow (Bing, Yandex, Seznam and others) with the site's URLs.
+// Run after deploying. This command is not automatically triggered by deployment.
 //   npm run indexnow                       every URL in the live sitemap
 //   npm run indexnow -- --urls=/a,https://datonum.com/b   only these
 // Node 22, no dependencies. The key file lives in public/ and is served from the site root.
@@ -13,6 +14,14 @@ async function fetchText(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`${url} → HTTP ${response.status}`);
   return response.text();
+}
+
+async function assertPublicKeyMatches() {
+  const liveKey = (await fetchText(KEY_LOCATION)).trim();
+  if (liveKey !== KEY) {
+    throw new Error(`Public IndexNow key file does not match the configured key: ${KEY_LOCATION}`);
+  }
+  console.log(`Verified public IndexNow key file: ${KEY_LOCATION}`);
 }
 
 function locs(xml) {
@@ -50,12 +59,32 @@ if (urlList.length === 0) {
 console.log(`Submitting ${urlList.length} URL(s) to IndexNow:`);
 for (const url of urlList) console.log(`  ${url}`);
 
+// IndexNow can return HTTP 202 while ownership verification is pending.
+// Check the published key *before* submitting to distinguish missing deployment
+// or CDN/proxy problems from a successful notification.
+try {
+  await assertPublicKeyMatches();
+} catch (error) {
+  console.error(`IndexNow preflight FAILED: ${error.message}`);
+  process.exit(1);
+}
+
 const response = await fetch(ENDPOINT, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json; charset=utf-8' },
   body: JSON.stringify({ host: HOST, key: KEY, keyLocation: KEY_LOCATION, urlList }),
 });
-const ok = response.status === 200 || response.status === 202;
 const body = (await response.text()).trim();
-console.log(`IndexNow: HTTP ${response.status} ${ok ? 'OK' : 'FAILED'}${body ? ` — ${body}` : ''}`);
-if (!ok) process.exit(1);
+const suffix = body ? ` — ${body}` : '';
+if (response.status === 200) {
+  console.log(`IndexNow: HTTP 200 OK — URLs received and key accepted${suffix}`);
+} else if (response.status === 202) {
+  console.warn(
+    `IndexNow: HTTP 202 PENDING — URLs received but key verification is not complete.${suffix}`
+  );
+  console.warn('Check Bing Webmaster Tools → IndexNow and retry after validation; 202 is not a confirmed success.');
+  process.exitCode = 2;
+} else {
+  console.error(`IndexNow: HTTP ${response.status} FAILED${suffix}`);
+  process.exitCode = 1;
+}
