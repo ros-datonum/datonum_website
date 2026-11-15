@@ -129,3 +129,7 @@ lists the exact tables and columns. Re-check it after every Umami upgrade. The w
 Verify the next day: `journalctl -t umami-retention --since yesterday` shows
 `Retention applied.`. Rows keep ageing out during the day, so a `--dry-run` reports 0 for
 every table only straight after a run.
+
+## GitHub Actions
+
+See [GitHub Actions deployment](github-actions.md) for automated checks, deployment, cache purge and rollback.

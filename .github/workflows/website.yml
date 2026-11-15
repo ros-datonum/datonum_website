@@ -1,0 +1,158 @@
+name: Website checks and deployment
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Build and validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node --test tests/deployment.test.mjs
+      - run: bash -n deploy/github-deploy.sh deploy/actions-ssh.sh
+      - run: npm run build
+      - name: Build the production container
+        env:
+          DEPLOY_SHA: ${{ github.sha }}
+        run: docker build --build-arg "DEPLOY_SHA=$DEPLOY_SHA" -t datonum-website:ci .
+      - name: Verify container serves this commit
+        env:
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          docker run -d --name datonum-ci -p 127.0.0.1:8080:80 datonum-website:ci
+          node deploy/verify-site.mjs --origin http://127.0.0.1:8080 --commit "$DEPLOY_SHA"
+      - name: Clean up test container
+        if: always()
+        run: docker rm -f datonum-ci >/dev/null 2>&1 || true
+
+  readiness:
+    name: Deployment configuration
+    needs: check
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.config.outputs.enabled }}
+    steps:
+      - id: config
+        env:
+          DEPLOY_ENABLED: ${{ vars.DEPLOY_ENABLED }}
+        run: |
+          if [ "$DEPLOY_ENABLED" = true ]; then
+            echo 'enabled=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'enabled=false' >> "$GITHUB_OUTPUT"
+            echo '::notice::Automatic deployment is not enabled. Complete deploy/github-actions.md, then set DEPLOY_ENABLED=true.'
+            echo '### Deployment not configured' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Build checks passed; nothing was deployed. See deploy/github-actions.md.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  deploy:
+    name: Deploy datonum.com
+    needs: [check, readiness]
+    if: needs.readiness.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://datonum.com
+    concurrency:
+      group: datonum-production
+      cancel-in-progress: false
+    env:
+      DEPLOY_SHA: ${{ github.sha }}
+      DEPLOY_HOST: ${{ vars.DEPLOY_HOST || '5.75.164.13' }}
+      DEPLOY_USER: ${{ vars.DEPLOY_USER || 'deploy' }}
+      DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '22' }}
+      CF_ZONE_ID: ${{ vars.CF_ZONE_ID }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+      - name: Prepare dedicated credentials
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          for setting in DEPLOY_SSH_KEY DEPLOY_KNOWN_HOSTS CF_API_TOKEN CF_ZONE_ID; do
+            if [ -z "${!setting}" ]; then
+              echo "::error::Missing $setting. See deploy/github-actions.md."
+              exit 1
+            fi
+          done
+          umask 077
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$RUNNER_TEMP/datonum-deploy-key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$RUNNER_TEMP/datonum-known-hosts"
+          ssh-keygen -y -f "$RUNNER_TEMP/datonum-deploy-key" > /dev/null
+      - name: Verify Cloudflare zone before changing production
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: node deploy/cloudflare.mjs check
+      - name: Build and activate the exact commit on the server
+        id: release
+        run: |
+          set -euo pipefail
+          bash deploy/actions-ssh.sh deploy | tee "$RUNNER_TEMP/datonum-release.log"
+          if grep -qx 'DEPLOY_RESULT=deployed' "$RUNNER_TEMP/datonum-release.log"; then
+            echo 'deployed=true' >> "$GITHUB_OUTPUT"
+          elif grep -qx 'DEPLOY_RESULT=superseded' "$RUNNER_TEMP/datonum-release.log"; then
+            echo 'deployed=false' >> "$GITHUB_OUTPUT"
+            echo 'A newer main commit exists; this run did not deploy.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '::error::Server did not report a verified deployment result.'
+            exit 1
+          fi
+      - name: Purge Cloudflare cache
+        if: steps.release.outputs.deployed == 'true'
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: node deploy/cloudflare.mjs purge
+      - name: Verify public deployment
+        if: steps.release.outputs.deployed == 'true'
+        run: node deploy/verify-site.mjs --commit "$DEPLOY_SHA"
+      - name: Roll back if deployment or public verification failed
+        if: failure() && (steps.release.outcome == 'failure' || steps.release.outputs.deployed == 'true')
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          bash deploy/actions-ssh.sh rollback
+          node deploy/cloudflare.mjs purge
+          echo 'Deployment failed. The server rollback was attempted; inspect the step logs.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Notify IndexNow after verified deployment
+        if: success() && steps.release.outputs.deployed == 'true'
+        continue-on-error: true
+        id: indexnow
+        run: npm run indexnow
+      - name: Record deployment outcome
+        if: success() && steps.release.outputs.deployed == 'true'
+        env:
+          INDEXNOW_OUTCOME: ${{ steps.indexnow.outcome }}
+        run: |
+          echo "Verified public deployment: $DEPLOY_SHA" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$INDEXNOW_OUTCOME" != success ]; then
+            echo 'IndexNow did not confirm success; inspect its step. This does not invalidate the verified website deployment.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Remove temporary credentials
+        if: always()
+        run: rm -f "$RUNNER_TEMP/datonum-deploy-key" "$RUNNER_TEMP/datonum-known-hosts"
