@@ -76,8 +76,8 @@ jobs:
       cancel-in-progress: false
     env:
       DEPLOY_SHA: ${{ github.sha }}
-      DEPLOY_HOST: ${{ vars.DEPLOY_HOST || '5.75.164.13' }}
-      DEPLOY_USER: ${{ vars.DEPLOY_USER || 'deploy' }}
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST || vars.DEPLOY_HOST || '5.75.164.13' }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER || vars.DEPLOY_USER || 'deploy' }}
       DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '22' }}
       CF_ZONE_ID: ${{ vars.CF_ZONE_ID }}
     steps:
@@ -87,7 +87,7 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
-      - name: Prepare dedicated credentials
+      - name: Prepare production credentials
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}

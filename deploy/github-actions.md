@@ -16,33 +16,24 @@ deployment is intended. Do not replace an existing protection rule without revie
 
 | Setting | Location | Purpose |
 | --- | --- | --- |
-| `DEPLOY_SSH_KEY` | production secret | Dedicated unencrypted Ed25519 private key for this repository, never Ros's personal SSH key |
-| `DEPLOY_KNOWN_HOSTS` | production secret | Verified SSH host-key entry for the deployment host/port |
+| `DEPLOY_SSH_KEY` | production secret | Existing production Actions key, transferred as GitHub-encrypted ciphertext from ai_stack_infra |
+| `DEPLOY_KNOWN_HOSTS` | production secret | Pinned host-key entry captured through the existing successful production Actions connection |
 | `CF_API_TOKEN` | production secret | Cloudflare token scoped to datonum.com, Zone Read and Cache Purge only |
 | `CF_ZONE_ID` | repository variable | Zone ID for datonum.com; the workflow verifies the returned zone name before a purge |
-| `DEPLOY_HOST` | repository variable, optional | Defaults to `5.75.164.13` |
-| `DEPLOY_USER` | repository variable, optional | Defaults to `deploy` |
+| `DEPLOY_HOST` | production secret (or repository variable) | Defaults to `5.75.164.13` |
+| `DEPLOY_USER` | production secret (or repository variable) | Defaults to `deploy` |
 | `DEPLOY_PORT` | repository variable, optional | Defaults to `22` |
 | `DEPLOY_ENABLED` | repository variable | Set to `true` only after the above connections are installed |
 
-Generate a new key on a trusted machine. Install its public half in the server deploy
-user's `~/.ssh/authorized_keys`, with the `restrict` prefix to disable forwarding and PTY.
-Save its private half directly to the GitHub environment secret using standard input;
-never paste it into a chat, issue, repository file or Actions log. A passphrase would
-require another unattended secret, so use a dedicated key with no passphrase and revoke
-it separately when no longer needed.
+The existing production Actions SSH key is reused; no new server key installation is
+required. The one-time connection run in ai_stack_infra sealed the key and host/user to
+this environment's GitHub public key before transfer. Plaintext keys were not downloaded
+or logged. Strict host-key checking uses the captured known-hosts entries; this preserves
+the existing workflow's trust basis, not a separate out-of-band fingerprint verification.
 
-```sh
-ssh-keygen -t ed25519 -N '' -C datonum-github-actions -f /secure/private/path/datonum-actions
-gh secret set DEPLOY_SSH_KEY --env production < /secure/private/path/datonum-actions
-gh secret set DEPLOY_KNOWN_HOSTS --env production < /secure/private/path/verified-known-hosts
-gh secret set CF_API_TOKEN --env production  # securely prompts for the token
-gh variable set CF_ZONE_ID --body YOUR_DATONUM_ZONE_ID
-```
-
-Do not trust a fresh `ssh-keyscan` result without comparing its fingerprint against the
-server console or an already trusted connection. For port22 the known-hosts line starts
-with the host; for a custom port use `[host]:port`. Strict host-key checking is mandatory.
+Store the Cloudflare token directly in the production secret and its zone ID as a
+repository variable. Never paste credentials into chat, source files or Actions logs.
+RB Home is a Shopify store and has no connection to this server or deployment workflow.
 
 ## Server prerequisites
 
@@ -73,7 +64,9 @@ gh run watch RUN_ID --exit-status
 2. One production deployment at a time, without cancelling an activation in progress.
 3. Verify Cloudflare's zone identity and strict SSH host identity before production work.
 4. On the server, refuse dirty/diverged/wrong-origin checkouts. Fetch and fast-forward to
-   the exact tested commit. Older queued runs are skipped if a newer `main` already exists.
+   the exact tested commit. The pre-existing public/BingSiteAuth.xml may be adopted only
+   when it is the sole untracked change and its bytes exactly match the tested Git blob;
+   retain a backup outside the checkout and restore it if the merge fails. Older queued runs are skipped if a newer `main` already exists.
 5. Preserve the running image and resolved Compose configuration; build with the server's
    production `.env`. Recreate only `datonum-website`, then check its origin version marker.
 6. Purge the Datonum zone's cache and verify the **canonical public** `/deployment.json`

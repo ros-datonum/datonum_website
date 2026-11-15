@@ -60,3 +60,35 @@ test('rollback refuses to replace a newer unrelated deployment',async()=>{
     const r=spawnSync('bash',[script,'rollback',commit],{env:f.env,encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/different deployment/);assert(!r.stderr.includes('MUTATION_NOT_ALLOWED'));
   }finally{await f.clean();}
 });
+
+async function bingFixture({different=false,failMerge=false}={}) {
+  const f=await fixture();
+  const git=(...args)=>{const r=spawnSync('/usr/bin/git',args,{cwd:`${f.dir}/repo`,encoding:'utf8'});assert.equal(r.status,0,r.stderr);return r.stdout.trim();};
+  git('init','-b','main');git('config','user.email','test@example.invalid');git('config','user.name','Test');
+  await fs.writeFile(`${f.dir}/repo/.gitignore`,'.env\n');git('add','.');git('commit','-m','base');const base=git('rev-parse','HEAD');
+  await fs.mkdir(`${f.dir}/repo/public`);await fs.writeFile(`${f.dir}/repo/public/BingSiteAuth.xml`,'<users><user>fixture</user></users>');git('add','.');git('commit','-m','preserve Bing');const target=git('rev-parse','HEAD');git('update-ref','refs/remotes/origin/main',target);git('reset','--hard',base);
+  await fs.mkdir(`${f.dir}/repo/public`,{recursive:true});await fs.writeFile(`${f.dir}/repo/public/BingSiteAuth.xml`,different?'different server verification':'<users><user>fixture</user></users>');await fs.writeFile(`${f.dir}/repo/.env`,'PUBLIC_FIXTURE=true');
+  await fs.writeFile(`${f.dir}/bin/git`,`#!/bin/sh\ncase "$1" in\nremote) echo git@github.com:ros-datonum/datonum_website.git;;\nfetch) exit 0;;\n${failMerge?'merge) echo "fixture merge failure" >&2; exit 1;;':''}\n*) exec /usr/bin/git "$@";;\nesac\n`,{mode:0o755});
+  await fs.writeFile(`${f.dir}/bin/docker`,'#!/bin/sh\ncase "$1" in\ninspect) case "$3" in *revision*) echo local;; *project*) echo datonum_website;; *) echo sha256:old;; esac;;\ntag) exit 0;;\ncompose) case "$*" in *config) echo "services: {}";; *build*) echo "fixture build stop" >&2; exit 3;; *) exit 99;; esac;;\n*) exit 99;;\nesac\n',{mode:0o755});
+  return {...f,git,target};
+}
+test('server adopts only an exact matching untracked Bing file and retains its backup',async()=>{
+  const f=await bingFixture();try{
+    const r=spawnSync('bash',[script,'deploy',f.target],{env:f.env,encoding:'utf8'});assert.equal(r.status,3,r.stderr);assert.match(r.stderr,/fixture build stop/);
+    assert.equal(f.git('status','--porcelain'),'');assert.equal(f.git('rev-parse','HEAD'),f.target);
+    assert.equal(await fs.readFile(`${f.dir}/state/${f.target}/BingSiteAuth.xml`,'utf8'),await fs.readFile(`${f.dir}/repo/public/BingSiteAuth.xml`,'utf8'));
+  }finally{await f.clean();}
+});
+test('server refuses a different untracked Bing verification without overwriting it',async()=>{
+  const f=await bingFixture({different:true});try{
+    const r=spawnSync('bash',[script,'deploy',f.target],{env:f.env,encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/Bing verification differs/);
+    assert.equal(await fs.readFile(`${f.dir}/repo/public/BingSiteAuth.xml`,'utf8'),'different server verification');
+    assert.equal(f.git('status','--porcelain'),'?? public/');
+  }finally{await f.clean();}
+});
+test('server restores the exact Bing file if its fast-forward merge fails',async()=>{
+  const f=await bingFixture({failMerge:true});try{
+    const r=spawnSync('bash',[script,'deploy',f.target],{env:f.env,encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/fixture merge failure/);
+    assert.equal(await fs.readFile(`${f.dir}/repo/public/BingSiteAuth.xml`,'utf8'),'<users><user>fixture</user></users>');
+  }finally{await f.clean();}
+});

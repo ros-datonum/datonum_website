@@ -64,7 +64,14 @@ rollback() {
 
 if [[ "$operation" = rollback ]]; then rollback; exit; fi
 [[ $(git branch --show-current) == main ]] || { echo 'Server checkout must be on main' >&2; exit 1; }
-[[ -z $(git status --porcelain) ]] || { echo 'Server checkout has local changes; refusing to overwrite' >&2; exit 1; }
+# Only the existing public Bing verification can be adopted, after exact blob comparison.
+checkout_status=$(git status --porcelain --untracked-files=all)
+adopt_bing=false
+case "$checkout_status" in
+  '') ;;
+  '?? public/BingSiteAuth.xml') adopt_bing=true ;;
+  *) echo 'Server checkout has local changes; refusing to overwrite' >&2; exit 1 ;;
+esac
 origin=$(git remote get-url origin)
 case "$origin" in
   git@github.com:ros-datonum/datonum_website.git|https://github.com/ros-datonum/datonum_website.git) ;;
@@ -77,6 +84,11 @@ if [[ $(git rev-parse origin/main) != "$target" ]]; then
   exit 0
 fi
 git merge-base --is-ancestor HEAD "$target" || { echo 'Server branch diverged; refusing non-fast-forward deployment' >&2; exit 1; }
+if [[ "$adopt_bing" = true ]]; then
+  [[ -f public/BingSiteAuth.xml && ! -L public/BingSiteAuth.xml ]] || { echo 'Bing verification is not a regular file' >&2; exit 1; }
+  expected_bing=$(git rev-parse "$target:public/BingSiteAuth.xml")
+  [[ $(git hash-object public/BingSiteAuth.xml) == "$expected_bing" ]] || { echo 'Server Bing verification differs from the tested commit; refusing to overwrite' >&2; exit 1; }
+fi
 if [[ $(container_revision) == "$target" ]]; then
   probe "$target"
   echo 'DEPLOY_RESULT=deployed'
@@ -97,7 +109,20 @@ docker compose --project-name "$project" config > "$state/compose.yaml"
 fi
 docker tag "$previous" "datonum-website:rollback-$target"
 # The checkout records desired source, not deployment success; the image marker is authoritative.
+restore_bing() {
+  if [[ "$adopt_bing" = true && -f "$state/BingSiteAuth.xml" && ! -e public/BingSiteAuth.xml ]]; then
+    cp -p "$state/BingSiteAuth.xml" public/BingSiteAuth.xml
+  fi
+}
+trap restore_bing EXIT
+if [[ "$adopt_bing" = true ]]; then
+  [[ ! -e "$state/BingSiteAuth.xml" ]] || { echo 'Bing backup already exists; inspect before retry' >&2; exit 1; }
+  mv public/BingSiteAuth.xml "$state/BingSiteAuth.xml"
+fi
 git merge --ff-only "$target"
+if [[ "$adopt_bing" = true ]]; then
+  [[ $(git hash-object public/BingSiteAuth.xml) == "$expected_bing" ]] || { echo 'Bing verification changed during merge' >&2; exit 1; }
+fi
 printf 'building\n' > "$state/status"
 docker compose --project-name "$project" build --build-arg "DEPLOY_SHA=$target" "$service"
 
