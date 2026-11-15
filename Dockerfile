@@ -16,5 +16,7 @@ FROM nginx:alpine
 ARG DEPLOY_SHA=local
 LABEL org.opencontainers.image.revision=$DEPLOY_SHA
 COPY --from=build /app/dist /usr/share/nginx/html
+# Git checkouts may use a restrictive umask; nginx must read all public assets.
+RUN chmod -R a+rX /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # nginx:alpine already EXPOSEs 80 and starts nginx.

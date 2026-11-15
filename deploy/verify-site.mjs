@@ -11,12 +11,13 @@ export async function verifySite({origin='https://datonum.com',commit,fetcher=fe
       const response=await fetcher(`${base.origin}/deployment.json`,{redirect:'error',signal:AbortSignal.timeout(15000)});
       if(!response.ok)throw new Error(`Deployment marker HTTP ${response.status}`);
       const marker=await response.json();if(marker.commit!==commit)throw new Error('Public deployment marker does not match this commit');
-      for(const route of ['/','/services','/insights','/robots.txt','/sitemap-index.xml']){
+      for(const route of ['/','/services','/insights','/robots.txt','/sitemap-index.xml','/BingSiteAuth.xml']){
         const page=await fetcher(`${base.origin}${route}`,{redirect:'error',signal:AbortSignal.timeout(15000)});
         if(page.status!==200)throw new Error(`${route}: HTTP ${page.status}`);
         const body=await page.text();
         if(route.endsWith('.txt')&&!body.includes('Sitemap:'))throw new Error('robots.txt has no sitemap');
-        if(route.endsWith('.xml')&&!body.includes('<sitemapindex'))throw new Error('Invalid sitemap index');
+        if(route==='/sitemap-index.xml'&&!body.includes('<sitemapindex'))throw new Error('Invalid sitemap index');
+        if(route==='/BingSiteAuth.xml'&&!/<users>\s*<user>[A-F0-9]{32}<\/user>\s*<\/users>/i.test(body))throw new Error('Invalid Bing verification');
         if(!route.includes('.')&&(!/<title>[^<]+<\/title>/.test(body)||!body.includes('rel="canonical"')))throw new Error(`${route}: missing title/canonical`);
       }
       return {verified:true,commit,origin:base.origin};

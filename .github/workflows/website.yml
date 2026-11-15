@@ -30,7 +30,10 @@ jobs:
       - name: Build the production container
         env:
           DEPLOY_SHA: ${{ github.sha }}
-        run: docker build --build-arg "DEPLOY_SHA=$DEPLOY_SHA" -t datonum-website:ci .
+        run: |
+          # Reproduce the server's restrictive checkout permissions for public files.
+          chmod 600 public/BingSiteAuth.xml
+          docker build --build-arg "DEPLOY_SHA=$DEPLOY_SHA" -t datonum-website:ci .
       - name: Verify container serves this commit
         env:
           DEPLOY_SHA: ${{ github.sha }}

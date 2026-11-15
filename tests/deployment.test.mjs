@@ -29,8 +29,8 @@ test('live verification requires important pages as well as commit marker',async
   await assert.rejects(()=>verifySite({commit,attempts:1,fetcher:async url=>url.endsWith('.json')?json({commit}):new Response('not found',{status:404})}),/HTTP 404/);
 });
 test('live verification checks the intended version and essential routes',async()=>{
-  const visited=[];const result=await verifySite({commit,attempts:1,fetcher:async url=>{visited.push(url);return url.endsWith('.json')?json({commit}):new Response(url.endsWith('.txt')?'Sitemap: https://datonum.com/sitemap-index.xml':url.endsWith('.xml')?'<sitemapindex></sitemapindex>':'<title>Datonum</title><link rel="canonical" href="https://datonum.com/">');}});
-  assert(result.verified);assert.equal(visited.length,6);
+  const visited=[];const result=await verifySite({commit,attempts:1,fetcher:async url=>{visited.push(url);return url.endsWith('.json')?json({commit}):new Response(url.endsWith('.txt')?'Sitemap: https://datonum.com/sitemap-index.xml':url.endsWith('BingSiteAuth.xml')?'<users><user>124A020669257E620E06D4D2FD869EBB</user></users>':url.endsWith('.xml')?'<sitemapindex></sitemapindex>':'<title>Datonum</title><link rel="canonical" href="https://datonum.com/">');}});
+  assert(result.verified);assert.equal(visited.length,7);
 });
 test('verification cannot be redirected to an unrelated origin',async()=>{
   await assert.rejects(()=>verifySite({origin:'https://other.example',commit}),/Unexpected/);

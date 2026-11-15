@@ -5,8 +5,10 @@ Changes are made, built and committed in the local Datonum repository, then push
 verified `main` commits when `DEPLOY_ENABLED=true`. A manual workflow dispatch on `main`
 can retry the same commit. No deployment occurs from pull requests or other branches.
 
-The workflow remains explicitly disabled until the production connections below are
-configured. A successful build with a skipped deployment is **not** a live release.
+Production connections are configured and automatic deployment is enabled. The existing
+production Actions SSH access is reused; Cloudflare access is scoped to datonum.com.
+For a fresh installation, keep deployment disabled until those connections are ready.
+A successful build with a skipped deployment is **not** a live release.
 
 ## One-time connections
 
@@ -70,7 +72,7 @@ gh run watch RUN_ID --exit-status
 5. Preserve the running image and resolved Compose configuration; build with the server's
    production `.env`. Recreate only `datonum-website`, then check its origin version marker.
 6. Purge the Datonum zone's cache and verify the **canonical public** `/deployment.json`
-   commit plus `/`, `/services`, `/insights`, robots and sitemap. No cache-busting query is
+   commit plus `/`, `/services`, `/insights`, robots, sitemap and Bing verification. No cache-busting query is
    used to hide stale canonical content.
 7. Submit IndexNow only after the website is verified. HTTP202 is pending verification,
    not indexing success. IndexNow failure produces a warning; it does not roll back a
