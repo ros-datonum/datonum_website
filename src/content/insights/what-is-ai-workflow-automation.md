@@ -3,9 +3,10 @@ title: "What Is AI Workflow Automation? A Practical Guide for Businesses"
 metaTitle: "What Is AI Workflow Automation? A Practical Guide"
 description: "AI workflow automation explained without the hype: what it is, where AI is needed, where plain rules are enough, and what a working workflow looks like."
 publishedDate: 2026-10-21
-updatedDate: 2026-11-15
+updatedDate: 2026-11-19
 relatedService: impl
 relatedCaseStudy: opportunity-scoring
+relatedPackage: inbox-desk
 ---
 
 Most explanations of AI workflow automation start with tools: which platform, which model, which integrations. If you run a business, that is the wrong end to start from. The useful question is not which tool to buy. It is which parts of your team's week could run without someone reading, copying, and re-typing, and which parts still need a person.
@@ -139,5 +140,7 @@ A first build usually has four parts:
 - **Testing against your own past examples** before it touches live work, so you see where it gets things wrong while nothing depends on it.
 - **A review point** where a person approves anything that reaches a client or changes a record.
 - **A visible exception** when the AI step fails or is unsure, instead of a silent wrong entry.
+
+Two common first projects are also sold as fixed-price packages, with the scope and the acceptance test written down before you pay: [Inbox Desk](/packages/inbox-desk) for a shared inbox that takes too long to sort, and [Team Answers](/packages/team-answers) for a team that keeps asking the same questions.
 
 If you are not sure which process to start with, that is what an [AI Readiness Audit](/services/ai-readiness-audit) is for: it maps where the time goes and which steps are worth automating, including the ones that do not need AI at all. Once the process is clear, [AI Workflow Implementation](/services/implementation) covers the build, from a single task to a full sequence. For more real sequences by business function, see [What we automate](/what-we-automate).

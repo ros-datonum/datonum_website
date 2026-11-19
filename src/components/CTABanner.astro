@@ -14,6 +14,8 @@ interface Props {
   tone?: 'ink' | 'soft';
   /** Umami cta_book_call location, e.g. service-<slug>, case-<slug>, article, page-<slug>. */
   location: string;
+  /** Show a quieter "see fixed-price packages" link under the main action. Off on package pages. */
+  packagesLink?: boolean;
 }
 const {
   eyebrow = 'Next step',
@@ -23,6 +25,7 @@ const {
   href = routes.contact,
   tone = 'ink',
   location,
+  packagesLink = true,
 } = Astro.props;
 
 const ink = tone === 'ink';
@@ -35,7 +38,12 @@ const CTA_EVENT = 'cta_book_call';
     <span class="cta__title">{title}</span>
     {lead && <span class="cta__lead">{lead}</span>}
   </div>
-  <Button size="lg" variant={ink ? 'inverse' : 'primary'} href={href} class="cta__action" data-umami-event={CTA_EVENT} data-umami-event-location={location}>{action}</Button>
+  <div class="cta__actions">
+    <Button size="lg" variant={ink ? 'inverse' : 'primary'} href={href} class="cta__action" data-umami-event={CTA_EVENT} data-umami-event-location={location}>{action}</Button>
+    {packagesLink && (
+      <a href={routes.packages} class="cta__secondary" data-umami-event="cta_see_packages" data-umami-event-location={`cta-${location}`}>Or buy a fixed-price package →</a>
+    )}
+  </div>
 </div>
 
 <style>
@@ -75,7 +83,12 @@ const CTA_EVENT = 'cta_book_call';
   .cta--ink .cta__lead { color: var(--text-inverse-muted); }
   .cta--soft .cta__lead { color: var(--text-body); }
 
+  .cta__actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
   .cta__action { flex: 0 0 auto; }
+  .cta__secondary { font: var(--type-small); border-bottom: 1px solid currentColor; }
+  .cta--ink .cta__secondary { color: var(--text-inverse-muted); }
+  .cta--ink .cta__secondary:hover { color: var(--white); }
+  .cta--soft .cta__secondary { color: var(--text-link); }
 
   @media (max-width: 768px) {
     .cta {

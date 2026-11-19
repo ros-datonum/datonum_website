@@ -4,9 +4,11 @@ import PageLayout from '../layouts/PageLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ChecklistItem from '../components/ChecklistItem.astro';
 import CTABanner from '../components/CTABanner.astro';
+import { routes } from '../data/navigation.ts';
+import { caseStudyPath } from '../data/caseStudies.ts';
 
 const principles = [
-  { n: '01', t: 'Diagnosis before building.', d: 'We will not quote you for a build until we understand the process. If you come to us knowing exactly what you want built, we will still spend a day checking that it is the right thing.' },
+  { n: '01', t: 'Diagnosis before building.', d: 'We will not quote you for a custom build until we understand the process. If you come to us knowing exactly what you want built, we will still spend a day checking that it is the right thing. The fixed-price packages are the exception only in form: their scope is written down in advance, and we still check the fit before any work starts, with a full refund if it is wrong.' },
   { n: '02', t: 'A person always reviews.', d: 'AI drafts, sorts, summarizes, and checks. People approve. We do not build workflows that make consequential decisions unsupervised, and we will say no if you ask us to.' },
   { n: '03', t: 'Your systems, not ours.', d: 'We work with the tools you already pay for. You will not end up on a platform you can only leave by starting over, and nothing runs on a credential only we hold.' },
   { n: '04', t: 'Tested on your real work.', d: 'Every workflow is tested against your own historical examples before it goes live. Sample data proves nothing.' },
@@ -45,6 +47,7 @@ const scaleIcon = '<path d="M12 3.5v17"></path><path d="M5 7.5h14"></path><path 
           </div>
         ))}
       </div>
+      <p class="muted" style="max-width:66ch;margin-top:32px">To see these principles in a real build, read the <a href={caseStudyPath('governed-delivery')}>governed delivery case study</a>, where no step approves its own work. For where AI is needed at all and where plain rules are enough, see <a href={routes.aivs}>AI vs automation</a>. For who does the work, see <a href={routes.about}>About</a>.</p>
     </div>
   </section>
 

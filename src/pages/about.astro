@@ -4,6 +4,8 @@ import PageLayout from '../layouts/PageLayout.astro';
 import ChecklistItem from '../components/ChecklistItem.astro';
 import Avatar from '../components/Avatar.astro';
 import CTABanner from '../components/CTABanner.astro';
+import { routes } from '../data/navigation.ts';
+import { caseStudyPath } from '../data/caseStudies.ts';
 
 const story = [
   'The useful writing about AI in business is aimed at organizations with engineering teams, data functions, and someone whose job is to evaluate this. That describes almost none of the businesses actually doing the work — the recruitment agency, the accountancy practice, the contractor, the freight forwarder.',
@@ -12,7 +14,7 @@ const story = [
   'We work from the business problem first — understanding how the company operates, where AI can create meaningful value, and what needs to change in the process, systems or way of working to make that value real. Datonum is not tied to a single platform, model or automation stack. The solution follows the business need.',
 ];
 const setup = [
-  'Based in Spain, working across the World.',
+  'Based in Spain, working across the world.',
   'Small by design. Engagements are run by the person who scoped them.',
   'We take on a limited number of implementations at a time so stabilization periods are real rather than nominal.',
 ];
@@ -47,6 +49,7 @@ const peopleIcon = '<path d="M15.5 20v-1.5a3.5 3.5 0 0 0-3.5-3.5H6a3.5 3.5 0 0 0
             </div>
           </div>
           <p class="muted">Datonum is led by Rostyslav Bachyk, working with a small group of specialists brought in by engagement. Background in delivery operations — how service businesses plan work, track it, and lose margin on it. The founder role covers business development, discovery, solution direction, commercial scoping and delivery coordination.</p>
+          <p class="muted">How the work is run is set out in <a href={routes.approach}>our approach</a>. What it has produced is in the <a href={routes.cases}>case studies</a>, including <a href={caseStudyPath('governed-delivery')}>governed delivery</a>, the method behind every build, and in the <a href={routes.insights}>insights</a>.</p>
         </div>
       </div>
     </div>

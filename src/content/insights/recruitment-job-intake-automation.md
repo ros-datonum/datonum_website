@@ -3,8 +3,10 @@ title: "From Client Brief to CRM: Automating Job Intake in a Recruitment Agency"
 metaTitle: "Automating Job Intake in a Recruitment Agency"
 description: "How recruitment agencies can automate job intake from client brief to CRM: what plain rules handle, where AI reading helps, and where a consultant decides."
 publishedDate: 2026-10-21
+updatedDate: 2026-11-19
 relatedService: audit
 relatedCaseStudy: opportunity-scoring
+relatedPackage: inbox-desk
 ---
 
 Every job an agency works on starts the same way: a client tells you what they need, and someone turns that into a record your team can work from. It is a small step. It is also the one that decides whether the shortlist, the rate on the timesheet, and the invoice at the end are right.
@@ -107,5 +109,7 @@ If the total is small, or most briefs already arrive complete through a form, le
 Job intake is a good first process for an [AI Readiness Audit](/services/ai-readiness-audit), because it is contained and repeats every day. The audit covers up to three connected processes in one part of the business, traced from the point work arrives to the point it is finished, over two to three weeks.
 
 For job intake, that means speaking to the consultants who do it, looking at five to ten real briefs, and using the volume figures your team reports. The result is a workflow map, a ranked view of which steps to automate, a leave-alone list for the steps that do not need AI, and a 90-day roadmap.
+
+If most briefs land in one shared inbox and the slow part is sorting them and writing the first reply, that narrower job is sold as a fixed-price setup: [Inbox Desk](/packages/inbox-desk). It labels each email, sends briefs to your CRM or a sheet, and leaves reply drafts that a consultant checks before anything is sent.
 
 For a related sequence already built, see the [opportunity scoring case study](/case-studies/opportunity-scoring): inbound inquiries read by AI, fixed rules applied separately, and anything uncertain routed to a person with the reason. More examples by function are on [What we automate](/what-we-automate).

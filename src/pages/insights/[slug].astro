@@ -11,6 +11,7 @@ import { caseStudies, caseStudyPath } from '../../data/caseStudies.ts';
 import { founder } from '../../data/site.ts';
 import { getInsights, insightPath, formatArticleDate } from '../../data/insights.ts';
 import { articleSchema, breadcrumbSchema } from '../../data/structuredData.ts';
+import { packages, packagePath, docIntake } from '../../data/packages.ts';
 
 const RELATED_INSIGHTS_LIMIT = 3;
 
@@ -23,13 +24,43 @@ export async function getStaticPaths() {
 }
 
 const { insight, others } = Astro.props;
-const { title, metaTitle, description, publishedDate, updatedDate, relatedService, relatedCaseStudy } = insight.data;
+const { title, metaTitle, description, publishedDate, updatedDate, relatedService, relatedCaseStudy, relatedPackage } = insight.data;
 const { Content } = await render(insight);
 
 const path = insightPath(insight.id);
 const service = serviceLinks.find((link) => link.href === routes[relatedService]);
 const caseStudy = caseStudies.find((study) => study.slug === relatedCaseStudy);
 const moreInsights = others.slice(0, RELATED_INSIGHTS_LIMIT);
+
+// The fixed-price package that solves this article's problem, shown after the article.
+interface PackageCard {
+  name: string;
+  summary: string;
+  price: string;
+  href: string;
+  action: string;
+  umamiId: string;
+}
+const pkg = packages.find((p) => p.slug === relatedPackage);
+const packageCard: PackageCard | undefined = pkg
+  ? {
+      name: pkg.name,
+      summary: pkg.summary,
+      price: `${pkg.tiers[0].price} setup · ${pkg.monthly.price}`,
+      href: packagePath(pkg.slug),
+      action: `See ${pkg.name}`,
+      umamiId: pkg.slug,
+    }
+  : relatedPackage === 'doc-intake'
+    ? {
+        name: docIntake.name,
+        summary: docIntake.summary,
+        price: docIntake.price,
+        href: `${routes.contact}?topic=doc-intake`,
+        action: docIntake.cta,
+        umamiId: 'doc-intake',
+      }
+    : undefined;
 
 const structuredData = [
   articleSchema(
@@ -58,12 +89,21 @@ const structuredData = [
     <div class="container split split--7-5 article-split">
       <article class="article-prose">
         <Content />
+        {packageCard && (
+          <aside class="article-package">
+            <span class="eyebrow eyebrow--teal">Fixed-price package</span>
+            <p class="article-package__name">{packageCard.name}</p>
+            <p class="article-package__summary">{packageCard.summary}</p>
+            <p class="article-package__price">{packageCard.price}</p>
+            <a href={packageCard.href} class="article-package__link" data-umami-event="package_view" data-umami-event-location={`article-${packageCard.umamiId}`}>{packageCard.action} →</a>
+          </aside>
+        )}
       </article>
 
       <aside class="side-card article-side">
         <div class="side-card__row">
           <span class="side-card__label">Written by</span>
-          <span class="side-card__value">{founder.name}, {founder.jobTitle}</span>
+          <span class="side-card__value"><a href={routes.about} class="article-side__link">{founder.name}</a>, {founder.jobTitle}</span>
         </div>
         <div class="side-card__row">
           <span class="side-card__label">Published</span>
@@ -79,6 +119,12 @@ const structuredData = [
           <div class="side-card__row">
             <span class="side-card__label">Related service</span>
             <a href={service.href} class="article-side__link">{service.label}</a>
+          </div>
+        )}
+        {packageCard && (
+          <div class="side-card__row">
+            <span class="side-card__label">Fixed-price package</span>
+            <a href={packageCard.href} class="article-side__link" data-umami-event="package_view" data-umami-event-location={`article-side-${packageCard.umamiId}`}>{packageCard.name}</a>
           </div>
         )}
         {caseStudy && (
@@ -138,6 +184,20 @@ const structuredData = [
   .article-prose :global(strong) { color: var(--text-strong); font-weight: 600; }
   .article-prose :global(a) { color: var(--text-link); border-bottom: 1px solid var(--border-accent); }
   .article-prose :global(a:hover) { color: var(--text-link-hover); }
+
+  .article-package {
+    margin-top: var(--space-10);
+    padding: var(--space-6);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--border-accent);
+    border-radius: var(--radius-card);
+    background: var(--surface-sunken);
+    display: flex; flex-direction: column; gap: var(--space-2);
+  }
+  .article-prose .article-package__name { font: var(--type-h4); color: var(--text-strong); margin: 0; }
+  .article-prose .article-package__summary { margin: 0; }
+  .article-prose .article-package__price { font: var(--type-data); color: var(--text-strong); margin: var(--space-2) 0 0; }
+  .article-prose .article-package__link { align-self: flex-start; margin-top: var(--space-2); font-weight: 600; }
   .article-prose :global(blockquote) { margin: var(--space-2) 0 var(--space-6); padding-left: var(--space-5); border-left: 2px solid var(--border-accent); }
   .article-prose :global(blockquote p) { font: var(--type-quote); color: var(--text-strong); margin: 0; }
   .article-prose :global(code) { font: var(--type-data); background: var(--surface-sunken); border-radius: var(--radius-xs); padding: 0 var(--space-1); }

@@ -85,7 +85,7 @@ const structuredData = [
         </div>
         <div class="tfield">
           <h3 class="ruled-item__title h3--icon"><span class="h3icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={workflowIcon} /></span>What we add on top</h3>
-          <p class="muted">These platforms move information between systems reliably. They do not read a supplier's email and work out what it means. That is the AI step, built with Claude or OpenAI, sitting inside the sequence at the point where judgment about language is genuinely required.</p>
+          <p class="muted">These platforms move information between systems reliably. They do not read a supplier's email and work out what it means. That is the AI step, built with Claude or OpenAI, sitting inside the sequence at the point where judgment about language is genuinely required. <a href={routes.aivs}>AI vs automation</a> explains where that line falls.</p>
         </div>
       </div>
     </div>
@@ -156,6 +156,18 @@ const structuredData = [
         <p class="muted">Five systems we designed and built, each showing the sequence, the step where AI is required, the systems involved, and what happens when it is unsure.</p>
       </div>
       <Button variant="secondary" href={routes.cases}>See the case studies</Button>
+    </div>
+  </section>
+
+  <!-- Packages pointer -->
+  <section class="band band--grey band--bordered" style="padding:80px 0">
+    <div class="container detail">
+      <div class="detail__copy" style="max-width:62ch">
+        <span class="eyebrow eyebrow--teal">Fixed price</span>
+        <h2 class="h2">Two of these, sold as packages</h2>
+        <p class="muted">Sorting a shared inbox and answering the same internal questions are narrow enough to sell with a set scope and a published price: Inbox Desk and Team Answers. Each has a written acceptance test and a refund if it falls short.</p>
+      </div>
+      <Button variant="secondary" href={routes.packages} data-umami-event="cta_see_packages" data-umami-event-location="page-what-we-automate">See the packages</Button>
     </div>
   </section>
 

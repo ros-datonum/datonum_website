@@ -3,8 +3,10 @@ title: "Temp Agency Timesheets: What Rules Can Handle, Where AI Helps, and What 
 metaTitle: "Temp Agency Timesheet Automation: Rules vs AI"
 description: "How temp agencies can automate timesheet processing: what booking-matching rules handle, where AI reading helps with messy inputs, and what stays with a person."
 publishedDate: 2026-10-22
+updatedDate: 2026-11-19
 relatedService: audit
 relatedCaseStudy: supplier-qualification
+relatedPackage: doc-intake
 ---
 
 Ask a temp desk what Monday morning looks like and timesheets come up fast. Hours arrive as photos, emails, a sheet signed by a site manager, a message from the worker. Someone types them in, checks them against the booking, chases the ones that don't match, and only then can payroll run and invoices go out.
@@ -115,5 +117,7 @@ If only a handful need a second look, leave the process alone, or tighten the on
 Timesheets are a good process for an [AI Readiness Audit](/services/ai-readiness-audit), because they repeat every week and the cost of a mistake is visible on payroll and invoices. The audit covers up to three connected processes in one part of the business, traced from the point work arrives to the point it is finished, over two to three weeks. For a temp desk, timesheets often sit next to [job intake](/insights/recruitment-job-intake-automation) and shift confirmation.
 
 For timesheets, that means speaking to the people who process them, looking at five to ten real examples from each channel, and using the volume figures your team reports. The result is a workflow map, a ranked view of which steps to automate, a leave-alone list for the steps that do not need AI, and a 90-day roadmap.
+
+If the problem is one kind of document that someone retypes every week, such as a paper timesheet signed on site, you do not need an audit first. We set that up at a fixed price on request: the fields go into your sheet or payroll system, and anything unclear waits for a person. See Doc Intake on the [packages page](/packages).
 
 For a related pattern already built, see the [supplier qualification case study](/case-studies/supplier-qualification): records arriving in inconsistent formats are standardized first, checked against fixed rules, and every rejection carries a recorded reason before a person approves anything. More examples by function are on [What we automate](/what-we-automate).

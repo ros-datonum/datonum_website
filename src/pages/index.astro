@@ -137,7 +137,7 @@ const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site
       </div>
       <div class="band__footer">
         <p class="lead-strong" style="max-width:62ch">In each case the interesting part is not what the AI does. It is what happens when the AI is not sure.</p>
-        <a href={routes.cases} class="nowrap">See all five case studies →</a>
+        <span class="nowrap" style="display:flex;gap:24px"><a href={routes.cases}>See all five case studies →</a><a href={routes.insights}>Read the insights →</a></span>
       </div>
     </div>
   </section>
@@ -178,7 +178,7 @@ const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site
         ))}
         <div class="row-between">
           <p class="lead-strong" style="max-width:56ch">Most AI demonstrations show the happy path. The engineering is in everything else.</p>
-          <a href={routes.approach} class="nowrap">How we work →</a>
+          <span class="nowrap" style="display:flex;gap:24px"><a href={routes.approach}>How we work →</a><a href={routes.about}>Who builds it →</a></span>
         </div>
       </div>
     </div>

@@ -23,6 +23,8 @@ const insights = defineCollection({
     // Key of the service route in data/navigation.ts this article leads to.
     relatedService: z.enum(['audit', 'deep', 'impl', 'retainer']),
     relatedCaseStudy: z.enum(caseStudySlugs).optional(),
+    // Fixed-price package this article's problem maps to (src/data/packages.ts).
+    relatedPackage: z.enum(['inbox-desk', 'team-answers', 'doc-intake']).optional(),
   }),
 });
 

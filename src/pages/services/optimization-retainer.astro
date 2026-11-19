@@ -3,6 +3,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import DataTable from '../../components/DataTable.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
+import { caseStudyPath } from '../../data/caseStudies.ts';
 import Accordion from '../../components/Accordion.astro';
 import ChecklistItem from '../../components/ChecklistItem.astro';
 import CTABanner from '../../components/CTABanner.astro';
@@ -76,6 +77,7 @@ const structuredData = [
         </div>
         <p class="lead-muted">None of these stop it working. They move the output gradually — from reliable, to occasionally needing an edit, to needing a careful check every time. At that point people quietly return to doing the work by hand, and the conclusion becomes that AI did not suit the business.</p>
         <p class="h3" style="margin:0">Maintenance is what prevents that.</p>
+        <p class="muted">The <a href={caseStudyPath('reporting-layer')}>reporting layer case study</a> shows the kind of reporting work an Advanced retainer can include.</p>
       </div>
     </div>
   </section>

@@ -90,7 +90,10 @@ export const caseStudies: CaseStudy[] = [
     outputLine: { label: 'The governing principle:', text: 'no material answer without evidence behind it.' },
     trustworthy: 'The answer is built only from documents you have approved, never from what the AI happens to have learned elsewhere. Where the evidence is thin, it says so instead of producing something plausible. When a document is updated, only the affected content is refreshed. And the finding step is tested separately from the answering step, so a well-written answer cannot conceal the wrong source.',
     builtWith: 'Python · AI · document processing · searchable index · evaluation against expected sources',
-    mapsTo: [{ href: routes.impl, label: 'AI Workflow Implementation — Standard or Advanced' }],
+    mapsTo: [
+      { href: routes.impl, label: 'AI Workflow Implementation — Standard or Advanced' },
+      { href: '/packages/team-answers', label: 'Team Answers — fixed-price package' },
+    ],
     heroWm: { img: '--wm-da', pos: 'right min(calc(50% + 596px + var(--wm-k) * 188px / 2), calc(100% + var(--wm-k) * 188px - 24px)) top 38%', size: 'calc(var(--wm-k) * 188px)' },
     bodyWm: { img: '--wm-b', pos: 'right min(calc(50% + 598px + var(--wm-k) * 132px / 2), calc(100% + var(--wm-k) * 132px - 24px)) top 34px', size: 'calc(var(--wm-k) * 132px)' },
   },
