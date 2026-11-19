@@ -18,6 +18,13 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   integrations: [
-    sitemap({ filter: (page) => hasInsights || new URL(page).pathname !== INSIGHTS_INDEX_PATH }),
+    sitemap({
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        // Post-purchase onboarding forms are noindex and only reached from Stripe Checkout.
+        if (path.startsWith('/onboarding/')) return false;
+        return hasInsights || path !== INSIGHTS_INDEX_PATH;
+      },
+    }),
   ],
 });

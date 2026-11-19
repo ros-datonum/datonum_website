@@ -1,0 +1,63 @@
+---
+// Radio or checkbox group: a fieldset whose legend matches Field labels, with each
+// option as a bordered row. Native inputs, so keyboard use and validation work as usual.
+interface Choice {
+  value: string;
+  label: string;
+}
+interface Props {
+  name: string;
+  label: string;
+  type?: 'radio' | 'checkbox';
+  choices: Choice[];
+  required?: boolean;
+  hint?: string;
+  class?: string;
+}
+const { name, label, type = 'radio', choices, required = false, hint, class: className } = Astro.props;
+---
+
+<fieldset class:list={['choice-group', className]}>
+  <legend class="choice-group__legend">
+    {label}{required && <span class="choice-group__req">*</span>}
+  </legend>
+  {hint && <p class="choice-group__hint">{hint}</p>}
+  <div class="choice-group__options">
+    {choices.map((c, i) => (
+      <label class="choice">
+        <input
+          class="choice__input"
+          type={type}
+          name={name}
+          value={c.value}
+          required={type === 'radio' && required && i === 0 ? true : undefined}
+        />
+        <span class="choice__label">{c.label}</span>
+      </label>
+    ))}
+  </div>
+</fieldset>
+
+<style>
+  .choice-group { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .choice-group__legend { font: var(--type-label); color: var(--text-strong); padding: 0; margin-bottom: 6px; }
+  .choice-group__req { color: var(--status-negative); margin-left: 4px; }
+  .choice-group__hint { font: var(--type-small); font-size: var(--text-xs); color: var(--text-muted); margin: -4px 0 2px; }
+  .choice-group__options { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .choice {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-control);
+    font-size: var(--text-sm);
+    color: var(--text-strong);
+    cursor: pointer;
+    transition: var(--transition-control);
+  }
+  .choice:hover { border-color: var(--border-accent); }
+  .choice:has(.choice__input:checked) { border-color: var(--border-accent); background: var(--surface-accent-soft); }
+  .choice:has(.choice__input:focus-visible) { box-shadow: var(--ring-focus); }
+  .choice__input { margin: 0; width: 16px; height: 16px; flex: none; accent-color: var(--action-accent); }
+  .choice__label { line-height: var(--leading-snug); }
+</style>

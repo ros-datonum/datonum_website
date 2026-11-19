@@ -1,0 +1,271 @@
+---
+// Post-purchase onboarding. Stripe redirects buyers here after payment. Questions live in
+// src/data/onboarding.ts. On submit the answers are joined into one text block and sent,
+// with the contact fields, to the HubSpot Forms Submissions API (same pattern as /contact).
+// noindex and excluded from the sitemap (astro.config.mjs).
+import PageLayout from '../../layouts/PageLayout.astro';
+import StepTracker from '../../components/StepTracker.astro';
+import Field from '../../components/Field.astro';
+import Input from '../../components/Input.astro';
+import Textarea from '../../components/Textarea.astro';
+import ChoiceGroup from '../../components/ChoiceGroup.astro';
+import Callout from '../../components/Callout.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { packages, packagePath } from '../../data/packages.ts';
+import { onboardingForms, ONBOARDING_FORM_GUID, type OnboardingForm } from '../../data/onboarding.ts';
+
+export function getStaticPaths() {
+  return onboardingForms.map((form) => ({ params: { slug: form.slug }, props: { form } }));
+}
+
+interface Props {
+  form: OnboardingForm;
+}
+const { form } = Astro.props;
+const pkg = packages.find((p) => p.slug === form.slug);
+const steps = pkg?.steps ?? [];
+const contactEmail = 'hello@datonum.com';
+const lockIcon = '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path>';
+---
+
+<PageLayout
+  title={`${form.packageName} onboarding — Datonum`}
+  description={`Onboarding form for Datonum ${form.packageName} customers.`}
+>
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+
+  <section class="ob-hero">
+    <div class="container">
+      <span class="ihero__eyebrow">Onboarding · {form.packageName}</span>
+      <h1 class="ihero__title" style="max-width:20ch">{form.title}</h1>
+      <p class="ihero__lead">{form.lead}</p>
+    </div>
+  </section>
+
+  <section class="band band--card">
+    <div class="container split split--5-7" style="gap:72px">
+      <aside class="ob-side">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <span class="eyebrow eyebrow--teal">What happens next</span>
+          <StepTracker steps={steps} current={0} orientation="vertical" />
+        </div>
+        <div class="ob-side__note">
+          <span class="eyebrow eyebrow--teal eyebrow--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={lockIcon} />Please leave out</span>
+          <p class="muted">Passwords, access codes and copies of customer emails. Access is given by your admin during setup, and we look at real examples together under the <a href={routes.dpa}>Data Processing Agreement</a>.</p>
+          <p class="muted">Questions: <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a></p>
+        </div>
+      </aside>
+
+      <div class="form-card">
+        <form
+          id="onboarding-form"
+          novalidate
+          data-hs-do-not-collect="true"
+          data-package={form.packageName}
+          data-guid={ONBOARDING_FORM_GUID}
+        >
+          <div class="ob-stack">
+            <section class="ob-section">
+              <h2 class="h3">About you</h2>
+              <div class="name-row">
+                <Field label="First name" required htmlFor="ob-firstname"><Input id="ob-firstname" name="firstname" required /></Field>
+                <Field label="Last name" required htmlFor="ob-lastname"><Input id="ob-lastname" name="lastname" required /></Field>
+              </div>
+              <Field label="Work email" required hint="The email you used at checkout, so we can match your order." htmlFor="ob-email">
+                <Input id="ob-email" name="email" type="email" required />
+              </Field>
+              <Field label="Company" required htmlFor="ob-company"><Input id="ob-company" name="company" required /></Field>
+            </section>
+
+            {form.sections.map((section) => (
+              <section class="ob-section">
+                <h2 class="h3">{section.title}</h2>
+                {section.lead && <p class="muted">{section.lead}</p>}
+                {section.questions.map((q) => (
+                  <div
+                    class="ob-q"
+                    data-q={q.id}
+                    data-label={q.label}
+                    data-kind={q.type}
+                    data-show-field={q.showWhen?.field}
+                    data-show-value={q.showWhen?.value}
+                  >
+                    {(q.type === 'radio' || q.type === 'checkbox') ? (
+                      <ChoiceGroup name={q.id} label={q.label} type={q.type} choices={q.choices} required={q.required} hint={q.hint} />
+                    ) : q.type === 'textarea' ? (
+                      <Field label={q.label} required={q.required} hint={q.hint} htmlFor={`ob-${q.id}`}>
+                        <Textarea id={`ob-${q.id}`} name={q.id} rows={q.rows ?? 4} required={q.required} placeholder={q.placeholder} />
+                      </Field>
+                    ) : (
+                      <Field label={q.label} required={q.required} hint={q.hint} htmlFor={`ob-${q.id}`}>
+                        <Input id={`ob-${q.id}`} name={q.id} type={q.type} required={q.required} placeholder={q.placeholder} />
+                      </Field>
+                    )}
+                  </div>
+                ))}
+              </section>
+            ))}
+
+            <div class="ob-submit">
+              <Button size="lg" fullWidth type="submit">Send onboarding answers</Button>
+              <p class="form-error" id="ob-error" hidden></p>
+              <p class="side-card__label" style="text-wrap:pretty">We use these answers to check the fit and set up your package. See our <a href={routes.privacy}>privacy notice</a>.</p>
+            </div>
+          </div>
+        </form>
+        <div class="ob-stack" id="onboarding-thanks" hidden>
+          <Callout tone="accent" title="Thanks, we have your answers">We read them and reply by email within 2 business days: either the next step of the setup, or a full refund if the package doesn’t fit.</Callout>
+          {pkg && <div style="display:flex"><Button variant="secondary" href={packagePath(pkg.slug)}>Back to {pkg.name}</Button></div>}
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .ob-hero {
+    padding: 104px 0 88px;
+    background-color: var(--surface-ink);
+    background-image: radial-gradient(120% 90% at 88% 0%, var(--alpha-glow-teal) 0%, rgba(10, 37, 64, 0) 60%), var(--wm-db);
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right min(calc(50% + 600px + var(--wm-k) * 104px / 2), calc(100% + var(--wm-k) * 104px - 24px)) bottom 64px;
+    background-size: auto, calc(var(--wm-k) * 104px);
+  }
+  .ob-side { display: flex; flex-direction: column; gap: 32px; align-self: start; position: sticky; top: calc(var(--header-height) + 24px); }
+  .ob-side__note { padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px; }
+  .form-card { background: var(--grey-050); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 36px; }
+  .ob-stack { display: flex; flex-direction: column; gap: 40px; }
+  .ob-section { display: flex; flex-direction: column; gap: 20px; }
+  .ob-section + .ob-section { padding-top: 32px; border-top: 1px solid var(--border-subtle); }
+  .ob-submit { display: flex; flex-direction: column; gap: 16px; }
+  .form-error { font: var(--type-small); color: var(--status-negative); margin: 0; }
+  .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 1024px) { .ob-side { position: static; order: 2; } }
+  @media (max-width: 480px) { .name-row { grid-template-columns: 1fr; } .form-card { padding: 24px; } }
+</style>
+
+<script>
+  import { hasAnalyticsConsent } from '../../scripts/consent.ts';
+  import { trackEvent } from '../../scripts/umami.ts';
+
+  const form = document.getElementById('onboarding-form') as HTMLFormElement | null;
+  const thanks = document.getElementById('onboarding-thanks');
+  const errorEl = document.getElementById('ob-error');
+
+  const PORTAL = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID;
+  const REGION = import.meta.env.PUBLIC_HUBSPOT_REGION || 'na1';
+  const HUBSPOT_VISITOR_COOKIE = 'hubspotutk';
+  const SUBMIT_EVENT = 'onboarding_submit';
+  const CONTACT_FIELDS = ['firstname', 'lastname', 'email', 'company'];
+
+  function showError(msg: string) {
+    if (!errorEl) return;
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+  }
+
+  function readCookie(name: string): string {
+    const prefix = `${name}=`;
+    const cookie = document.cookie.split('; ').find((entry) => entry.startsWith(prefix));
+    return cookie ? decodeURIComponent(cookie.slice(prefix.length)) : '';
+  }
+
+  function radioValue(name: string): string {
+    const checked = form?.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`);
+    return checked?.value ?? '';
+  }
+
+  // Questions with showWhen appear only when the controlling radio has the given value.
+  // Hidden questions are disabled, so their required flag and value are ignored.
+  function applyConditions() {
+    form?.querySelectorAll<HTMLElement>('[data-show-field]').forEach((el) => {
+      const visible = radioValue(el.dataset.showField ?? '') === el.dataset.showValue;
+      el.hidden = !visible;
+      el.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea').forEach((input) => {
+        input.disabled = !visible;
+      });
+    });
+  }
+
+  // ?plan=plus (from the Team Answers Plus checkout) preselects that plan.
+  const plan = new URLSearchParams(window.location.search).get('plan');
+  if (plan && form) {
+    const option = form.querySelector<HTMLInputElement>(`input[name="plan"][value="${CSS.escape(plan)}"]`);
+    if (option) option.checked = true;
+  }
+  applyConditions();
+  form?.addEventListener('change', applyConditions);
+
+  // One readable block: "Label\nanswer", separated by blank lines. Empty answers are left out.
+  function buildAnswers(): string {
+    if (!form) return '';
+    const blocks: string[] = [`Package: ${form.dataset.package ?? ''}`];
+    form.querySelectorAll<HTMLElement>('[data-q]').forEach((el) => {
+      if (el.hidden) return;
+      const name = el.dataset.q ?? '';
+      const kind = el.dataset.kind;
+      let value = '';
+      if (kind === 'radio' || kind === 'checkbox') {
+        value = Array.from(el.querySelectorAll<HTMLInputElement>('input:checked'))
+          .map((input) => input.closest('label')?.textContent?.trim() ?? input.value)
+          .join(', ');
+      } else {
+        const input = el.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${name}"]`);
+        value = input?.value.trim() ?? '';
+      }
+      if (value) blocks.push(`${el.dataset.label}\n${value}`);
+    });
+    return blocks.join('\n\n');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (errorEl) errorEl.hidden = true;
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const guid = form.dataset.guid;
+    if (!PORTAL || !guid) {
+      showError('The form is not connected yet. Please email your answers to hello@datonum.com.');
+      return;
+    }
+
+    const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (submit) submit.disabled = true;
+
+    const data = new FormData(form);
+    const fields = [
+      ...CONTACT_FIELDS.map((name) => ({ name, value: String(data.get(name) ?? '').trim() })),
+      { name: 'onboarding_answers', value: buildAnswers() },
+    ];
+    const hubspotVisitorToken = hasAnalyticsConsent() ? readCookie(HUBSPOT_VISITOR_COOKIE) : '';
+    const context = {
+      pageUri: window.location.href,
+      pageName: document.title,
+      ...(hubspotVisitorToken && { hutk: hubspotVisitorToken }),
+    };
+    const host = REGION === 'na1' ? 'api.hsforms.com' : `api-${REGION}.hsforms.com`;
+    const endpoint = `https://${host}/submissions/v3/integration/submit/${PORTAL}/${guid}`;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields, context }),
+      });
+      if (!res.ok) throw new Error(`HubSpot responded ${res.status}`);
+      trackEvent(SUBMIT_EVENT, { package: form.dataset.package ?? '' });
+      form.hidden = true;
+      if (thanks) {
+        thanks.hidden = false;
+        thanks.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } catch {
+      if (submit) submit.disabled = false;
+      showError('Something went wrong sending that. Please try again, or email your answers to hello@datonum.com.');
+    }
+  });
+</script>
