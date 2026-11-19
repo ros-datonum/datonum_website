@@ -112,7 +112,7 @@ Before anyone builds anything, four questions sort most processes quickly:
 
 1. **Does the input arrive in the same shape every time?** If it does, a rule will handle it.
 2. **Could you write the decision down as instructions?** If a competent new starter could follow a one-page rule sheet and get it right every time, it is automation, not AI.
-3. **What happens when the step gets it wrong?** The higher the cost of a wrong answer, the more the design is about review and routing rather than the AI itself.
+3. **What happens when the step gets it wrong?** The higher the cost of a wrong answer, the more the design is about review and routing rather than the AI itself. [Human-in-the-loop AI](/insights/human-in-the-loop-ai) goes through where the review step belongs.
 4. **How often does it happen?** Volume is what makes the effort repay.
 
 Read in order, the same four questions work as a path. Stop at the first outcome that applies:
@@ -141,6 +141,6 @@ A first build usually has four parts:
 - **A review point** where a person approves anything that reaches a client or changes a record.
 - **A visible exception** when the AI step fails or is unsure, instead of a silent wrong entry.
 
-Two common first projects are also sold as fixed-price packages, with the scope and the acceptance test written down before you pay: [Inbox Desk](/packages/inbox-desk) for a shared inbox that takes too long to sort, and [Team Answers](/packages/team-answers) for a team that keeps asking the same questions.
+Two common first projects are also sold as fixed-price packages, with the scope and the acceptance test written down before you pay: [Inbox Desk](/packages/inbox-desk) for a shared inbox that takes too long to sort, and [Team Answers](/packages/team-answers) for a team that keeps asking the same questions. Our guides to [shared inbox triage](/insights/shared-inbox-ai-triage) and [AI knowledge bases](/insights/ai-knowledge-assistant) explain how each one works. To pick between candidates, try the scorecard in [what to automate first](/insights/what-to-automate-with-ai).
 
 If you are not sure which process to start with, that is what an [AI Readiness Audit](/services/ai-readiness-audit) is for: it maps where the time goes and which steps are worth automating, including the ones that do not need AI at all. Once the process is clear, [AI Workflow Implementation](/services/implementation) covers the build, from a single task to a full sequence. For more real sequences by business function, see [What we automate](/what-we-automate).

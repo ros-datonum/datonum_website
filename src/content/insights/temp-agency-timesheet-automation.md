@@ -75,6 +75,8 @@ If all your timesheets already arrive through an app or portal, skip this step. 
 
 ## Flag, don't decide: exceptions go to a person
 
+The same reading-and-checking pattern applies to most business documents; [how AI document processing works](/insights/ai-document-processing) covers it in general terms, and [human-in-the-loop AI](/insights/human-in-the-loop-ai) covers where the person should sit.
+
 Read in order, a few questions sort every timesheet into one of three outcomes:
 
 <figure class="fig fig-decide">

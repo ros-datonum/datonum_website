@@ -110,6 +110,6 @@ Job intake is a good first process for an [AI Readiness Audit](/services/ai-read
 
 For job intake, that means speaking to the consultants who do it, looking at five to ten real briefs, and using the volume figures your team reports. The result is a workflow map, a ranked view of which steps to automate, a leave-alone list for the steps that do not need AI, and a 90-day roadmap.
 
-If most briefs land in one shared inbox and the slow part is sorting them and writing the first reply, that narrower job is sold as a fixed-price setup: [Inbox Desk](/packages/inbox-desk). It labels each email, sends briefs to your CRM or a sheet, and leaves reply drafts that a consultant checks before anything is sent.
+If most briefs land in one shared inbox and the slow part is sorting them and writing the first reply, that narrower job is sold as a fixed-price setup: [Inbox Desk](/packages/inbox-desk). It labels each email, sends briefs to your CRM or a sheet, and leaves reply drafts that a consultant checks before anything is sent. For how that works in any shared inbox, see [AI for a shared inbox](/insights/shared-inbox-ai-triage).
 
 For a related sequence already built, see the [opportunity scoring case study](/case-studies/opportunity-scoring): inbound inquiries read by AI, fixed rules applied separately, and anything uncertain routed to a person with the reason. More examples by function are on [What we automate](/what-we-automate).

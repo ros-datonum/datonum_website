@@ -114,6 +114,7 @@ export const packages: Package[] = [
       { question: 'Do we have to keep the monthly plan?', answer: 'No. You can cancel at any time. We hand over the workflow and a short guide so you can run it on your own server or ours.' },
     ],
     related: [
+      { label: 'Guide: AI for a shared inbox', href: '/insights/shared-inbox-ai-triage' },
       { label: 'Terms of Service', href: '/service-terms' },
       { label: 'Data Processing Agreement', href: '/dpa' },
     ],
@@ -206,6 +207,7 @@ export const packages: Package[] = [
     ],
     related: [
       { label: 'Case study: answers from company documents', href: '/case-studies/document-answers' },
+      { label: 'Guide: when an AI knowledge base helps', href: '/insights/ai-knowledge-assistant' },
       { label: 'Terms of Service', href: '/service-terms' },
       { label: 'Data Processing Agreement', href: '/dpa' },
     ],

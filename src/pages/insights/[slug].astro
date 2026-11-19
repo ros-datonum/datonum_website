@@ -173,7 +173,7 @@ const structuredData = [
   .article-split { gap: var(--space-16); }
 
   /* The article body is rendered Markdown, so its elements are styled from the wrapper. */
-  .article-prose { display: flex; flex-direction: column; max-width: 68ch; }
+  .article-prose { display: flex; flex-direction: column; max-width: 68ch; min-width: 0; }
   .article-prose :global(h2) { font: var(--type-h3); letter-spacing: var(--tracking-heading); color: var(--text-strong); margin: var(--space-10) 0 var(--space-3); text-wrap: pretty; }
   .article-prose :global(h3) { font: var(--type-h4); color: var(--text-strong); margin: var(--space-6) 0 var(--space-2); text-wrap: pretty; }
   .article-prose :global(> :first-child) { margin-top: 0; }
@@ -202,7 +202,7 @@ const structuredData = [
   .article-prose :global(blockquote p) { font: var(--type-quote); color: var(--text-strong); margin: 0; }
   .article-prose :global(code) { font: var(--type-data); background: var(--surface-sunken); border-radius: var(--radius-xs); padding: 0 var(--space-1); }
   .article-prose :global(hr) { border: 0; border-top: 1px solid var(--border-subtle); margin: var(--space-8) 0; }
-  .article-prose :global(table) { width: 100%; border-collapse: collapse; margin: 0 0 var(--space-6); }
+  .article-prose :global(table) { display: block; max-width: 100%; overflow-x: auto; width: 100%; border-collapse: collapse; margin: 0 0 var(--space-6); }
   .article-prose :global(th) { font: var(--type-label); color: var(--text-strong); text-align: left; padding: var(--space-3); border-bottom: 2px solid var(--navy-800); }
   .article-prose :global(td) { font: var(--type-body); color: var(--grey-600); padding: var(--space-3); border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
   @media (max-width: 720px) {
