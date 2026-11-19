@@ -63,6 +63,8 @@ const lockIcon = '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path 
           novalidate
           data-hs-do-not-collect="true"
           data-package={form.packageName}
+          data-slug={form.slug}
+          data-purchase={JSON.stringify(form.purchaseValue)}
           data-guid={ONBOARDING_FORM_GUID}
         >
           <div class="ob-stack">
@@ -147,7 +149,7 @@ const lockIcon = '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path 
 
 <script>
   import { hasAnalyticsConsent } from '../../scripts/consent.ts';
-  import { trackEvent } from '../../scripts/umami.ts';
+  import { trackEvent, trackEventWhenReady } from '../../scripts/umami.ts';
 
   const form = document.getElementById('onboarding-form') as HTMLFormElement | null;
   const thanks = document.getElementById('onboarding-thanks');
@@ -157,6 +159,7 @@ const lockIcon = '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path 
   const REGION = import.meta.env.PUBLIC_HUBSPOT_REGION || 'na1';
   const HUBSPOT_VISITOR_COOKIE = 'hubspotutk';
   const SUBMIT_EVENT = 'onboarding_submit';
+  const PURCHASE_EVENT = 'package_purchase';
   const CONTACT_FIELDS = ['firstname', 'lastname', 'email', 'company'];
 
   function showError(msg: string) {
@@ -189,12 +192,41 @@ const lockIcon = '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path 
   }
 
   // ?plan=plus (from the Team Answers Plus checkout) preselects that plan.
-  const plan = new URLSearchParams(window.location.search).get('plan');
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get('plan');
   if (plan && form) {
     const option = form.querySelector<HTMLInputElement>(`input[name="plan"][value="${CSS.escape(plan)}"]`);
     if (option) option.checked = true;
   }
   applyConditions();
+
+  // Stripe Payment Links redirect here with ?paid=1 only after a successful payment, so
+  // this is the purchase conversion. Counted once per browser session, then the flag is
+  // removed from the address bar so a reload or a shared link does not count again.
+  if (form && params.get('paid') === '1') {
+    const slug = form.dataset.slug ?? '';
+    const planKey = plan ?? 'default';
+    const onceKey = `datonum_purchase_${slug}_${planKey}`;
+    let alreadyCounted = false;
+    try {
+      alreadyCounted = sessionStorage.getItem(onceKey) === '1';
+      sessionStorage.setItem(onceKey, '1');
+    } catch {
+      // Storage unavailable (private mode): count it anyway.
+    }
+    if (!alreadyCounted) {
+      const values = JSON.parse(form.dataset.purchase ?? '{}') as Record<string, number>;
+      trackEventWhenReady(PURCHASE_EVENT, {
+        package: slug,
+        plan: planKey,
+        revenue: values[planKey] ?? values.default ?? 0,
+        currency: 'EUR',
+      });
+    }
+    params.delete('paid');
+    const query = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
+  }
   form?.addEventListener('change', applyConditions);
 
   // One readable block: "Label\nanswer", separated by blank lines. Empty answers are left out.
@@ -257,7 +289,7 @@ const lockIcon = '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path 
         body: JSON.stringify({ fields, context }),
       });
       if (!res.ok) throw new Error(`HubSpot responded ${res.status}`);
-      trackEvent(SUBMIT_EVENT, { package: form.dataset.package ?? '' });
+      trackEvent(SUBMIT_EVENT, { package: form.dataset.slug ?? '', plan: radioValue('plan') || 'default' });
       form.hidden = true;
       if (thanks) {
         thanks.hidden = false;

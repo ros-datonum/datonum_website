@@ -201,7 +201,9 @@ const sendIcon = '<path d="M20.5 3.5 10.5 13.5"></path><path d="M20.5 3.5 14 20.
         body: JSON.stringify({ fields, context }),
       });
       if (!res.ok) throw new Error(`HubSpot responded ${res.status}`);
-      trackEvent(CONTACT_SUBMIT_EVENT, submissionCampaign());
+      // ?topic= comes from package pages ("Ask to start", Doc Intake request).
+      const topic = new URLSearchParams(window.location.search).get('topic');
+      trackEvent(CONTACT_SUBMIT_EVENT, { ...submissionCampaign(), ...(topic && { topic }) });
       form.hidden = true;
       if (thanks) thanks.hidden = false;
     } catch (err) {

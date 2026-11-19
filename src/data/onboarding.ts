@@ -36,6 +36,9 @@ export interface OnboardingSection {
 export interface OnboardingForm {
   slug: string; // matches the package slug
   packageName: string;
+  // Amount charged at checkout, EUR excluding VAT, by plan ('default' unless ?plan= says
+  // otherwise). Sent as revenue with the package_purchase event. Keep in sync with packages.ts.
+  purchaseValue: Record<string, number>;
   title: string;
   lead: string;
   sections: OnboardingSection[];
@@ -55,6 +58,7 @@ export const onboardingForms: OnboardingForm[] = [
   {
     slug: 'inbox-desk',
     packageName: 'Inbox Desk',
+    purchaseValue: { default: 1500 },
     title: 'Tell us about your inbox',
     lead: 'About 10 minutes. We use your answers to check the fit within 2 business days and to plan the setup.',
     sections: [
@@ -122,6 +126,7 @@ export const onboardingForms: OnboardingForm[] = [
   {
     slug: 'team-answers',
     packageName: 'Team Answers',
+    purchaseValue: { default: 1500, plus: 1500 }, // Plus: the 50% paid at order
     title: 'Tell us about your team and documents',
     lead: 'About 10 minutes. We use your answers to check the fit within 2 business days and to plan the setup.',
     sections: [
