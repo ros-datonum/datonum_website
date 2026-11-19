@@ -22,6 +22,8 @@ export const routes = {
   contact: '/contact',
   privacy: '/privacy',
   terms: '/terms',
+  serviceTerms: '/service-terms',
+  dpa: '/dpa',
 } as const;
 
 export const serviceLinks: readonly NavLink[] = [

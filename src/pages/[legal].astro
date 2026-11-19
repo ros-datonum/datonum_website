@@ -1,5 +1,5 @@
 ---
-// Legal template → /privacy and /terms.
+// Legal template → /privacy, /terms, /service-terms and /dpa.
 // Privacy Notice: GDPR (Reg. EU 2016/679) + LOPDGDD (LO 3/2018) + LSSI-CE (Ley 34/2002).
 // Terms of Use: combined aviso legal (Art. 10 LSSI) + website conditions of use.
 // IDENTITY placeholders (nif, address) are required by law — fill before publishing.
@@ -12,14 +12,89 @@ export function getStaticPaths() {
   return [
     { params: { legal: 'privacy' }, props: { variant: 'privacy', title: 'Privacy Notice' } },
     { params: { legal: 'terms' }, props: { variant: 'terms', title: 'Terms of Use' } },
+    { params: { legal: 'service-terms' }, props: { variant: 'service-terms', title: 'Terms of Service' } },
+    { params: { legal: 'dpa' }, props: { variant: 'dpa', title: 'Data Processing Agreement' } },
   ];
 }
 
 const { variant, title } = Astro.props;
 
 const PRIVACY_LAST_UPDATED = '20 October 2026';
-const TERMS_LAST_UPDATED = '10 August 2026';
-const lastUpdated = variant === 'privacy' ? PRIVACY_LAST_UPDATED : TERMS_LAST_UPDATED;
+const TERMS_LAST_UPDATED = '19 November 2026';
+const SERVICE_TERMS_LAST_UPDATED = '19 November 2026';
+const DPA_LAST_UPDATED = '19 November 2026';
+const legalEmail = 'legal@datonum.com';
+
+// Service Terms, section 7: what monthly plans cover.
+const planColumns = [
+  { key: 'area', label: 'Area' },
+  { key: 'covered', label: 'Covered' },
+  { key: 'notCovered', label: 'Not covered' },
+];
+const planRows = [
+  { area: 'Hosting', covered: 'Running your workflow on our EU server, within the monthly volume of your package', notCovered: 'Volume above the package limit (priced separately)' },
+  { area: 'Monitoring', covered: 'Alerts on failed runs, checked on business days (Monday to Friday, 9:00–18:00 Madrid time)', notCovered: '24/7 monitoring or a guaranteed uptime percentage' },
+  { area: 'Fixes', covered: 'Fixing failures caused by our setup, usually within 2 business days', notCovered: 'Failures caused by changes in your systems or by outages at third-party providers, beyond restarting once they recover' },
+  { area: 'Tuning', covered: 'A monthly accuracy check and up to 2 small changes to categories, rules or documents', notCovered: 'New inboxes, new document types or new integrations (a new setup)' },
+  { area: 'Contact', covered: 'Email, answered within 1 business day', notCovered: 'Phone support' },
+];
+
+// DPA, Annex 1: details of processing per package.
+const annex1Columns = [
+  { key: 'item', label: '' },
+  { key: 'inbox', label: 'Inbox Desk' },
+  { key: 'docs', label: 'Doc Intake' },
+  { key: 'answers', label: 'Team Answers (with Run & Care)' },
+];
+const annex1Rows = [
+  { item: 'Subject matter and purpose', inbox: 'Sorting emails in one shared inbox, routing them to the Customer’s tools and preparing reply drafts for the Customer’s staff to review', docs: 'Extracting agreed fields from the Customer’s documents into a table, with a human review step', answers: 'Answering staff questions from the Customer’s internal documents' },
+  { item: 'Nature of processing', inbox: 'Reading, classifying, storing logs, generating drafts. No email is sent automatically', docs: 'Reading, extracting, storing, presenting for review', answers: 'Indexing documents, answering questions, periodic accuracy checks' },
+  { item: 'Data subjects', inbox: 'Senders and recipients of emails to the inbox: customers, prospects, suppliers, the Customer’s staff', docs: 'People named in the documents: suppliers’ contacts, customers, staff, applicants (as agreed)', answers: 'The Customer’s staff; people named in internal documents' },
+  { item: 'Personal data', inbox: 'Names, email addresses, phone numbers, message content, attachment metadata', docs: 'Names, contact details and other fields agreed in the scope', answers: 'Names, roles, contact details and other content of the documents' },
+  { item: 'Special category data', inbox: 'Not intended. The Customer will exclude such messages where possible', docs: 'Not intended unless agreed in writing', answers: 'Not intended' },
+  { item: 'Retention inside the service', inbox: 'Run logs: 14 days. Drafts stay in the Customer’s mailbox', docs: 'Source files: 30 days after extraction. Extracted data stays in the Customer’s table', answers: 'For the term of the service' },
+  { item: 'Location', inbox: 'EU (Germany), plus sub-processors in Annex 3', docs: 'EU (Germany), plus sub-processors in Annex 3', answers: 'The Customer’s own AI workspace account; Datonum accesses it for maintenance' },
+];
+
+// DPA, Annex 2: technical and organisational measures.
+const annex2Columns = [
+  { key: 'area', label: 'Area' },
+  { key: 'measure', label: 'Measure' },
+];
+const annex2Rows = [
+  { area: 'Access', measure: 'Only the named Datonum owner has access to production systems. Server login by SSH key only, no passwords. Two-factor authentication on hosting, email and AI provider accounts' },
+  { area: 'Least privilege', measure: 'Access to the Customer’s systems uses the narrowest permissions the service needs, through an app registered in the Customer’s own Google Workspace or Microsoft 365 account, which the Customer can revoke at any time' },
+  { area: 'Encryption in transit', measure: 'All connections use HTTPS/TLS' },
+  { area: 'Credentials', measure: 'Stored encrypted in the workflow tool, never in plain text files or email' },
+  { area: 'Separation', measure: 'Each Customer has separate workflows and credentials' },
+  { area: 'Data minimisation', measure: 'Only the inbox, folders or document types in the agreed scope are processed. Workflow run logs, which can contain message or document content, are deleted automatically after 14 days' },
+  { area: 'Backups', measure: 'Daily, stored in Cloudflare R2 in a bucket restricted to the EU jurisdiction, kept for up to 35 days' },
+  { area: 'Updates', measure: 'Operating system and workflow software patched at least monthly, critical fixes within 7 days' },
+  { area: 'Monitoring', measure: 'Alerts on failed runs and unusual errors, reviewed on business days' },
+  { area: 'AI providers', measure: 'Accessed only through paid business APIs or business plans, each under the provider’s data processing addendum. Free tiers and consumer accounts are never used for Customer Personal Data' },
+  { area: 'Incidents', measure: 'Breach handling as in section 5; incidents logged with date, impact and actions taken' },
+  { area: 'People', measure: 'Anyone given access is bound by confidentiality and gets access only for as long as needed' },
+];
+
+// DPA, Annex 3: approved sub-processors.
+const annex3Columns = [
+  { key: 'name', label: 'Sub-processor' },
+  { key: 'purpose', label: 'Purpose' },
+  { key: 'location', label: 'Location' },
+  { key: 'transfer', label: 'Transfer mechanism' },
+];
+const annex3Rows = [
+  { name: 'Hetzner Online GmbH', purpose: 'Server hosting for workflows', location: 'Germany (EU)', transfer: 'None needed (EU)' },
+  { name: 'Cloudflare (R2 object storage)', purpose: 'Encrypted storage of backups', location: 'EU (bucket restricted to the EU jurisdiction)', transfer: 'None needed for storage in the EU; any access from outside the EU is covered by the SCCs in Cloudflare’s Data Processing Addendum' },
+  { name: 'Anthropic (Claude API)', purpose: 'AI model that classifies, extracts and drafts', location: 'United States', transfer: 'EU Standard Contractual Clauses (Module 3) and UK Addendum, in Anthropic’s Data Processing Addendum' },
+  { name: 'OpenAI (API and business plans, including Codex)', purpose: 'AI model that classifies, extracts and drafts; development tooling', location: 'Ireland (OpenAI Ireland Ltd for EEA data), with processing in the United States', transfer: 'Standard Contractual Clauses or an adequacy decision, under OpenAI’s Data Processing Addendum' },
+  { name: 'Google (Gemini API, paid tier only)', purpose: 'AI model that classifies, extracts and drafts', location: 'United States and other countries where Google operates', transfer: 'As set out in Google’s Data Processing Addendum for products where Google is a data processor, referenced in the Gemini API Additional Terms' },
+];
+const lastUpdated =
+  variant === 'privacy' ? PRIVACY_LAST_UPDATED
+  : variant === 'service-terms' ? SERVICE_TERMS_LAST_UPDATED
+  : variant === 'dpa' ? DPA_LAST_UPDATED
+  : TERMS_LAST_UPDATED;
 const contactEmail = 'hello@datonum.com';
 // Legally required identification of the data controller / service provider.
 const legalName = 'Rostyslav Bachyk';
@@ -60,7 +135,11 @@ const cookieRows = [
 const description =
   variant === 'privacy'
     ? 'How Datonum collects, uses and protects personal data, and your rights under the GDPR and Spanish data protection law.'
-    : 'The terms for using datonum.com: acceptable use, intellectual property, disclaimers, limitation of liability and Spanish governing law.';
+    : variant === 'service-terms'
+      ? 'The terms for buying a Datonum package: scope, fit check, payment, acceptance tests, guarantee, ownership and liability.'
+      : variant === 'dpa'
+        ? 'Datonum’s Data Processing Agreement under GDPR Article 28: processing details, security measures and sub-processors.'
+        : 'The terms for using datonum.com: acceptable use, intellectual property, disclaimers, limitation of liability and Spanish governing law.';
 ---
 
 <PageLayout title={`${title} — Datonum`} description={description}>
@@ -345,16 +424,18 @@ const description =
 
           <h2>2. Purpose of the site</h2>
           <p>
-            This website provides general information about {commercialName}’s AI workflow
-            implementation and automation services. It is informational only: no products or services
-            are sold or contracted through this website, and no prices are offered here.
+            This website provides information about {commercialName}’s AI workflow implementation and
+            automation services. Some packages can be bought online through our checkout. Those
+            purchases are governed by our <a href={routes.serviceTerms}>Terms of Service</a> and
+            <a href={routes.dpa}>Data Processing Agreement</a>, not by these Terms of Use.
           </p>
 
           <h2>3. Inquiries do not create a contract</h2>
           <p>
             Completing the inquiry form or contacting us does not create any contractual or client
-            relationship and does not oblige either party to proceed. Any engagement is governed
-            exclusively by a separate written agreement signed by both parties.
+            relationship and does not oblige either party to proceed. An engagement starts only when
+            you buy a package under our <a href={routes.serviceTerms}>Terms of Service</a>, or under a
+            separate written agreement accepted by both parties.
           </p>
 
           <h2>4. Acceptable use</h2>
@@ -427,6 +508,310 @@ const description =
           </p>
 
           <p>Questions about these Terms? Email <a href={`mailto:${contactEmail}`} data-umami-event="email_click">{contactEmail}</a>.</p>
+        </div>
+      )}
+
+
+      {variant === 'service-terms' && (
+        <div class="legal-prose">
+          <p class="legal-lead">
+            These terms apply to every package you buy from {commercialName}. Version 1.0, effective
+            19 November 2026.
+          </p>
+
+          <h2>1. About these terms</h2>
+          <p>
+            {commercialName} is the trading name of {legalName}, a self-employed professional registered
+            in Spain, NIE {nif}, {address} (“{commercialName}”, “we”, “us”). “You” means the business that
+            places the order.
+          </p>
+          <ul>
+            <li><strong>Business customers only.</strong> We sell to companies and self-employed
+              professionals buying for their business, not to consumers.</li>
+            <li><strong>How you accept.</strong> You accept these terms and the <a href={routes.dpa}>Data
+              Processing Agreement</a> by ticking the box at checkout. The version shown at checkout
+              applies to your order. We keep a record of the date and the version you accepted.</li>
+            <li><strong>Authority.</strong> By ticking the box, you confirm you are authorised to accept
+              these terms for your business.</li>
+            <li><strong>What makes up the agreement.</strong> These terms, the DPA, the package description
+              on our website at the time of your order, and the written scope we agree before work
+              starts. If they conflict, the written scope wins on what we build, the DPA wins on personal
+              data, and these terms win on everything else.</li>
+          </ul>
+
+          <h2>2. Packages, scope and fit check</h2>
+          <p><strong>Fixed scope.</strong> Each package has a fixed scope and price, described on its page.
+            Work outside that scope is quoted separately and starts only after you agree in writing.</p>
+          <p><strong>Fit check.</strong> After payment you fill in a short form. Within 2 business days we
+            confirm in writing whether the package fits your case. If it doesn’t, we refund your payment
+            in full and the order ends.</p>
+          <p><strong>Written scope.</strong> Before we build, we agree in writing (email is enough) the
+            details of your setup and the acceptance tests in section 5. Work starts after that.</p>
+          <p><strong>Capacity.</strong> We start a limited number of new setups each month. If we can’t
+            start yours within 10 business days of the fit check, we tell you the start date. If it
+            doesn’t suit you, you can cancel for a full refund.</p>
+          <p><strong>Delays on your side.</strong> Timelines depend on you giving access and materials. If
+            we are waiting on you for more than 30 days, we may close the order and keep the payment for
+            work already done, after telling you in writing at least 7 days before.</p>
+
+          <h2>3. Prices, payment and monthly plans</h2>
+          <ul>
+            <li><strong>Currency.</strong> Prices are in euros. Where we show prices in other currencies,
+              the currency of your checkout applies.</li>
+            <li><strong>Setup fees of €2,000 or less</strong> are paid in full when you order.</li>
+            <li><strong>Setup fees above €2,000</strong> are paid in two parts: 50% when you order and 50%
+              after the acceptance tests pass. We send the second payment link at that point.</li>
+            <li><strong>Taxes.</strong> Prices exclude VAT. VAT is added where it applies. For business
+              customers in other EU countries with a valid VAT number, the reverse charge applies.</li>
+            <li><strong>Monthly plans (Run, Run &amp; Care)</strong> start after launch, renew every month
+              and are charged in advance. You can cancel at any time; the plan ends at the end of the
+              month already paid, with no refund for the rest of that month.</li>
+            <li><strong>Price changes</strong> to a monthly plan apply only after 30 days’ written notice.
+              You can cancel before the new price applies.</li>
+            <li><strong>Late payment.</strong> If a monthly payment fails and is not fixed within 14 days,
+              we may pause the service after telling you.</li>
+          </ul>
+
+          <h2>4. Your responsibilities</h2>
+          <ul>
+            <li><strong>Access and materials.</strong> You give us the access, sample data and documents
+              agreed in the written scope, and an admin who can approve access in your Google Workspace
+              or Microsoft 365 account.</li>
+            <li><strong>Lawful use.</strong> You make sure you are allowed to give us the data we process
+              for you, and that your use of the service follows the law, including data protection
+              law.</li>
+            <li><strong>AI outputs are checked by people.</strong> Our systems use AI models, which can
+              make mistakes. Categories, extracted data, drafts and answers are suggestions for your team
+              to review. You decide what to send, file, pay or rely on.</li>
+            <li><strong>What we never do.</strong> We do not send emails, submit filings, sign documents or
+              make payments on your behalf. Any action with consequences outside your business stays
+              with your team.</li>
+            <li><strong>Your accounts.</strong> You keep control of your own accounts and can remove our
+              access at any time. Removing access stops the service that depends on it.</li>
+          </ul>
+
+          <h2>5. Acceptance tests and our guarantee</h2>
+          <p>
+            Before building, we agree in writing one or more measurable acceptance tests for your setup.
+            For example: at least 180 of 200 past emails sorted into the right category, or at least 27
+            of 30 test questions answered correctly with a source.
+          </p>
+          <ol>
+            <li>When the build is ready, we run the tests and send you the results.</li>
+            <li>If the tests pass, the setup is accepted and any second payment becomes due.</li>
+            <li>If a test fails, we fix the setup at no extra cost and run the tests again.</li>
+            <li>If the setup still fails after that second round, you can choose a full refund of the
+              setup fee. We then remove our access and delete your data under the DPA.</li>
+          </ol>
+          <p>
+            If you don’t reply to the test results within 10 business days, the setup counts as
+            accepted. The guarantee covers the agreed tests only, not results that depend on things
+            outside the agreed scope, such as changes you make to your systems later.
+          </p>
+
+          <h2>6. Ownership of the work</h2>
+          <ul>
+            <li><strong>What becomes yours.</strong> Once the setup fee is paid in full, you own what we
+              build specifically for you: the workflow configuration, prompts, category rules,
+              documentation and video guides. Until then, we keep ownership and you may use the work only
+              to test it.</li>
+            <li><strong>What we keep.</strong> We keep our own tools, templates, reusable components and
+              know-how that existed before your order or are not specific to you. You get a permanent,
+              non-exclusive right to use them as part of your setup.</li>
+            <li><strong>Reuse.</strong> We may reuse general methods and non-confidential components in work
+              for other clients. We never reuse your data, your documents or your confidential
+              information.</li>
+            <li><strong>If you leave a monthly plan.</strong> We hand over an export of your workflow and a
+              short guide so you can run it yourself. There is no charge for this.</li>
+            <li><strong>Third-party services</strong> (Google, Microsoft, AI providers, workflow tools)
+              remain under their own terms and any fees they charge.</li>
+          </ul>
+
+          <h2>7. Monthly plans: what they cover</h2>
+          <DataTable columns={planColumns} rows={planRows} dense />
+
+          <h2>8. Confidentiality and data protection</h2>
+          <ul>
+            <li><strong>Confidentiality.</strong> We keep your business information confidential and use
+              it only to deliver your package. This continues for 3 years after the order ends, and for
+              as long as the law requires for personal data.</li>
+            <li><strong>Personal data.</strong> When we process personal data for you, we act as your
+              processor under the <a href={routes.dpa}>Data Processing Agreement</a>, which is part of
+              these terms. You accept it at checkout together with these terms.</li>
+            <li><strong>Case studies.</strong> We mention you as a client or publish a case study only with
+              your written permission.</li>
+          </ul>
+
+          <h2>9. Liability, ending the agreement, changes and law</h2>
+          <ul>
+            <li><strong>Liability cap.</strong> Our total liability for an order is limited to the fees you
+              paid for it in the 12 months before the claim.</li>
+            <li><strong>Excluded losses.</strong> We are not liable for lost profits, lost business or
+              indirect losses, or for decisions your team makes based on AI outputs it has
+              reviewed.</li>
+            <li><strong>What is not limited.</strong> Nothing in these terms limits liability for fraud,
+              wilful misconduct or anything else the law does not allow to be limited.</li>
+            <li><strong>Ending the agreement.</strong> Either side may end an order if the other seriously
+              breaches these terms and doesn’t fix it within 14 days of written notice. Monthly plans can
+              also be cancelled as in section 3.</li>
+            <li><strong>Changes to these terms.</strong> We may update these terms. The version you
+              accepted applies to your order; for monthly plans, a new version applies after 30 days’
+              notice, and you can cancel before then.</li>
+            <li><strong>Governing law.</strong> Spanish law applies. The courts of Alicante, Spain, have
+              jurisdiction.</li>
+            <li><strong>Contact.</strong> <a href={`mailto:${legalEmail}`} data-umami-event="email_click">{legalEmail}</a></li>
+          </ul>
+          <p>Previous versions of these terms are available on request.</p>
+        </div>
+      )}
+
+      {variant === 'dpa' && (
+        <div class="legal-prose">
+          <p class="legal-lead">
+            Version 1.0, effective 19 November 2026. This Data Processing Agreement (“DPA”) applies
+            whenever {commercialName} processes personal data on a customer’s behalf to provide its
+            packages.
+          </p>
+
+          <h2>1. Parties and scope</h2>
+          <p>This DPA is between:</p>
+          <ul>
+            <li><strong>Customer</strong> (the controller): the business that orders a {commercialName} package and accepts this DPA at checkout, with the company details it gives at
+              checkout.</li>
+            <li><strong>{commercialName}</strong> (the processor): {legalName}, trading as {commercialName}, a self-employed professional (autónomo) registered in Spain, NIE {nif}, {address}.</li>
+          </ul>
+          <p>
+            This DPA forms part of the order or agreement under which {commercialName} provides the
+            services listed in Annex 1, including the <a href={routes.serviceTerms}>Terms of Service</a>
+            (the “Agreement”). It applies whenever {commercialName} processes personal data on the
+            Customer’s behalf to provide those services. If this DPA and the Agreement conflict on the
+            processing of personal data, this DPA prevails.
+          </p>
+
+          <h2>2. Definitions and roles</h2>
+          <p>
+            Terms such as “personal data”, “processing”, “controller”, “processor”, “data subject”,
+            “personal data breach” and “supervisory authority” have the meanings given in the EU General
+            Data Protection Regulation 2016/679 (“GDPR”) and, where it applies, the UK GDPR and the Data
+            Protection Act 2018 (together, “Data Protection Law”).
+          </p>
+          <ul>
+            <li><strong>Customer Personal Data</strong> means personal data that {commercialName} processes on the Customer’s behalf under the Agreement, as described in Annex 1.</li>
+            <li><strong>Sub-processor</strong> means any third party {commercialName} engages to process
+              Customer Personal Data.</li>
+          </ul>
+          <p>
+            The Customer is the controller of Customer Personal Data and decides why and how it is
+            processed. {commercialName} is the processor and processes it only to provide the services.
+            The Customer is responsible for having a lawful basis for the processing and for the
+            instructions it gives.
+          </p>
+
+          <h2>3. {commercialName}’s obligations</h2>
+          <p>{commercialName} will:</p>
+          <ol>
+            <li><strong>Instructions.</strong> Process Customer Personal Data only on the Customer’s
+              documented instructions, including on international transfers. The Agreement, this DPA and
+              the written scope agreed before each build are the Customer’s instructions. If the law
+              requires other processing, {commercialName} will tell the Customer first, unless the law
+              forbids it. {commercialName} will tell the Customer promptly if it believes an instruction
+              breaks Data Protection Law.</li>
+            <li><strong>Confidentiality.</strong> Allow access to Customer Personal Data only to people who
+              need it to provide the services and who are bound by confidentiality.</li>
+            <li><strong>Security.</strong> Apply the technical and organisational measures in Annex 2, as
+              required by Article 32 GDPR.</li>
+            <li><strong>Sub-processors.</strong> Use sub-processors only under section 4.</li>
+            <li><strong>Data subject requests.</strong> Help the Customer, as far as reasonably possible, to
+              answer requests from data subjects exercising their rights. {commercialName} will pass on
+              any request it receives directly and will not answer it without the Customer’s
+              instruction.</li>
+            <li><strong>Compliance support.</strong> Help the Customer meet its obligations on security,
+              breach notification, data protection impact assessments and prior consultation (Articles
+              32 to 36 GDPR), taking into account the nature of the processing and the information {commercialName} has.</li>
+            <li><strong>End of processing.</strong> Delete or return Customer Personal Data at the end of
+              the services under section 6.</li>
+            <li><strong>Proof of compliance.</strong> Give the Customer the information needed to show
+              compliance with this DPA and allow audits under section 6.</li>
+          </ol>
+
+          <h2>4. Sub-processors and international transfers</h2>
+          <p><strong>General authorisation.</strong> The Customer authorises {commercialName} to use the
+            sub-processors listed in Annex 3. {commercialName} will bind each sub-processor by a written
+            contract with data protection obligations no less protective than this DPA, and remains
+            responsible to the Customer for its sub-processors.</p>
+          <p><strong>Changes.</strong> {commercialName} will notify the Customer by email at least 14 days
+            before adding or replacing a sub-processor. The Customer may object on reasonable data
+            protection grounds within that period. If the parties cannot resolve the objection, the
+            Customer may end the affected service and receive a pro rata refund of any prepaid fees for
+            the unused period.</p>
+          <p><strong>Transfers outside the EEA and the UK.</strong> {commercialName} hosts the services in
+            the European Union. Where a sub-processor processes Customer Personal Data outside the EEA or
+            the UK, the transfer relies on an adequacy decision or on the European Commission’s Standard
+            Contractual Clauses (Decision (EU) 2021/914), with the UK International Data Transfer Addendum
+            for UK data. Annex 3 names the mechanism for each sub-processor.</p>
+
+          <h2>5. Security and personal data breaches</h2>
+          <p><strong>Security.</strong> {commercialName} applies the measures in Annex 2 and may update
+            them, provided the overall level of protection does not go down.</p>
+          <p><strong>Breach notification.</strong> {commercialName} will notify the Customer without undue
+            delay, and in any case within 48 hours, after becoming aware of a personal data breach
+            affecting Customer Personal Data. The notice will describe, as far as known: what happened,
+            the categories and approximate number of data subjects and records, the likely consequences,
+            and the measures taken or proposed. {commercialName} will send further information as it
+            becomes available and will take reasonable steps to contain the breach.</p>
+          <p>The Customer remains responsible for notifying the supervisory authority and data subjects
+            where Data Protection Law requires it. {commercialName} will not notify them on the
+            Customer’s behalf unless the Customer instructs it to.</p>
+
+          <h2>6. Deletion, audits, term and law</h2>
+          <p><strong>Return and deletion.</strong> When the services end, the Customer may ask within 14
+            days for an export of Customer Personal Data held by {commercialName}. {commercialName} will
+            then delete Customer Personal Data, including copies held by sub-processors, within 30 days.
+            Backups are deleted as they rotate out, within 35 days at most. {commercialName} keeps data
+            longer only where the law requires it, and then only for that purpose.</p>
+          <p><strong>Audits.</strong> {commercialName} will answer the Customer’s reasonable written
+            questions about its compliance within 14 days. If the answers are not enough, the Customer, or
+            an independent auditor bound by confidentiality, may audit once a year with at least 30 days’
+            notice, during business hours and at the Customer’s cost. Further audits are allowed after a
+            personal data breach or at a supervisory authority’s request.</p>
+          <p><strong>Term.</strong> This DPA applies for as long as {commercialName} processes Customer
+            Personal Data, and ends when deletion under this section is complete.</p>
+          <p><strong>Liability.</strong> Each party’s liability under this DPA follows the limits in the
+            Agreement. If the Agreement sets no limit, each party’s total liability is limited to the
+            fees paid under the Agreement in the 12 months before the claim, except where Data Protection
+            Law does not allow such a limit.</p>
+          <p><strong>Governing law.</strong> This DPA is governed by the laws of Spain, and the courts of
+            Alicante, Spain, have jurisdiction, unless Data Protection Law requires otherwise.</p>
+          <p><strong>Notices.</strong> Notices to {commercialName} under this DPA go to <a
+              href={`mailto:${legalEmail}`} data-umami-event="email_click">{legalEmail}</a>. Notices to the
+            Customer go to the email address given at checkout.</p>
+          <p><strong>Acceptance.</strong> The Customer accepts this DPA electronically by ticking the box at
+            checkout, together with the <a href={routes.serviceTerms}>Terms of Service</a>. The person
+            ticking the box confirms they are authorised to accept it for the Customer.
+            {commercialName} keeps a record of the date, the order and the version accepted. A
+            countersigned copy is available on request.</p>
+
+          <h2>Annex 1. Details of processing</h2>
+          <p>The column for each package the Customer orders applies. Processing lasts for the term of the
+            service plus the deletion period in section 6.</p>
+          <DataTable columns={annex1Columns} rows={annex1Rows} dense />
+
+          <h2>Annex 2. Technical and organisational measures</h2>
+          <p>{commercialName} applies these measures to all Customer Personal Data it processes.</p>
+          <DataTable columns={annex2Columns} rows={annex2Rows} dense />
+
+          <h2>Annex 3. Approved sub-processors</h2>
+          <DataTable columns={annex3Columns} rows={annex3Rows} dense />
+          <p>
+            Providers’ terms: <a href="https://www.cloudflare.com/cloudflare-customer-dpa/" target="_blank"
+              rel="noopener">Cloudflare DPA</a>, <a href="https://www.anthropic.com/legal/data-processing-addendum"
+              target="_blank" rel="noopener">Anthropic DPA</a>, <a
+              href="https://openai.com/policies/data-processing-addendum/" target="_blank" rel="noopener">OpenAI
+              DPA</a>, <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Gemini API
+              Additional Terms</a>.
+          </p>
+          <p>Google Workspace and Microsoft 365 are the Customer’s own providers under the Customer’s own
+            contracts. They are not {commercialName}’s sub-processors.</p>
         </div>
       )}
 
