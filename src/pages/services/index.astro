@@ -7,6 +7,7 @@ import CTABanner from '../../components/CTABanner.astro';
 import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { reviewCols, reviewRows } from '../../data/serviceContent.ts';
+import { packages, packagePath } from '../../data/packages.ts';
 ---
 
 <PageLayout
@@ -17,7 +18,28 @@ import { reviewCols, reviewRows } from '../../data/serviceContent.ts';
     <div class="container">
       <span class="svc-hero__eyebrow">Services</span>
       <h1 class="svc-hero__title">AI automation services — assessment, implementation, and ongoing support</h1>
-      <p class="svc-hero__lead">Four services across three stages. Most start with a review, and you are never asked to commit to more than the next step.</p>
+      <p class="svc-hero__lead">Fixed-price packages for common needs, and four services across three stages for everything else. You are never asked to commit to more than the next step.</p>
+    </div>
+  </section>
+
+
+  <!-- Packages first -->
+  <section class="band band--card">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <span class="num">Start here</span>
+        <h2 class="h2">Fixed-price packages</h2>
+      </div>
+      <div class="split__body" style="gap:20px">
+        <p class="lead-muted">If your need is a shared inbox that takes too long to sort, or a team that keeps asking the same questions, a package is the fastest route: a set scope, a published price and a written acceptance test. Buy online, no call needed.</p>
+        <div class="pair-grid">
+          {packages.map((p) => (
+            <div class="pair"><span class="pair__label"><a href={packagePath(p.slug)} class="linkline">{p.name} →</a></span><span class="pair__value">From {p.tiers[0].price} setup · {p.monthly.name} {p.monthly.price}</span></div>
+          ))}
+        </div>
+        <div><a href={routes.packages} class="linkline">See all packages →</a></div>
+        <p class="muted">For anything that spans several systems or teams, the services below start with an audit and lead to a custom build.</p>
+      </div>
     </div>
   </section>
 

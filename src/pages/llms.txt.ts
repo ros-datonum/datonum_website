@@ -6,6 +6,7 @@ import { routes, serviceLinks } from '../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../data/caseStudies.ts';
 import { siteIdentity } from '../data/site.ts';
 import { getInsights, insightPath } from '../data/insights.ts';
+import { packages, packagePath } from '../data/packages.ts';
 
 interface DescribedLink {
   label: string;
@@ -91,6 +92,10 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     `Based in Spain, working worldwide. Small by design: engagements are run by the person who scoped them. Contact: ${siteIdentity.contactEmail}`,
     '',
+    section('Fixed-price packages', [
+      { label: 'All packages', href: routes.packages, description: 'Fixed-price AI setups with a published price, a written acceptance test and a refund if it fails.' },
+      ...packages.map((p) => ({ label: p.name, href: packagePath(p.slug), description: p.metaDescription })),
+    ]),
     section('Services', services),
     section('Case studies', cases),
     ...(insights.length > 0 ? [section('Insights', insights)] : []),

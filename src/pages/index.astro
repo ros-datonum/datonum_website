@@ -7,6 +7,7 @@ import CTABanner from '../components/CTABanner.astro';
 import Button from '../components/Button.astro';
 import { routes } from '../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../data/caseStudies.ts';
+import { packages, packagePath } from '../data/packages.ts';
 import { organizationSchema, webSiteSchema } from '../data/structuredData.ts';
 
 const cases = [
@@ -85,8 +86,33 @@ const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site
         decisions your team approves rather than produces. Built on n8n, Make, or Zapier.
       </p>
       <div class="hero__actions">
-        <Button size="lg" variant="inverse" href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="hero">Book a 30-minute call</Button>
+        <Button size="lg" variant="inverse" href={routes.packages} data-umami-event="cta_see_packages" data-umami-event-location="hero">See fixed-price packages</Button>
         <Button size="lg" variant="inverse-outline" href={routes.cases}>See what we have built</Button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Fixed-price packages -->
+  <section class="band band--card">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Fixed-price packages"
+        title="Start with a package you can buy today"
+        lead="A set scope, a published price, and a test we agree in writing before we build. If it fails the test twice, you get your money back."
+      />
+      <div class="pk-home">
+        {packages.map((p) => (
+          <a class="pk-home__card" href={packagePath(p.slug)} data-umami-event="package_view" data-umami-event-location={`home-${p.slug}`}>
+            <span class="pk-home__name">{p.name}</span>
+            <span class="pk-home__text">{p.summary}</span>
+            <span class="pk-home__price">From {p.tiers[0].price} setup · {p.monthly.name} {p.monthly.price}</span>
+          </a>
+        ))}
+      </div>
+      <div class="actions" style="margin-top:28px">
+        <Button href={routes.packages} data-umami-event="cta_see_packages" data-umami-event-location="home-packages">See all packages</Button>
+        <a href={routes.services} class="linkline">Need something custom? See services →</a>
       </div>
     </div>
   </section>
@@ -333,4 +359,15 @@ const structuredData = [organizationSchema(Astro.site), webSiteSchema(Astro.site
   @media (max-width: 1024px) {
     .wm-trust .split__side { position: static; top: auto; }
   }
+
+  .pk-home { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 32px; }
+  .pk-home__card {
+    display: flex; flex-direction: column; gap: 10px; padding: 28px;
+    background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-card);
+    text-decoration: none;
+  }
+  .pk-home__card:hover { border-color: var(--border-accent); }
+  .pk-home__name { font: var(--type-h3); letter-spacing: var(--tracking-heading); color: var(--text-strong); }
+  .pk-home__text { font: var(--type-body); color: var(--grey-600); }
+  .pk-home__price { font: var(--type-small); color: var(--text-link); margin-top: auto; }
 </style>

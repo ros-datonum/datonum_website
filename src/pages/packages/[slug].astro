@@ -1,0 +1,184 @@
+---
+// One fixed-price package. Copy, prices and checkout links live in src/data/packages.ts.
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ChecklistItem from '../../components/ChecklistItem.astro';
+import StepTracker from '../../components/StepTracker.astro';
+import Accordion from '../../components/Accordion.astro';
+import Callout from '../../components/Callout.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { packages, packagePath, type Package } from '../../data/packages.ts';
+import { serviceSchema, breadcrumbSchema, faqSchema } from '../../data/structuredData.ts';
+
+export function getStaticPaths() {
+  return packages.map((p) => ({ params: { slug: p.slug }, props: { pkg: p } }));
+}
+
+const { pkg } = Astro.props as { pkg: Package };
+const site = Astro.site!;
+const path = packagePath(pkg.slug);
+const others = packages.filter((p) => p.slug !== pkg.slug);
+
+const structuredData = [
+  serviceSchema(site, { name: pkg.name, description: pkg.metaDescription, path }),
+  breadcrumbSchema(site, [
+    { label: 'Packages', href: routes.packages },
+    { label: pkg.name, href: path },
+  ]),
+  faqSchema(pkg.faqs),
+];
+---
+
+<PageLayout title={pkg.metaTitle} description={pkg.metaDescription} structuredData={structuredData}>
+  <section class="pkg-hero">
+    <div class="container">
+      <a class="pkg-hero__back" href={routes.packages}>← All packages</a>
+      <span class="pkg-hero__eyebrow">{pkg.eyebrow}</span>
+      <h1 class="pkg-hero__title">{pkg.title}</h1>
+      <p class="pkg-hero__lead">{pkg.outcome}</p>
+      <div class="pkg-hero__actions">
+        <Button size="lg" variant="inverse" href="#pricing" data-umami-event="package_pricing_jump" data-umami-event-location={`package-${pkg.slug}`}>See price and what is included</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <SectionHeading eyebrow="Who it is for" title="Is this your situation?" />
+      </div>
+      <div class="split__body" style="gap:14px">
+        <ul class="pkg-list">{pkg.forWhom.map((line) => <ChecklistItem>{line}</ChecklistItem>)}</ul>
+        {pkg.problem.map((para) => <p class="muted">{para}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--grey band--bordered" id="pricing">
+    <div class="container">
+      <SectionHeading eyebrow="Price" title="What you get" lead="Prices in euros, VAT excluded. Business customers only." />
+      <div class="pkg-tiers">
+        {pkg.tiers.map((t) => (
+          <article class="pkg-tier">
+            <h3 class="pkg-tier__name">{t.name}</h3>
+            <p class="pkg-tier__price">{t.price}</p>
+            <p class="pkg-tier__note">{t.priceNote}</p>
+            <ul class="pkg-list">
+              {t.includes.map((i) => <ChecklistItem>{i}</ChecklistItem>)}
+            </ul>
+            <div class="pkg-tier__cta">
+              {t.checkoutUrl ? (
+                <Button href={t.checkoutUrl} data-umami-event="package_buy" data-umami-event-location={t.umamiId}>{t.cta}</Button>
+              ) : (
+                <Button variant="secondary" href={`${routes.contact}?topic=${t.umamiId}`} data-umami-event="package_enquire" data-umami-event-location={t.umamiId}>Ask to start</Button>
+              )}
+            </div>
+          </article>
+        ))}
+        <article class="pkg-tier pkg-tier--monthly">
+          <h3 class="pkg-tier__name">{pkg.monthly.name}</h3>
+          <p class="pkg-tier__price">{pkg.monthly.price}</p>
+          <p class="pkg-tier__note">{pkg.monthly.note}</p>
+          <ul class="pkg-list">
+            {pkg.monthly.includes.map((i) => <ChecklistItem>{i}</ChecklistItem>)}
+          </ul>
+        </article>
+      </div>
+      <p class="pkg-legal">
+        At checkout you accept our <a href={routes.serviceTerms}>Terms of Service</a> and
+        <a href={routes.dpa}> Data Processing Agreement</a>. You pay through Stripe.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--card">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <SectionHeading eyebrow="How it works" title="From payment to launch, in writing" />
+      </div>
+      <div class="split__body">
+        <StepTracker steps={pkg.steps} />
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--grey band--bordered">
+    <div class="container split split--4-8">
+      <div class="split__side">
+        <SectionHeading eyebrow="Guarantee" title="A test we agree before we build" />
+      </div>
+      <div class="split__body" style="gap:20px">
+        <Callout tone="accent" title="Our guarantee">{pkg.guarantee}</Callout>
+        <p class="muted"><strong>You own it.</strong> Once the setup is paid, the workflow, its settings and the guides are yours. If you stop the monthly plan, we hand over what you need to run it yourself.</p>
+        <p class="muted"><strong>Works with:</strong> {pkg.worksWith}</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <p class="muted"><strong>Not included:</strong></p>
+          <ul class="pkg-list">{pkg.notIncluded.map((n) => <ChecklistItem tone="excluded">{n}</ChecklistItem>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card">
+    <div class="container">
+      <SectionHeading eyebrow="Questions" title={`${pkg.name}: common questions`} />
+      <div style="margin-top:28px;max-width:820px">
+        <Accordion items={pkg.faqs} />
+      </div>
+      <div class="pkg-related">
+        {pkg.related.map((r) => <a href={r.href} class="linkline">{r.label} →</a>)}
+        {others.map((o) => <a href={packagePath(o.slug)} class="linkline">Also see: {o.name} →</a>)}
+        <a href={routes.services} class="linkline">Need something custom? See all services →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card band--cta">
+    <div class="container">
+      <CTABanner
+        location={`package-${pkg.slug}`}
+        title={`Questions about ${pkg.name}?`}
+        lead="Send a short message about your setup. We reply in writing within one business day."
+        action="Ask a question"
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .pkg-hero {
+    padding: 88px 0 80px;
+    background-color: var(--surface-ink);
+    background-image: var(--wm-da);
+    background-repeat: no-repeat;
+    background-position: right min(calc(50% + 610px + var(--wm-k) * 160px / 2), calc(100% + var(--wm-k) * 160px - 24px)) bottom 40px;
+    background-size: calc(var(--wm-k) * 160px);
+  }
+  .pkg-hero__back { display: inline-block; font: var(--type-small); color: var(--text-inverse-muted); margin-bottom: 20px; }
+  .pkg-hero__back:hover { color: var(--white); }
+  .pkg-hero__eyebrow { display: block; font: var(--type-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--teal-500); }
+  .pkg-hero__title { font: var(--type-display-2); letter-spacing: var(--tracking-display); color: var(--white); margin: 22px 0 0; max-width: 24ch; text-wrap: pretty; }
+  .pkg-hero__lead { font: var(--type-body-lg); color: var(--text-inverse-muted); margin: 26px 0 0; max-width: 64ch; text-wrap: pretty; }
+  .pkg-hero__actions { margin-top: 32px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .pkg-tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 32px; }
+  .pkg-tier {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 28px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+  }
+  .pkg-tier--monthly { background: var(--surface-sunken); }
+  .pkg-tier__name { font: var(--type-h3); letter-spacing: var(--tracking-heading); color: var(--text-strong); margin: 0; }
+  .pkg-tier__price { font: var(--type-display-2); letter-spacing: var(--tracking-display); color: var(--text-strong); margin: 4px 0 0; }
+  .pkg-tier__note { font: var(--type-small); color: var(--text-muted); margin: 0 0 6px; }
+  .pkg-list { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; }
+  .pkg-tier__cta { margin-top: auto; padding-top: 16px; display: flex; }
+  .pkg-legal { font: var(--type-small); color: var(--text-muted); margin: 24px 0 0; }
+  .pkg-legal a { color: var(--text-link); border-bottom: 1px solid var(--border-accent); }
+
+  .pkg-related { display: flex; flex-direction: column; gap: 10px; margin-top: 36px; }
+</style>

@@ -8,6 +8,7 @@ export interface NavLink {
 
 export const routes = {
   home: '/',
+  packages: '/packages',
   services: '/services',
   audit: '/services/ai-readiness-audit',
   deep: '/services/deep-audit',

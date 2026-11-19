@@ -8,6 +8,7 @@ import { routes, serviceLinks, isActive, toRoutePath } from '../data/navigation.
 const path = toRoutePath(Astro.url.pathname);
 const servicesActive = isActive(path, routes.services) || serviceLinks.some((l) => isActive(path, l.href));
 const casesActive = isActive(path, routes.cases);
+const packagesActive = isActive(path, routes.packages);
 const automateActive = isActive(path, routes.automate);
 const approachActive = isActive(path, routes.approach);
 const aboutActive = isActive(path, routes.about);
@@ -20,6 +21,7 @@ const aboutActive = isActive(path, routes.about);
     </a>
 
     <nav class="site-header__nav" aria-label="Primary">
+      <a href={routes.packages} class:list={['navlink', packagesActive && 'is-active']}>Packages</a>
       <a href={routes.cases} class:list={['navlink', casesActive && 'is-active']}>Case studies</a>
 
       <div class="services">
@@ -37,7 +39,7 @@ const aboutActive = isActive(path, routes.about);
       <a href={routes.automate} class:list={['navlink', automateActive && 'is-active']}>What we automate</a>
       <a href={routes.approach} class:list={['navlink', approachActive && 'is-active']}>Approach</a>
       <a href={routes.about} class:list={['navlink', aboutActive && 'is-active']}>About</a>
-      <Button size="sm" href={routes.contact} data-umami-event="cta_book_call" data-umami-event-location="nav">Book a call</Button>
+      <Button size="sm" href={routes.packages} data-umami-event="cta_see_packages" data-umami-event-location="nav">See packages</Button>
     </nav>
 
     <button type="button" class="site-header__burger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -46,6 +48,7 @@ const aboutActive = isActive(path, routes.about);
   </div>
 
   <div class="mobile-menu" id="mobile-menu" hidden>
+    <a href={routes.packages} class="mobile-menu__link">Packages</a>
     <a href={routes.cases} class="mobile-menu__link">Case studies</a>
     <span class="mobile-menu__group">Services</span>
     {serviceLinks.map((l) => (
@@ -54,7 +57,8 @@ const aboutActive = isActive(path, routes.about);
     <a href={routes.automate} class="mobile-menu__link">What we automate</a>
     <a href={routes.approach} class="mobile-menu__link">Approach</a>
     <a href={routes.about} class="mobile-menu__link">About</a>
-    <a href={routes.contact} class="mobile-menu__link mobile-menu__link--cta" data-umami-event="cta_book_call" data-umami-event-location="nav">Book a call</a>
+    <a href={routes.contact} class="mobile-menu__link">Contact</a>
+    <a href={routes.packages} class="mobile-menu__link mobile-menu__link--cta" data-umami-event="cta_see_packages" data-umami-event-location="nav">See packages</a>
   </div>
 </header>
 

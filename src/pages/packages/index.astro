@@ -1,0 +1,145 @@
+---
+// Fixed-price packages overview. Copy and prices live in src/data/packages.ts.
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import Button from '../../components/Button.astro';
+import { routes } from '../../data/navigation.ts';
+import { packages, docIntake, packagePath } from '../../data/packages.ts';
+import { breadcrumbSchema } from '../../data/structuredData.ts';
+
+const site = Astro.site!;
+const title = 'Fixed-price AI packages — Datonum';
+const description =
+  'Fixed-price AI setups with a published price, a written acceptance test and a refund if it fails: Inbox Desk for shared inboxes and Team Answers for company knowledge.';
+const fromPrice = (p: (typeof packages)[number]) => p.tiers[0].price;
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  structuredData={[
+    breadcrumbSchema(site, [{ label: 'Packages', href: routes.packages }]),
+  ]}
+>
+  <section class="pk-hero">
+    <div class="container">
+      <span class="pk-hero__eyebrow">Packages</span>
+      <h1 class="pk-hero__title">Fixed-price AI setups you can buy today</h1>
+      <p class="pk-hero__lead">
+        Each package has a set scope, a published price and a test we agree in writing before we
+        build. If the setup fails the test twice, you get your money back. Everything we build is
+        yours once it is paid.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--card">
+    <div class="container">
+      <div class="pk-grid">
+        {packages.map((p) => (
+          <article class="pk-card">
+            <span class="pk-card__eyebrow">{p.eyebrow}</span>
+            <h2 class="pk-card__title"><a href={packagePath(p.slug)}>{p.name}</a></h2>
+            <p class="pk-card__summary">{p.summary}</p>
+            <dl class="pk-card__prices">
+              <div><dt>Setup</dt><dd>from {fromPrice(p)}</dd></div>
+              <div><dt>{p.monthly.name}</dt><dd>{p.monthly.price}</dd></div>
+            </dl>
+            <div class="pk-card__actions">
+              <Button href={packagePath(p.slug)} data-umami-event="package_view" data-umami-event-location={`packages-${p.slug}`}>See {p.name}</Button>
+            </div>
+          </article>
+        ))}
+
+        <article class="pk-card pk-card--request">
+          <span class="pk-card__eyebrow">On request · Documents</span>
+          <h2 class="pk-card__title">{docIntake.name}</h2>
+          <p class="pk-card__summary">{docIntake.summary}</p>
+          <dl class="pk-card__prices">
+            <div><dt>Price</dt><dd>{docIntake.price}</dd></div>
+          </dl>
+          <p class="pk-card__note">{docIntake.note}</p>
+          <div class="pk-card__actions">
+            <Button variant="secondary" href={`${routes.contact}?topic=doc-intake`} data-umami-event="doc_intake_request" data-umami-event-location="packages">{docIntake.cta}</Button>
+          </div>
+        </article>
+      </div>
+      <p class="pk-vat">Prices in euros, VAT excluded. Business customers only. Buying means you accept our <a href={routes.serviceTerms}>Terms of Service</a> and <a href={routes.dpa}>Data Processing Agreement</a>.</p>
+    </div>
+  </section>
+
+  <section class="band band--grey band--bordered">
+    <div class="container">
+      <SectionHeading eyebrow="How every package works" title="No sales call needed" />
+      <ol class="pk-steps">
+        <li><strong>Pay online.</strong> Card or bank payment through Stripe.</li>
+        <li><strong>Fill in a short form.</strong> About ten minutes.</li>
+        <li><strong>We check the fit within 2 business days.</strong> If it is not a fit, you get a full refund.</li>
+        <li><strong>We agree the acceptance test in writing.</strong> Then we build and test on your real data.</li>
+        <li><strong>Launch, then 30 days of tuning.</strong> A monthly plan is optional and can be cancelled any time.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band--brass">
+    <div class="container split split--4-8 split--center">
+      <h2 class="h2" style="max-width:16ch">Need something no package covers?</h2>
+      <div style="display:flex;flex-direction:column;gap:24px;align-items:flex-start">
+        <p class="lead-muted">For a process that spans several systems or teams, start with an audit, then a custom build. See how the <a href={routes.audit}>AI Readiness Audit</a> and <a href={routes.impl}>AI Workflow Implementation</a> work.</p>
+        <Button variant="secondary" href={routes.services}>See all services</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--card band--cta">
+    <div class="container">
+      <CTABanner
+        location="page-packages"
+        title="Not sure which package fits?"
+        lead="Send a short message about the inbox or documents you have in mind. We reply in writing within one business day."
+        action="Ask a question"
+      />
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .pk-hero {
+    padding: 104px 0 88px;
+    background-color: var(--surface-ink);
+    background-image: var(--wm-da);
+    background-repeat: no-repeat;
+    background-position: right min(calc(50% + 610px + var(--wm-k) * 160px / 2), calc(100% + var(--wm-k) * 160px - 24px)) bottom 40px;
+    background-size: calc(var(--wm-k) * 160px);
+  }
+  .pk-hero__eyebrow { font: var(--type-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--teal-500); }
+  .pk-hero__title { font: var(--type-display-2); letter-spacing: var(--tracking-display); color: var(--white); margin: 22px 0 0; max-width: 22ch; text-wrap: pretty; }
+  .pk-hero__lead { font: var(--type-body-lg); color: var(--text-inverse-muted); margin: 26px 0 0; max-width: 64ch; text-wrap: pretty; }
+
+  .pk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .pk-card {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 32px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+  }
+  .pk-card--request { background: var(--surface-sunken); }
+  .pk-card__eyebrow { font: var(--type-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--teal-700); }
+  .pk-card__title { font: var(--type-h3); letter-spacing: var(--tracking-heading); color: var(--text-strong); margin: 0; }
+  .pk-card__title a { color: inherit; text-decoration: none; }
+  .pk-card__title a:hover { color: var(--text-link-hover); }
+  .pk-card__summary { font: var(--type-body); color: var(--grey-600); margin: 0; text-wrap: pretty; }
+  .pk-card__prices { display: flex; flex-wrap: wrap; gap: 24px; margin: 6px 0 0; }
+  .pk-card__prices dt { font: var(--type-small); color: var(--text-muted); }
+  .pk-card__prices dd { font: var(--type-h3); color: var(--text-strong); margin: 2px 0 0; }
+  .pk-card__note { font: var(--type-small); color: var(--text-muted); margin: 0; }
+  .pk-card__actions { margin-top: auto; padding-top: 8px; display: flex; }
+  .pk-vat { font: var(--type-small); color: var(--text-muted); margin: 24px 0 0; }
+  .pk-vat a, .lead-muted a { color: var(--text-link); border-bottom: 1px solid var(--border-accent); }
+
+  .pk-steps { margin: 32px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 12px; max-width: 70ch; }
+  .pk-steps li { font: var(--type-body); color: var(--grey-600); }
+  .pk-steps strong { color: var(--text-strong); font-weight: 600; }
+</style>
