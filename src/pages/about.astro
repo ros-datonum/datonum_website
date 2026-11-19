@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { routes } from '../data/navigation.ts';
 import { caseStudyPath } from '../data/caseStudies.ts';
+import RelatedReading from '../components/RelatedReading.astro';
 
 const story = [
   'The useful writing about AI in business is aimed at organizations with engineering teams, data functions, and someone whose job is to evaluate this. That describes almost none of the businesses actually doing the work — the recruitment agency, the accountancy practice, the contractor, the freight forwarder.',
@@ -68,6 +69,8 @@ const peopleIcon = '<path d="M15.5 20v-1.5a3.5 3.5 0 0 0-3.5-3.5H6a3.5 3.5 0 0 0
       </ul>
     </div>
   </section>
+
+  <RelatedReading location="about" slugs={['what-to-automate-with-ai', 'human-in-the-loop-ai']} />
 
   <section class="band band--card band--cta">
     <div class="container">

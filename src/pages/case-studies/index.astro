@@ -7,6 +7,7 @@ import CTABanner from '../../components/CTABanner.astro';
 import { routes } from '../../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../../data/caseStudies.ts';
 import { collectionPageSchema, breadcrumbSchema } from '../../data/structuredData.ts';
+import RelatedReading from '../../components/RelatedReading.astro';
 
 const principles = [
   { t: 'AI and rules are kept separate.', d: 'Criteria you set cannot be quietly overridden by an AI interpretation.' },
@@ -81,6 +82,8 @@ const structuredData = [
       </div>
     </div>
   </section>
+
+  <RelatedReading location="case-studies" slugs={['what-is-ai-workflow-automation', 'human-in-the-loop-ai', 'ai-document-processing']} />
 
   <section class="band--card band--tail">
     <div class="container">

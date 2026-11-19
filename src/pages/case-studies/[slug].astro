@@ -5,6 +5,7 @@ import CTABanner from '../../components/CTABanner.astro';
 import { routes } from '../../data/navigation.ts';
 import { caseStudies, caseStudyPath } from '../../data/caseStudies.ts';
 import { articleSchema, breadcrumbSchema } from '../../data/structuredData.ts';
+import RelatedReading from '../../components/RelatedReading.astro';
 
 export function getStaticPaths() {
   return caseStudies.map((cs, index) => ({
@@ -31,6 +32,14 @@ const structuredData = [
     { label: cs.navName, href: casePath },
   ]),
 ];
+// Insights articles that explain each case's pattern in general terms.
+const readingByCase: Record<string, string[]> = {
+  'opportunity-scoring': ['shared-inbox-ai-triage', 'recruitment-job-intake-automation', 'human-in-the-loop-ai'],
+  'document-answers': ['ai-knowledge-assistant', 'human-in-the-loop-ai'],
+  'supplier-qualification': ['ai-document-processing', 'temp-agency-timesheet-automation', 'human-in-the-loop-ai'],
+  'reporting-layer': ['what-to-automate-with-ai', 'what-is-ai-workflow-automation'],
+  'governed-delivery': ['human-in-the-loop-ai', 'what-is-ai-workflow-automation'],
+};
 ---
 
 <PageLayout title={`${cs.metaTitle ?? cs.title} — Datonum`} description={cs.metaDescription ?? cs.lead} ogType="article" structuredData={structuredData}>
@@ -100,6 +109,8 @@ const structuredData = [
       </aside>
     </div>
   </section>
+
+  <RelatedReading location={`case-${cs.slug}`} slugs={readingByCase[cs.slug] ?? ['what-is-ai-workflow-automation', 'human-in-the-loop-ai']} />
 
   <section class="band--card band--tail">
     <div class="container">

@@ -7,6 +7,7 @@ import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { packages, docIntake, packagePath } from '../../data/packages.ts';
 import { breadcrumbSchema } from '../../data/structuredData.ts';
+import RelatedReading from '../../components/RelatedReading.astro';
 
 const site = Astro.site!;
 const title = 'Fixed-price AI packages — Datonum';
@@ -91,6 +92,8 @@ const fromPrice = (p: (typeof packages)[number]) => p.tiers[0].price;
       </div>
     </div>
   </section>
+
+  <RelatedReading location="packages" slugs={['shared-inbox-ai-triage', 'ai-knowledge-assistant', 'ai-document-processing']} />
 
   <section class="band band--card band--cta">
     <div class="container">

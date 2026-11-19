@@ -11,6 +11,7 @@ import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { tierCols, retRows, retainerFaqs } from '../../data/serviceContent.ts';
 import { serviceSchema, breadcrumbSchema, faqSchema } from '../../data/structuredData.ts';
+import RelatedReading from '../../components/RelatedReading.astro';
 
 const reasons = [
   { t: 'New client types arrive with documents laid out differently.', d: 'The workflow was tuned on what came before.' },
@@ -105,6 +106,8 @@ const structuredData = [
       </div>
     </div>
   </section>
+
+  <RelatedReading location="service-retainer" slugs={['human-in-the-loop-ai', 'what-is-ai-workflow-automation']} />
 
   <section class="band band--card wm-terms" style="padding:88px 0">
     <div class="container" style="display:flex;flex-direction:column;gap:64px">

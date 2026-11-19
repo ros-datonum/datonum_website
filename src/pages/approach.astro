@@ -6,6 +6,7 @@ import ChecklistItem from '../components/ChecklistItem.astro';
 import CTABanner from '../components/CTABanner.astro';
 import { routes } from '../data/navigation.ts';
 import { caseStudyPath } from '../data/caseStudies.ts';
+import RelatedReading from '../components/RelatedReading.astro';
 
 const principles = [
   { n: '01', t: 'Diagnosis before building.', d: 'We will not quote you for a custom build until we understand the process. If you come to us knowing exactly what you want built, we will still spend a day checking that it is the right thing. The fixed-price packages are the exception only in form: their scope is written down in advance, and we still check the fit before any work starts, with a full refund if it is wrong.' },
@@ -64,6 +65,8 @@ const scaleIcon = '<path d="M12 3.5v17"></path><path d="M5 7.5h14"></path><path 
       </ul>
     </div>
   </section>
+
+  <RelatedReading location="approach" slugs={['human-in-the-loop-ai', 'what-to-automate-with-ai', 'what-is-ai-workflow-automation']} />
 
   <section class="band band--card band--cta">
     <div class="container">

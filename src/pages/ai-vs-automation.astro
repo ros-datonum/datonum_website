@@ -8,6 +8,7 @@ import CTABanner from '../components/CTABanner.astro';
 import { aivsFaqs } from '../data/serviceContent.ts';
 import { routes } from '../data/navigation.ts';
 import { articleSchema, faqSchema } from '../data/structuredData.ts';
+import RelatedReading from '../components/RelatedReading.astro';
 
 const ruleItems = [
   'Moving a field from one system to another.',
@@ -130,6 +131,8 @@ const structuredData = [
   </section>
 
   <!-- FAQ + CTA -->
+  <RelatedReading location="ai-vs-automation" slugs={['what-is-ai-workflow-automation', 'human-in-the-loop-ai', 'what-to-automate-with-ai']} />
+
   <section class="band band--card wm-faq" style="padding:88px 0">
     <div class="container" style="display:flex;flex-direction:column;gap:56px">
       <div class="split split--4-8">

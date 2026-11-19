@@ -1,0 +1,54 @@
+---
+// "Further reading" band: links a page to the insights articles that explain it.
+// Slugs are checked at build time, so a renamed or missing article fails the build.
+import { getCollection } from 'astro:content';
+
+interface Props {
+  slugs: string[];
+  location: string; // Umami event location, e.g. "service-implementation"
+  title?: string;
+}
+const { slugs, location, title = 'Further reading' } = Astro.props;
+const all = await getCollection('insights');
+const items = slugs.map((slug) => {
+  const entry = all.find((e) => e.id === slug);
+  if (!entry) throw new Error(`RelatedReading: no insights article "${slug}"`);
+  return entry;
+});
+---
+
+<section class="band band--grey band--bordered reading" aria-labelledby={`reading-${location}`}>
+  <div class="container">
+    <h2 id={`reading-${location}`} class="reading__title">{title}</h2>
+    <div class:list={['reading__grid', items.length === 2 && 'reading__grid--two']}>
+      {items.map((e) => (
+        <a
+          href={`/insights/${e.id}`}
+          class="case-card reading__card"
+          data-umami-event="related_reading_click"
+          data-umami-event-article={e.id}
+          data-umami-event-location={location}
+        >
+          <span class="eyebrow eyebrow--teal">Guide</span>
+          <h3 class="case-card__title">{e.data.title}</h3>
+          <p class="muted reading__desc">{e.data.description}</p>
+          <span class="case-card__more">Read the guide →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .reading { padding: 64px 0; }
+  .reading__title { font: var(--type-h3); color: var(--text-strong); margin: 0 0 28px; }
+  .reading__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .reading__grid--two { grid-template-columns: repeat(2, 1fr); max-width: 880px; }
+  .reading__card { text-decoration: none; }
+  /* band--tail has no top padding because it normally follows a white band */
+  :global(.reading + .band--tail) { padding-top: 64px; }
+  .reading__desc { font: var(--type-small); }
+  @media (max-width: 1024px) {
+    .reading__grid, .reading__grid--two { grid-template-columns: 1fr; }
+  }
+</style>

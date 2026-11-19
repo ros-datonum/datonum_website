@@ -10,6 +10,7 @@ import Button from '../../components/Button.astro';
 import { routes } from '../../data/navigation.ts';
 import { tierCols, implRows } from '../../data/serviceContent.ts';
 import { serviceSchema, breadcrumbSchema } from '../../data/structuredData.ts';
+import RelatedReading from '../../components/RelatedReading.astro';
 
 const truths = [
   { t: 'We start from your real examples.', d: 'Tested against work your business has actually done, not sample data.' },
@@ -251,6 +252,8 @@ const structuredData = [
   </section>
 
   <!-- Where to start + CTA -->
+  <RelatedReading location="service-implementation" slugs={['human-in-the-loop-ai', 'ai-document-processing', 'shared-inbox-ai-triage']} />
+
   <section class="band band--card wm-start" style="padding:88px 0">
     <div class="container" style="display:flex;flex-direction:column;gap:56px">
       <div class="split split--4-8">
