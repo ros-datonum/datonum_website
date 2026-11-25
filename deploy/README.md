@@ -98,7 +98,7 @@ docker logs datonum-website 2>&1 | grep -c 'GET /'              # 0: no access l
 ### Umami data (24 months; recordings 30 days)
 
 `umami-retention.sql` deletes analytics rows older than 24 months and session-replay and
-heatmap rows older than 30 days. It is written for Umami v3.2.0 (PostgreSQL); its header
+heatmap rows older than 30 days. It is written for Umami v3.4.1 (PostgreSQL); its header
 lists the exact tables and columns. Re-check it after every Umami upgrade. The wrapper
 `umami-retention.sh` takes a lock (`flock`, from util-linux), so overlapping runs skip.
 
