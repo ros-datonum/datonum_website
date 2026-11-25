@@ -1,8 +1,8 @@
 -- Umami data retention (Privacy Notice §7): usage analytics up to 24 months, session
 -- recordings (replay and heatmap data) up to 30 days. Umami has no built-in retention.
 --
--- Written against Umami v3.2.0 (PostgreSQL; prisma/schema.prisma and
--- prisma/migrations/01_init … 20_add_heatmap). The schema uses relationMode = "prisma", so the
+-- Written against Umami v3.4.1 (PostgreSQL; prisma/schema.prisma and
+-- prisma/migrations/01_init … 26_add_api_key). The schema uses relationMode = "prisma", so the
 -- database has no foreign keys: child rows are deleted explicitly, before their parents.
 -- Re-check the tables below after every Umami upgrade.
 --
@@ -13,6 +13,8 @@
 --   revenue                            created_at
 --   session                            created_at, only when no website_event, session_data
 --                                      or revenue row still refers to it
+--   session_link                       created_at (v3.3+, written by umami.identify()), plus
+--                                      rows whose session is gone
 --   recordings (30 days)
 --   session_replay                     created_at (falls back to ended_at, which is NOT NULL)
 --   heatmap_event                      created_at (NOT NULL)
@@ -67,6 +69,11 @@ SELECT 'session', count(*)
    AND NOT EXISTS (SELECT 1 FROM revenue r
                     WHERE r.session_id = s.session_id AND coalesce(r.created_at, 'infinity') >= c.analytics)
 UNION ALL
+SELECT 'session_link', count(*)
+  FROM session_link l, retention_cutoff c
+ WHERE l.created_at < c.analytics
+    OR NOT EXISTS (SELECT 1 FROM session s WHERE s.session_id = l.session_id)
+UNION ALL
 SELECT 'session_replay', count(*)
   FROM session_replay, retention_cutoff c WHERE coalesce(created_at, ended_at) < c.recording
 UNION ALL
@@ -92,6 +99,12 @@ SELECT 'heatmap_event', count(*) FROM heatmap_event, retention_cutoff c WHERE cr
      AND NOT EXISTS (SELECT 1 FROM website_event e WHERE e.session_id = s.session_id)
      AND NOT EXISTS (SELECT 1 FROM session_data d WHERE d.session_id = s.session_id)
      AND NOT EXISTS (SELECT 1 FROM revenue r WHERE r.session_id = s.session_id);
+
+  -- Identity links (distinct_id) follow the analytics period and never outlive their session.
+  DELETE FROM session_link l
+   USING retention_cutoff c
+   WHERE l.created_at < c.analytics
+      OR NOT EXISTS (SELECT 1 FROM session s WHERE s.session_id = l.session_id);
 
   DELETE FROM session_replay r USING retention_cutoff c WHERE coalesce(r.created_at, r.ended_at) < c.recording;
   DELETE FROM heatmap_event h USING retention_cutoff c WHERE h.created_at < c.recording;
