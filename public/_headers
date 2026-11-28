@@ -1,0 +1,21 @@
+# Cloudflare Pages response headers. Pages reads this file from the build output root.
+# Same headers the shared Caddy (security_headers) and nginx.conf used to set.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Fingerprinted assets are immutable — cache hard.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts and brand artwork keep stable filenames: cached long, but not immutable.
+/fonts/*
+  Cache-Control: public, max-age=2592000
+/brand/*
+  Cache-Control: public, max-age=2592000
+
+# The deploy workflow reads this marker to prove which commit is live; never cache it.
+/deployment.json
+  Cache-Control: no-store

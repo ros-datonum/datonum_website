@@ -4,7 +4,10 @@ import {setTimeout as delay} from 'node:timers/promises';
 export async function verifySite({origin='https://datonum.com',commit,fetcher=fetch,attempts=12,pause=5000}={}) {
   if(!/^[a-f0-9]{40}$/.test(commit??''))throw new Error('A full commit SHA is required');
   const base=new URL(origin);
-  if(!['https://datonum.com','http://127.0.0.1:8080'].includes(base.origin))throw new Error('Unexpected verification origin');
+  // datonum.com itself, or a deployment of the datonum-website Cloudflare Pages project
+  // (<hash>.<project-subdomain>.pages.dev, or the project's own <project-subdomain>.pages.dev).
+  const pagesHost=/^https:\/\/([a-z0-9-]+\.)?datonum-website(-[a-z0-9]+)?\.pages\.dev$/;
+  if(base.origin!=='https://datonum.com'&&!pagesHost.test(base.origin))throw new Error('Unexpected verification origin');
   let error;
   for(let i=0;i<attempts;i++){
     try{
@@ -20,6 +23,9 @@ export async function verifySite({origin='https://datonum.com',commit,fetcher=fe
         if(route==='/BingSiteAuth.xml'&&!/<users>\s*<user>[A-F0-9]{32}<\/user>\s*<\/users>/i.test(body))throw new Error('Invalid Bing verification');
         if(!route.includes('.')&&(!/<title>[^<]+<\/title>/.test(body)||!body.includes('rel="canonical"')))throw new Error(`${route}: missing title/canonical`);
       }
+      // A /go/ short link (public/_redirects) must answer 302 with its UTM destination.
+      const go=await fetcher(`${base.origin}/go/li`,{redirect:'manual',signal:AbortSignal.timeout(15000)});
+      if(go.status!==302||!(go.headers.get('location')??'').includes('utm_source=linkedin'))throw new Error(`/go/li: expected 302 to a UTM link, got HTTP ${go.status}`);
       return {verified:true,commit,origin:base.origin};
     }catch(e){error=e;if(i+1<attempts)await delay(pause);}
   }

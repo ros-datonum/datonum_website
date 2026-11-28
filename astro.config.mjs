@@ -9,9 +9,9 @@ const INSIGHTS_DIRECTORY = './src/content/insights';
 const INSIGHTS_INDEX_PATH = '/insights';
 const hasInsights = readdirSync(INSIGHTS_DIRECTORY).some((file) => file.endsWith('.md'));
 
-// Static marketing site for datonum.com — no adapter (nginx serves the built output).
-// URLs carry no trailing slash: pages build to /about.html and nginx serves them at /about
-// (see nginx.conf), so canonicals, internal links and the sitemap all agree on one form.
+// Static marketing site for datonum.com — no adapter (Cloudflare Pages serves the built output).
+// URLs carry no trailing slash: pages build to /about.html and Pages serves them at /about
+// (308 from every other spelling), so canonicals, internal links and the sitemap agree on one form.
 // https://astro.build/config
 export default defineConfig({
   site: 'https://datonum.com',

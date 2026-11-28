@@ -1,0 +1,18 @@
+# Cloudflare Pages redirects. Pages reads this file from the build output root.
+#
+# /go/<code> short links with UTM parameters. 302, so a destination can change without
+# browser or CDN cache problems. Each code is listed with and without a trailing slash.
+# Codes are registered in Notion: "UTM-правила" -> Реєстр посилань.
+# tests/deployment.test.mjs checks that every code has both spellings and a 302.
+/go/li         /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=contact-info  302
+/go/li/        /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=contact-info  302
+/go/li-about   /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=about  302
+/go/li-about/  /?utm_source=linkedin&utm_medium=profile&utm_campaign=always-on&utm_content=about  302
+/go/co         /?utm_source=linkedin&utm_medium=company-page&utm_campaign=always-on  302
+/go/co/        /?utm_source=linkedin&utm_medium=company-page&utm_campaign=always-on  302
+/go/x          /?utm_source=x&utm_medium=profile&utm_campaign=always-on&utm_content=bio  302
+/go/x/         /?utm_source=x&utm_medium=profile&utm_campaign=always-on&utm_content=bio  302
+/go/th         /?utm_source=threads&utm_medium=profile&utm_campaign=always-on&utm_content=bio  302
+/go/th/        /?utm_source=threads&utm_medium=profile&utm_campaign=always-on&utm_content=bio  302
+/go/sig        /?utm_source=email&utm_medium=signature&utm_campaign=always-on  302
+/go/sig/       /?utm_source=email&utm_medium=signature&utm_campaign=always-on  302

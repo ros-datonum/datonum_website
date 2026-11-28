@@ -43,16 +43,17 @@ top-right of a section; sparse inline line-icons (checkmarks, small UI marks).
 No prices anywhere on the site. Pricing lives only in the PDF one-pagers.
 
 ## Stack
-Astro 7, static output, no adapter. Built into an nginx container (`Dockerfile`,
-`nginx.conf`) on a VPS, behind a shared Caddy container (TLS, on the `ai_stack_public_proxy`
-Docker network) and Cloudflare. Deploy:
-`docker compose up -d --build`.
-After deploying a new article or a major edit, run `npm run indexnow` (pings IndexNow with
-every sitemap URL; `npm run indexnow -- --urls=/insights/slug,...` sends only those). The key
+Astro 7, static output, no adapter. Hosted on Cloudflare Pages (project `datonum-website`).
+A push to `main` (or a merged PR) deploys automatically via GitHub Actions: preview check,
+then production, then a check of datonum.com (`deploy/github-actions.md`). Short links
+`/go/*` live in `public/_redirects`; security and cache headers in `public/_headers`.
+Local check of Pages routing: `npm run build && npx wrangler pages dev dist`.
+The deploy workflow runs `npm run indexnow` after every verified release (pings IndexNow with
+every sitemap URL); `npm run indexnow -- --urls=/insights/slug,...` sends only those URLs by hand. The key
 file is `public/087946e69631a726e776769531d9618f.txt`.
 
 URLs have no trailing slash. Pages build to `/about.html` (`build.format: 'file'`) and
-nginx serves them at `/about`, 301-ing every other spelling. Use `toRoutePath()` from
+Pages serves them at `/about`, 308-ing every other spelling. Use `toRoutePath()` from
 `src/data/navigation.ts` rather than raw `Astro.url.pathname`.
 
 SEO plumbing: head metadata and JSON-LD render in `src/layouts/BaseLayout.astro`; site

@@ -1,14 +1,32 @@
 # Deploy notes
 
-The site is a static Astro build served by nginx in a container (`Dockerfile`,
-`nginx.conf`). In front of it sit the shared Caddy container (TLS), reached over the
-`ai_stack_public_proxy` Docker network with no host port published, and Cloudflare. Deploy on
-the VPS with `docker compose up -d --build`.
+The site is a static Astro build hosted on **Cloudflare Pages** (project `datonum-website`).
+A push to `main`, including a merged pull request, builds and deploys automatically through
+GitHub Actions; see [GitHub Actions deployment](github-actions.md). Nothing about the site
+runs on the VPS any more.
+
+Pages reads two control files from the build output root, both kept in `public/`:
+
+- `public/_redirects`: the `/go/*` short links (302);
+- `public/_headers`: security headers and cache rules (immutable `/_astro/*`, 30 days for
+  `/fonts/*` and `/brand/*`, `no-store` for `/deployment.json`).
+
+Pages serves `/about.html` at `/about` and 308-redirects `/about.html`, `/about/` and
+`/index.html` to the canonical spelling, matching `trailingSlash: 'never'` and
+`build.format: 'file'`. One difference from the old nginx: `/404` answers 200 with the
+not-found page (Pages cannot return 404 for an existing file); the page is `noindex`.
+
+Local check of the real Pages routing, redirects and headers:
+
+```sh
+npm run build && npx wrangler pages dev dist
+```
 
 ## Environment variables
 
-The build reads `.env` (copied into the build stage). See `.env.example` for the full
-list. Required in production:
+The `PUBLIC_*` values are public (inlined into the client bundle) and are set in the
+`env:` block of `.github/workflows/website.yml`. For local builds copy `.env.example` to
+`.env`. Required in production:
 
 - `PUBLIC_HUBSPOT_PORTAL_ID`, `PUBLIC_HUBSPOT_FORM_GUID`, `PUBLIC_HUBSPOT_REGION`: contact
   form submission and the consent-gated HubSpot tracking code.
@@ -19,33 +37,9 @@ list. Required in production:
 
 ## Short links (`/go/*`)
 
-`go-links.caddy` holds the `/go/<code>` redirects. They live in Caddy, not in the site,
-so adding a link needs no rebuild.
-
-Caddy runs as a shared container whose compose file is not in this repo. Below,
-`<caddy-container>` is its container name (`docker ps --filter ancestor=caddy`), and
-`<caddy-config-dir>` is the host directory it mounts at `/etc/caddy`
-(`docker inspect -f '{{json .Mounts}}' <caddy-container>`).
-
-1. Copy `go-links.caddy` into `<caddy-config-dir>`, next to the Caddyfile.
-2. Inside the `datonum.com` site block of the Caddyfile, add:
-
-   ```caddy
-   import go-links.caddy
-   ```
-
-3. Validate and reload:
-
-   ```sh
-   docker exec <caddy-container> caddy validate --config /etc/caddy/Caddyfile
-   docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
-   ```
-
-4. Check: `curl -sI https://datonum.com/go/li` and `curl -sI https://datonum.com/go/li/`
-   both return `302` with the UTM `location`.
-
-To add a link, add a matcher and `redir` pair to `go-links.caddy` on the VPS (and
-here), then reload.
+Each code is two lines in `public/_redirects` (with and without a trailing slash), status
+302. Add a code there, register it in Notion ("UTM-правила" -> Реєстр посилань) and push:
+the next deploy publishes it, and the deploy workflow checks `/go/li` on every release.
 
 ## Content Security Policy
 
@@ -62,38 +56,9 @@ session as that deploy.
 
 ### Server logs
 
-Nothing here changes VPS-wide settings; everything is scoped to this site.
-
-- **nginx (this container):** requests arrive through Caddy with the visitor's IP in
-  `X-Forwarded-For` and `CF-Connecting-IP`, and the image's default access-log format
-  records `X-Forwarded-For`. `nginx.conf` therefore sets `access_log off` and logs errors
-  at `warn` only. Those error lines show the Caddy container's address as `client`,
-  never a visitor's. `docker-compose.yml` caps this container's log at 2 × 1 MB
-  (`json-file`, per service).
-- **Caddy (shared container):** Caddy writes access logs only for site blocks that
-  contain a `log` directive. Check the `datonum.com` block in the shared Caddyfile:
-  - no `log`: nothing to do;
-  - has `log`: remove it, or keep it and mask client IPs:
-
-    ```caddy
-    log {
-    	format filter {
-    		request>remote_ip ip_mask 16 32
-    		request>client_ip ip_mask 16 32
-    		request>headers>X-Forwarded-For delete
-    		request>headers>Cf-Connecting-Ip delete
-    	}
-    }
-    ```
-
-    Then validate and reload as in "Short links" above.
-
-Verify after the next deploy:
-
-```sh
-docker inspect -f '{{.HostConfig.LogConfig}}' datonum-website   # {json-file map[max-file:2 max-size:1m]}
-docker logs datonum-website 2>&1 | grep -c 'GET /'              # 0: no access lines
-```
+The site has no web server of its own: Cloudflare Pages serves it and gives the account no
+per-request access log, so no visitor IPs are kept for the website. Umami is the only
+analytics store (below). Umami itself still runs on the VPS.
 
 ### Umami data (24 months; recordings 30 days)
 
@@ -116,14 +81,14 @@ lists the exact tables and columns. Re-check it after every Umami upgrade. The w
    deletes nothing:
 
    ```sh
-   sudo /path/to/datonum-website/deploy/umami-retention.sh --dry-run
+   sudo /opt/datonum_website/deploy/umami-retention.sh --dry-run
    ```
 
 3. Install the daily job as `/etc/cron.d/umami-retention` (03:30 server time):
 
    ```cron
    PATH=/usr/local/bin:/usr/bin:/bin
-   30 3 * * * root /path/to/datonum-website/deploy/umami-retention.sh 2>&1 | logger -t umami-retention
+   30 3 * * * root /opt/datonum_website/deploy/umami-retention.sh 2>&1 | logger -t umami-retention
    ```
 
 Verify the next day: `journalctl -t umami-retention --since yesterday` shows
@@ -132,4 +97,4 @@ every table only straight after a run.
 
 ## GitHub Actions
 
-See [GitHub Actions deployment](github-actions.md) for automated checks, deployment, cache purge and rollback.
+See [GitHub Actions deployment](github-actions.md) for automated checks, deployment, cache purge and rollback. The Umami retention job above still runs on the VPS from the `/opt/datonum_website` checkout; keep that checkout when the old site container is removed.
